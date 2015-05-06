@@ -1,0 +1,67 @@
+
+// TODO: refactor this
+/* Tag tag(string name, object[] props, object[] events, object value, Tagable[] childs) { */
+Tag tag(string name, object props, object events, object value, object childs) {
+  Tag tg = new Tag();
+  tg.name = name;
+
+  // TODO: set properties here
+  if props isnot null {
+    tg.props = props;
+  }
+
+  if events isnot null {
+    tg.events = events;
+  }
+
+  tg.create();
+
+  if childs isnot null {
+    for object child: childs {
+      tg.append(child);
+    }
+  }
+
+  if value isnot null {
+    tg.setValue(value);
+  }
+
+  return tg;
+}
+
+
+/* View view(object clas, objects[] props, objects[] events, Tagable[] childs) { */
+View view(object clas, object props, object events, object childs) {
+  auto v = new clas();
+
+  if props isnot null {
+    for int i = 0; i < props.length; i = i + 2 {
+      v[props[i]] = props[i+1];
+    }
+  }
+
+  if events isnot null {
+    log("view.events not implemented:");
+    log(events);
+    for int i = 0; i < events.length; i = i + 2 {
+      /* v["event" + events[i]] */
+    }
+  }
+
+  v.create();
+
+  if childs isnot null {
+    for object child: childs {
+      v.append(child);
+    }
+  }
+
+  return v;
+}
+
+
+// appendTag to body
+void appendTag(Tagable element) {
+  document.body.appendChild(element.getNode());
+  element.enter();
+}

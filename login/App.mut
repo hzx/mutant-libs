@@ -1,0 +1,36 @@
+
+class App {
+  AppView view = new AppView();
+
+  void enter() {
+    view.enter();
+    view.eventSend.listen(onSend);
+  }
+
+  void exit() {
+    view.exit();
+  }
+
+  void main() {
+    view.create();
+    web.appendTag(view);
+    enter();
+  }
+
+  bind void onSend(object data) {
+    view.errors.clear();
+    App me = this;
+    browser.post("/login", data, apploader.App.instance().xsrf, void (string response) {
+      window.location = response;
+    }, void (int status, string response) {
+      me.view.showError(response);
+    }, void () {});
+  }
+
+  static App instance_ = null;
+
+  static App instance() {
+    if App.instance_ is null { App.instance_ = new App(); }
+    return App.instance_;
+  }
+}

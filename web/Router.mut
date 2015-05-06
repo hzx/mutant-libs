@@ -1,0 +1,21 @@
+
+class Router {
+  object handlers_ = {};
+
+  void addHandler(string name, object handler) {
+    handlers_[name] = handler;
+  }
+
+  void addHandlers(object handlers) {
+    for string name in handlers { handlers_[name] = handlers[name]; }
+  }
+
+  void enter() {
+  }
+
+  void exit() {
+  }
+
+  bind void onUrlChange() {
+  }
+}

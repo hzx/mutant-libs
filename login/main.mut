@@ -1,0 +1,13 @@
+import browser;
+import web;
+import container;
+import login.style;
+import apploader;
+
+extern window;
+
+
+void main() {
+  App.instance().main();
+  apploader.App.instance().hide();
+}

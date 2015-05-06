@@ -1,0 +1,3 @@
+
+string DELIM_ROW = "\1";
+string DELIM_FIELD = "\2";

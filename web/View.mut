@@ -1,0 +1,79 @@
+
+class View implements Tagable {
+  int tagableCode = TAGABLE_VIEW;
+  tag element = null;
+  bool isEnter = false;
+
+  Tagable getParent() {
+    return element.parent;
+  }
+
+  Tagable getNext() {
+    return element.next;
+  }
+
+  Tagable getPrev() {
+    return element.prev;
+  }
+
+  Tagable getFirst() {
+    return element.first;
+  }
+
+  Tagable getLast() {
+    return element.last;
+  }
+
+
+  void create() {
+    /* element = tag("div", null, null, "View__", null); */
+    element = <div> "override View.create" </div>;
+  }
+
+  void destroy() {
+  }
+
+  void enter() {
+    if isEnter { return; }
+    isEnter = true;
+    element.enter();
+  }
+
+  void exit() {
+    if !isEnter { return; }
+    isEnter = false;
+    element.exit();
+  }
+
+  string getId() {
+    return element.getNode().getId();
+  }
+
+  object getNode() {
+    return element.getNode();
+  }
+
+  void insert(Tagable child) {
+    element.insert(child);
+  }
+
+  void append(Tagable child) {
+    element.append(child);
+  }
+
+  void appendBefore(Tagable child, string beforeHash) {
+    element.appendBefore(child);
+  }
+
+  void remove() {
+    element.remove();
+  }
+
+  void removeChild(string hash) {
+    element.removeChild(hash);
+  }
+
+  void setValue(string text) {
+    element.setValue(text);
+  }
+}

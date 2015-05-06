@@ -1,0 +1,312 @@
+
+void SetText(object node, string text);
+string GetText(object node);
+string GetStyle(object node, string name);
+
+
+SetText setTextInit_() {
+  if "textContent" in document.body { // W3C
+    return void (object node, string text) {
+      node.textContent = text;
+    };
+  } else {
+    return void (object node, string text) { // IE
+      if node.firstChild {
+        node.firstChild.nodeValue = text;
+      } else {
+        node.appendChild(document.createTextNode(text));
+      }
+    };
+  }
+}
+
+
+GetText getTextInit_() {
+  if "textContent" in document.body { // W3C
+    return string (object node) {
+      return node.textContent;
+    };
+  } else {
+    return string (object node) { // IE
+      if node.firstChild {
+        return node.firstChild.nodeValue;
+      } else {
+        return "";
+      }
+    };
+  }
+}
+
+
+void setStyleProperty(object node, string name, string value) {
+  node.style[name] = value;
+}
+
+
+GetStyle getStyleInit_() {
+  object foo = document.body;
+
+  // TODO: try simple element.style[name];
+  /* return string (object node, string name) { */
+  /*   return node.style[name]; */
+  /* }; */
+
+  if document.defaultView and document.defaultView.getComputedStyle { // W3C
+    return string (object node, string name) {
+      /* object s = document.defaultView.getComputedStyle(node, ""); */
+      object s = document.defaultView.getComputedStyle(node, null);
+      return s and s.getPropertyValue(name);
+    };
+  }
+
+  if foo.currentStyle { // IE
+    return string (object node, string name) {
+      return node.currentStyle[name];
+    };
+  }
+}
+
+
+int pageX(object node) {
+  if node.offsetParent {
+    return node.offsetLeft + pageX(node.offsetParent);
+  } else {
+    return node.offsetLeft;
+  }
+}
+
+
+int pageY(object node) {
+  if node.offsetParent {
+    return node.offsetTop + pageY(node.offsetParent);
+  } else {
+    return node.offsetTop;
+  }
+}
+
+
+int parentX(object node) {
+  if node.parentNode is node.offsetParent {
+    return node.offsetLeft;
+  } else {
+    return pageX(node) - pageX(node.parentNode);
+  }
+}
+
+
+int parentY(object node) {
+  if node.parentNode is node.offsetParent {
+    return node.offsetTop;
+  } else {
+    return pageY(node) - pageY(node.parentNode);
+  }
+}
+
+
+int posX(object node) {
+  return parseInt(getStyle(node, "left"));
+}
+
+
+int posY(object node) {
+  return parseInt(getStyle(node, "top"));
+}
+
+
+void setX(object node, int pos) {
+  node.style.left = pos + "px";
+}
+
+
+void setY(object node, int pos) {
+  node.style.top = pos + "px";
+}
+
+
+int getWidth(object node) {
+  return parseInt(getStyle(node, "width")) or 0;
+}
+
+
+int getHeight(object node) {
+  return parseInt(getStyle(node, "height")) or 0;
+}
+
+
+void hide(object node) {
+  string display = getStyle(node, "display");
+  if display isnot "none" {
+    node.oldDisplay__ = display;
+  }
+  node.style.display = "none";
+}
+
+
+void show(object node) {
+  node.style.display = node.oldDisplay__ or "";
+}
+
+
+void SetOpacity(object node, float level);
+
+SetOpacity setOpacityInit_() {
+  object foo = document.body;
+
+  if foo.filters { // IE
+    return void (object node, float level) {
+      node.style.filter = "alpha(opacity=" + Math.floor(level * 100.0) + ")";
+    };
+  }
+
+  // W3C
+  return void (object node, float level) {
+    node.style.opacity = level;
+  };
+}
+
+
+GetStyle getStyle = null;
+
+
+object setStyleBackup(object node, object styles) {
+  object bak = {};
+  for string name in styles {
+    bak[name] = node.style[name];
+    node.style[name] = styles[name];
+  }
+
+  return bak;
+}
+
+
+void setStyle(object node, object styles) {
+  for string name in styles {
+    node.style[name] = styles[name];
+  }
+}
+
+
+object fullStyle_ = {
+  "display": "",
+  "visibility": "hidden",
+  "position": "absolute",
+};
+
+
+// Find the full, possible, width of an element (not the actual,
+// current, width)
+int getFullWidth(object node) {
+  if getStyle(node, "display") isnot "none" {
+    return node.offsetWidth or getWidth(node);
+  }
+
+  object bak = setStyleBackup(node, fullStyle_);
+  int width = node.clientWidth or getWidth(node);
+  setStyle(node, bak);
+
+  return width;
+}
+
+
+int getFullHeight(object node) {
+  if getSTyle(node, "display") isnot "none" {
+    return node.offsetHeight or getHeight(node);
+  }
+
+  object bak = setStyleBackup(node, fullStyle_);
+  int height = node.clientHeight or getHeight(node);
+  setStyle(node, bak);
+
+  return height;
+}
+
+
+int MousePos(object event_);
+
+MousePos mouseXInit_() {
+  if window.addEventListener { // W3C
+    return int (object event_) {
+      return event_.pageX;
+    };
+  } else { // IE
+    return int (object event_) {
+      return event_.clientX + document.body.scrollLeft;
+    };
+  }
+}
+
+
+MousePos mouseYInit_() {
+  if window.addEventListener { // W3C
+    return int (object event_) {
+      return event_.pageY;
+    };
+  } else { // IE
+    return int (object event_) {
+      return event_.clientY + document.body.scrollTop;
+    };
+  }
+}
+
+
+// get the x position of the mouse relative to the element target
+// used in event object
+MousePos mouseElementXInit_() {
+  if window.addEventListener { // W3C
+    return int (object event_) {
+      return event_.layerX;
+    };
+  } else { // IE
+    return int (object event_) {
+      return event_.offsetX;
+    };
+  }
+}
+
+
+MousePos mouseElementYInit_() {
+  if window.addEventListener { // W3C
+    return int (object event_) {
+      return event_.layerY;
+    };
+  } else { // IE
+    return int (object event_) {
+      return event_.offsetY;
+    };
+  }
+}
+
+
+// pageHeight
+// element.scrollHeight;
+// pageWidth
+// element.scrollWidth;
+
+
+// A function for determining how far horizontally the browser (element)
+// is scrolled;
+int scrollX(object node) {
+  return node.pageXOffset or node.scrollLeft;
+}
+
+
+int scrollY(object node) {
+  return node.pageYOffset or node.scrollTop;
+}
+
+
+// scroll to position
+// element.scrollTo(x, y);
+
+
+void addJs(string content) {
+  object node = document.createElement("script");
+  node.type = "text/javascript";
+  node.text = content;
+
+  object heads = document.getElementsByTagName("head");
+  heads[0].appendChild(node);
+
+  // TODO: make this work
+  //document.getElementsByTagName("head")[0].appendChild(node);
+}

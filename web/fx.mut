@@ -1,0 +1,95 @@
+
+int fastTime = 200;
+int normalTime = 400;
+int slowTime = 1000;
+
+
+// smooth show with size
+void slideIn(object node, int time, object callback) {
+  node.style.height = "0px";
+  show(node);
+
+  object update = void (float value) {
+    node.style.height = parseInt(value) + "px";
+  };
+
+  animate(update, callback, time, animationDelta, 0, getFullHeight(node), easingLinear);
+}
+
+
+// smoot hide with size
+void slideDown(object node, int time, object callback) {
+  object update = void (float value) {
+    node.style.height = parseInt(value) + "px";
+  };
+
+  object end = void () {
+    hide(node);
+    callback();
+  };
+
+  animate(update, end, time, animationDelta, getHeight(node), 0, easingLinear);
+}
+
+
+// smooth show with opacity
+void fadeIn(object node, int time, object callback) {
+  setOpacity(node, 0.0);
+  show(node);
+
+  object update = void (float value) {
+    setOpacity(node, value);
+  };
+
+  animate(update, callback, time, animationDelta, 0.0, 1.0, easingLinear);
+}
+
+
+// smoot hide with opacity
+void fadeOut(object node, int time, object callback) {
+  setOpacity(node, 1.0);
+  show(node);
+
+  object update = void (float value) {
+    setOpacity(element, value);
+  };
+
+  object end = void () {
+    hide(node);
+    callback();
+  };
+
+  animate(update, end, time, animationDelta, 1.0, 0.0, easingLinear);
+}
+
+
+void slideFadeIn(object node, int time, object callback) {
+  int height = getFullHeight(node);
+  node.style.height = "0px";
+  setOpacity(node, 0.0);
+  show(node);
+
+  object update = void (float value) {
+    node.style.height = parseInt(height * value) + "px";
+    setOpacity(node, value);
+  };
+
+  animate(update, callback, time, animationDelta, 0.0, 1.0, easingLinear);
+}
+
+
+void slideFadeOut(object node, int time, object callback) {
+  int height = getFullHeight(node);
+
+  object update = void (float value) {
+    node.style.height = parseInt(height * value) + "px";
+    setOpacity(node, value);
+  };
+
+  object end = void (float value) {
+    hide(node);
+    callback();
+  };
+
+  animate(update, end, time, animationDelta, 1.0, 0.0, easingLinear);
+}

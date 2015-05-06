@@ -1,0 +1,15 @@
+import web;
+import browser;
+import container;
+import apploader.style;
+
+
+/* // place this in ur loader
+int main() {
+  browser.addEvent(window, "load", void () {
+    App.instance().initUrl = "/app/init";
+    App.instance().main();
+  });
+  return 0;
+}
+*/

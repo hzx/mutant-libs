@@ -1,0 +1,80 @@
+
+
+void stopPropagationIE_() {
+  this.cancelBubble = true;
+}
+
+
+void preventDefaultIE_() {
+  this.returnValue = false;
+}
+
+
+object fixEventIE_(object e) {
+  e.target = e.srcElement;
+  e.stopPropagation = stopPropagationIE_;
+  e.preventDefault = preventDefaultIE_;
+  return e;
+}
+
+
+void ManageEvent(object node, string name, object handler);
+
+
+ManageEvent addEventInit_() {
+  if window.addEventListener { // W3C
+    return void (object node, string name, object handler) {
+      node.addEventListener(name, handler, false);
+    };
+  } else { // IE
+    return void (object node, string name, object handler) {
+      // create proxy handler
+      if (!handler.proxy) {
+        handler.proxy = object (object event_) {
+          // call handler W3C way - with event parameter
+          return handler(fixEventIE_(event_ or window.event));
+        };
+      }
+      node.attachEvent("on" + name, handler.proxy);
+    };
+  }
+}
+
+
+ManageEvent removeEventInit_() {
+  if window.removeEventListener { // W3C
+    return void (object node, string name, object handler) {
+      node.removeEventListener(name, handler, false);
+    };
+  } else { // IE
+    return void (object node, string name, object handler) {
+      node.detachEvent("on" + name, handler.proxy);
+    };
+  }
+}
+
+
+void FireClick();
+
+
+FireClick clickInit_() {
+  if document.body.click { // Firefox
+    return void (object node) {
+      node.click();
+    };
+  }
+
+  if document.createEvent { // W3C
+    return void (object node) {
+      object event = document.createEvent("MouseEvents");
+      event.initMouseEvent("click", true, true, window,
+        0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      node.dispatchEvent(event);
+    };
+  }
+
+  // IE
+  return void (object node) {
+    node.fireEvent("onclick", node.ownerDocument.createEventObject());
+  };
+}

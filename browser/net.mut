@@ -1,0 +1,194 @@
+
+auto eventConnectionError = new container.Event();
+auto eventClientError = new container.Event();
+auto eventServerError = new container.Event();
+
+
+// FormData supported
+// window.FormData;
+
+
+object CreateXhr();
+
+CreateXhr createXhr = null;
+
+CreateXhr createXhrInit_() {
+  object methods = [
+    object () { return new XMLHttpRequest(); },
+    object () { return new ActiveXObject("Msxml2.XMLHTTP"); },
+    object () { return new ActiveXObject("Microsoft.XMLHTTP"); },
+  ];
+
+  for auto method: methods {
+    try {
+      method();
+    } catch object e {
+      continue;
+    }
+    return method;
+  }
+
+  log("[error]: createXhr method not found");
+}
+
+
+void notifyNetworkFail(int status, string response) {
+  if status is 0 {
+    eventConnectionError.notify("Ошибка соединения, проверьте подключение интернета");
+    /* return; */
+  }
+
+  if status >= 400 and status < 500 {
+    eventClientError.notify2(status, response);
+    /* return; */
+  }
+
+  if status >= 500 and status < 600 {
+    eventServerError.notify2(status, response);
+  }
+}
+
+
+string saltUrl(string url) {
+  int pos = url.indexOf("?");
+  string suffix;
+  if pos < 0 { // not found
+    suffix = "?";
+  } else { // found
+    suffix = "&";
+  }
+  return url + suffix + container.Hasher.generate();
+}
+
+
+string encodeData(object data) {
+  object buf = [];
+  for string name in data {
+    buf.push(name + "=" + encodeURIComponent(data[name]));
+  }
+  return buf.join("&");
+}
+
+
+// params - {method, headers, url, data, success, fail}
+void ajax(object params) {
+  object xhr = createXhr();
+  params.xhr = xhr;
+  xhr.onprogress = params.progress;
+
+  xhr.onreadystatechange = void () {
+    if xhr.readyState is 4 {
+      string response = xhr.responseText;
+      int status = xhr.status;
+
+      // clean xhr
+      xhr.onprogress = null;
+      xhr.onreadystatechange = null;
+      params.xhr = null;
+      delete xhr;
+      xhr = null;
+
+      if (status >= 200 and status < 300) or status is 304 {
+        params.success(response);
+      } else {
+        notifyNetworkFail(status, response);
+        params.fail(status, response);
+      }
+    } else { // onprogress
+    }
+  };
+
+  xhr.open(params.method, params.url, true);
+  xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+  for string name in params.headers {
+    xhr.setRequestHeader(name, params.headers[name]);
+  }
+
+  xhr.send(params.data);
+}
+
+
+void get(string url, object success, object fail, object progress) {
+  object params = {
+    xhr: null,
+    method: "GET",
+    headers: {},
+    url: saltUrl(url),
+    data: null,
+    success: success,
+    fail: fail,
+    progress: progress
+  };
+
+  ajax(params);
+  return params;
+}
+
+
+void post(string url, object data, string xsrf, object success, object fail, object progress) {
+  object headers = {
+    "Content-Type": "application/x-www-form-urlencoded",
+    "X-Xsrftoken": xsrf
+  };
+
+  object params = {
+    xhr: null,
+    method: "POST",
+    /* headers: headers, */
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+      "X-Xsrftoken": xsrf
+    },
+    url: url,
+    data: encodeData(data),
+    success: success,
+    fail: fail,
+    progress: progress
+  };
+
+  ajax(params);
+  return params;
+}
+
+
+void postFiles(string url, object files, string hash, object success, object fail, object progress) {
+  object data = new FormData();
+  for object file: files {
+    data.append(file.name, file);
+  }
+
+  object params = {
+    xhr: null,
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "X-Xsrftoken": xsrf,
+      "X-Hash": hash
+    },
+    url: url,
+    data: data,
+    success: success,
+    fail: fail,
+    progress: progress
+  };
+
+  ajax(params);
+  return params;
+}
+
+
+void getCached(string url, object success, object fail, object progress) {
+  object params = {
+    xhr: null,
+    method: "GET",
+    headers: {},
+    url: url,
+    data: null,
+    success: success,
+    fail: fail,
+    progress: progress
+  };
+
+  ajax(params);
+  return params;
+}

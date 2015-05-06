@@ -1,0 +1,203 @@
+
+/* like Collection, but CollectionNode integrated */
+
+class Tag implements Tagable {
+  string id = container.Hasher.generate();
+  int tagableCode = TAGABLE_TAG;
+  string name = null;
+  object node = null;
+  object parent = null;
+  object first = null;
+  object last = null;
+  object next = null;
+  object prev = null;
+  bool isEnter = false;
+  object props = null;
+  object events = [];
+  string value = "";
+  object idToChilds_ = {};
+  /* object childs_ = []; */
+  object styleBackup = null; // need for saving temporary style changes
+
+  Tagable getParent() {
+    return parent;
+  }
+
+  Tagable getNext() {
+    return next;
+  }
+
+  Tagable getPrev() {
+    return prev;
+  }
+
+  Tagable getFirst() {
+    return first;
+  }
+
+  Tagable getLast() {
+    return last;
+  }
+
+  void create() {
+    node = document.createElement(name);
+
+    if props {
+      for int i = 0; i < props.length; i = i + 2 {
+        setProperty(props[i], props[i + 1]);
+      }
+    }
+  }
+
+  void destroy() {
+  }
+
+  void enter() {
+    if isEnter { return; }
+    isEnter = true;
+
+    for int i = 0; i < events.length; i = i + 2 {
+      browser.addEvent(node, events[i], events[i+1]);
+    }
+
+    /* for Tagable child: childs { child.enter(); } */
+    Tagable cursor = first;
+    while cursor isnot null {
+      cursor.enter();
+      cursor = cursor.next;
+    }
+  }
+
+  void exit() {
+    if !isEnter { return; }
+    isEnter = false;
+
+    for int i = 0; i < events.length; i = i + 2 {
+      browser.removeEvent(node, events[i], events[i+1]);
+    }
+
+    /* for Tagable child: childs { child.exit(); } */
+    Tagable cursor = first;
+    while cursor isnot null {
+      cursor.exit();
+      cursor = cursor.next;
+    }
+  }
+
+  string getId() {
+    return id;
+  }
+
+  object getNode() {
+    return node;
+  }
+
+  void insert(Tagable child) {
+    child.prev = null;
+    child.next = first;
+    if first isnot null { first.prev = child; }
+    if last is null { last = first; }
+    first = child;
+    node.insertChild(child.getNode());
+    idToChilds_[child.getId()] = child;
+    if isEnter { child.enter(); }
+  }
+
+  void insertBefore(Tagable child, string beforeHash) {
+    if beforeHash in idToChilds_ {
+      Tagable before = idToChilds_[beforeHash];
+      child.prev = before.prev;
+      child.next = before;
+      if before.prev isnot null {
+        before.prev.next = child;
+      }
+      before.prev = child;
+      if first is before { first = child; }
+      node.insertBefore(child.getNode(), before.getNode());
+      idToChilds_[child.getId()] = child;
+    } else {
+      insert(child);
+    }
+  }
+
+  void append(Tagable child) {
+    child.prev = last;
+    child.next = null;
+    if first is null { first = child; }
+    if last isnot null { last.next = child; }
+    last = child;
+    node.appendChild(child.getNode());
+    if isEnter { child.enter(); }
+    idToChilds_[child.getId()] = child;
+  }
+
+  void remove() {
+    if parent is null { return; }
+    parent.removeChild(getId());
+  }
+
+  void removeChild(string hash) {
+    if hash in idToChilds_ {
+      Tagable child = idToChilds_[hash];
+      if isEnter { child.exit(); }
+      node.removeChild(child.getNode());
+
+      delete idToChilds_[hash];
+      /* int i = childs_.indexOf(child); */
+      /* childs_.splice(i, 1); */
+
+      child.parent = null;
+      child.next = null;
+      child.prev = null;
+    }
+  }
+
+  void clear() { // remove all childs
+    Tagable child = first;
+    Tagable nxt;
+    while child isnot null {
+      nxt = child.getNext();
+      if isEnter { child.exit(); }
+      node.removeChild(child.getNode());
+      child = nxt;
+    }
+    first = null;
+    last = null;
+    idToChilds_ = {};
+    /* childs_ = []; */
+  }
+
+  void setValue(string text) {
+    value = text;
+    browser.setText(node, text);
+  }
+
+  void setHtml(string html) {
+    node.innerHTML = html;
+  }
+
+  void setProperty(string name, object value) {
+    switch name {
+      case "style":
+        setStyle(value);
+        break;
+      case "type":
+        node.type = value;
+        break;
+      case "value":
+        node.value = value;
+        break;
+      default:
+        log("unknown property name: " + name);
+        break;
+    }
+  }
+
+  void setStyle(object style) {
+    browser.setStyle(getNode(), style);
+  }
+
+  void setStyleProperty(string name, string value) {
+    browser.setStyleProperty(getNode(), name, value);
+  }
+}

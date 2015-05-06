@@ -1,0 +1,109 @@
+
+class Collection {
+  object idToNodes_ = {};
+  object first = null;
+  object last = null;
+  object next = null;
+  object prev = null;
+
+  void insert(object obj) {
+    insertNode_({
+      obj: obj,
+      next: null,
+      prev: null,
+    });
+  }
+
+  void insertBefore(object obj, string beforeId) {
+    if beforeId in idToNodes_ {
+      insertBeforeNode_({
+        obj: obj,
+        next: null,
+        prev: null,
+      }, idToNodes_[beforeId]);
+    } else {
+      insert(obj);
+    }
+  }
+
+  void append(object obj) {
+    appendNode_({
+      obj: obj,
+      next: null,
+      prev: null,
+    });
+  }
+
+  void move(string id, string beforeId) {
+    if id in idToNodes_ and beforeId in idToNodes_ {
+      auto node = idToNodes_[id];
+      removeNode(node);
+      insertBeforeNode_(node, idToNodes_[beforeId]);
+    }
+  }
+
+  void remove(string id) {
+    if id in idToNodes_ { removeNode_(idToNodes_[id]); }
+  }
+
+  object get(string id) {
+    auto node = getNode_(id);
+    if node isnot null { return node.obj; }
+    return null;
+  }
+
+  void insertNode_(object node) {
+    if node.obj.id in idToNodes_ {
+      log("node with the same id exists");
+      return ;
+    }
+    node.prev = null;
+    node.next = first;
+    if first isnot null { first.prev = node; }
+    if last is null { last = node; }
+    first = node;
+    idToNodes_[node.obj.id] = node;
+  }
+
+  void insertBeforeNode_(object node, object before) {
+    if node.obj.id in idToNodes_ {
+      log("node with the same id exists");
+      return ;
+    }
+    if before is null { return insertNode_(node); }
+
+    if before.prev isnot null { before.prev.next = node; }
+    node.prev = before.prev;
+    node.next = before;
+    before.prev = node;
+    idToNodes_[node.obj.id] = node;
+  }
+
+  void appendNode_(object node) {
+    if node.obj.id in idToNodes_ {
+      log("node with the same id exists");
+      return;
+    }
+    node.prev = last;
+    node.next = null;
+    if first is null { first = node; }
+    if last isnot null { last.next = node; }
+    last = node;
+    idToNodes_[node.obj.id] = node;
+  }
+
+  object getNode_(string id) {
+    if id in idToNodes_ { return idToNodes_[id]; }
+    return null;
+  }
+
+  void removeNode_(object node) {
+    if first is node { first = null; }
+    if last is node { last = null; }
+    if node.prev isnot null { node.prev.next = node.next; }
+    if node.next isnot null { node.next.prev = node.prev; }
+    node.next = null;
+    node.prev = null;
+    delete idToNodes_[node.obj.id];
+  }
+}

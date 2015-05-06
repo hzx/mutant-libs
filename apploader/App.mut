@@ -1,0 +1,86 @@
+
+class App {
+  AppView view = new AppView();
+  string initUrl = null;
+  string appUrl = null;
+  string xsrf = "";
+  string data = "";
+
+  void main() {
+    browser.init();
+
+    view.create();
+    web.appendTag(view);
+    view.enter();
+
+    view.errors.clear();
+    browser.getCached(initUrl, onInit, onInitFail, onInitProgress);
+  }
+
+  void hide() {
+    browser.hide(view.getNode());
+  }
+
+  void parseFields(string data) {
+    // find first 2 delim_fields and init 3 fields - xsrf, appUrl, data
+    int left = 0;
+    int cursor = 0;
+    int max = data.length;
+    int delimCounter = 0;
+    object parsed = [];
+    while cursor < max {
+      if data.charAt(cursor) is container.DELIM_FIELD {
+        parsed.push(data.substr(left, cursor - left));
+        left = cursor + 1;
+        ++delimCounter;
+        if delimCounter is 2 {
+          parsed.push(data.substr(left));
+          break;
+        }
+      } 
+      ++cursor;
+    }
+
+    return parsed;
+  }
+
+  bind void onInit(string response) {
+    view.setProgress(0.5);
+
+    object fields = parseFields(response);
+    xsrf = fields[0];
+    appUrl = fields[1];
+    data = fields[2];
+
+    browser.getCached(appUrl, onApp, onAppFail, onAppProgress);
+  }
+
+  bind void onInitFail(int status, string response) {
+    view.showError("[init] " + response);
+  }
+
+  bind void onInitProgress(object e) {
+    view.setProgress(e.loaded / e.total);
+  }
+
+  bind void onApp(string response) {
+    browser.addJs(response);
+  }
+
+  bind void onAppFail(int status, string response) {
+    view.showError("[app] " + response);
+  }
+
+  bind void onAppProgress(object e) {
+    view.setProgress(0.5 + (e.loaded / e.total) / 2);
+  }
+
+  static App instance_ = null;
+
+  static App instance() {
+    if App.instance_ is null {
+      App.instance_ = new App();
+    }
+    return App.instance_;
+  }
+}

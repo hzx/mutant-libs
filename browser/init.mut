@@ -1,0 +1,28 @@
+
+ManageEvent addEvent = addEventInit_();
+ManageEvent removeEvent = removeEventInit_();
+FireClick click = null;
+SetText setText = null;
+GetText getText = null;
+SetOpacity setOpacity = null;
+MousePos mouseX = null;
+MousePos mouseY = null;
+MousePos mouseElementX = null;
+MousePos mouseElementY = null;
+
+
+// call after document loaded (in window.onload)
+void init() {
+  click = clickInit_();
+  setText = setTextInit_();
+  getText = getTextInit_();
+  getStyle = getStyleInit_();
+  setOpacity = setOpacityInit_();
+  mouseX = mouseXInit_();
+  mouseY = mouseYInit_();
+  mouseElementX = mouseElementXInit_();
+  mouseElementY = mouseElementYInit_();
+  createXhr = createXhrInit_();
+  requestAnimationFrame = requestAnimationFrameInit_();
+  cancelAnimationFrame = cancelAnimationFrameInit_();
+}

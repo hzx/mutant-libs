@@ -1,0 +1,30 @@
+
+class AppView extends web.View {
+  tag progressElement = null;
+  tag errors = null;
+
+  override void create() {
+    progressElement = <div style=style.progress></div>;
+    errors = <div style=style.errors></div>;
+
+    element =
+    <div style=style.app>
+      <div style=style.block>
+        <div style=style.label> "ЗАГРУЗКА" </div>
+        <div style=style.progressWrap>
+          {progressElement}
+        </div>
+        {errors}
+      </div>
+    </div>;
+  }
+
+  void setProgress(float value) {
+    progressElement.setStyleProperty("width", parseInt(100 * value) + "%");
+  }
+
+  void showError(string msg) {
+    object error = <div style=style.error> msg </div>;
+    errors.append(error);
+  }
+}

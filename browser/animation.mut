@@ -1,0 +1,190 @@
+
+void AnimationFrame(int delta);
+int RequestAnimationFrame(AnimationFrame frame);
+void CancelAnimationFrame(int id);
+void AnimationEnd();
+float Easing(float progress);
+
+RequestAnimationFrame requestAnimationFrame = null;
+CancelAnimationFrame cancelAnimationFrame = null;
+
+
+RequestAnimationFrame requestAnimationFrameInit_() {
+  int lastTime = 0;
+
+  RequestAnimationFrame customFrame = int (AnimationFrame frame) {
+    object date = new Date();
+    int currTime = date.getTime();
+    int timeToCall = Math.max(0, 16 - (currTime - lastTime));
+    object callback = void () {
+      frame(currTime + timeToCall);
+    };
+    int id = setTimeout(callback, timeToCall);
+
+    // TODO: this cause bug
+    /* int id = setTimeout(void () { */
+    /*   frame(currTime + timeToCall); */
+    /* }, timeToCall); */
+
+    lastTime = currTime + timeToCall;
+    return id;
+
+    // OLD METHOD - destroy after IE 7 WORK with above method
+    // var id = wr.global.setTimeout(callback, 1000 / 10);
+    // return id;
+  };
+
+  return window.requestAnimationFrame or
+    window.webkitRequestAnimationFrame or
+    window.mozRequestAnimationFrame or
+    window.oRequestAnimationFrame or
+    window.msRequestAnimationFrame or
+    customFrame;
+}
+
+
+CancelAnimationFrame cancelAnimationFrameInit_() {
+  CancelAnimationFrame custom = void (int id) {
+    clearTimeout(id);
+  };
+
+  return window.cancelAnimationFrame or
+    window.webkitCancelAnimationFrame or
+    window.webkitCancelRequestAnimationFrame or
+    window.mozCancelAnimationFrame or
+    window.oCancelAnimationFrame or
+    window.msCancelAnimationFrame or
+    custom;
+}
+
+
+// TODO: think about class Animator with static methods
+bool animationFlag = false; // render loop flag
+object animationQueue = []; // task queue
+float animationDelta = 1000.0 / 60.0;
+
+// task
+/* string id; */
+/* RequestAnimationFrame update; */
+/* AnimationEnd end; */
+/* int time; */
+/* int dt; */
+/* int from; */
+/* int to; */
+/* Easing easing; */
+/* int lastTime; */
+
+
+float easingLinear(float progress) {
+  return progress;
+}
+
+
+void animationFrame() {
+  int i = 0;
+  object task;
+  float progress;
+  int last;
+  var date;
+
+  while i < animationQueue.length {
+    task = animationQueue[i];
+    date = new Date();
+    last = date.getTime();
+
+    progress = (last - task.begin) / task.time;
+    if progress > 1 { // remove task
+      animationQueue.splice(i, 1);
+      task.update(task.to); // call update and end;
+      task.end();
+      continue;
+    } else {
+      // skip if update too early
+      // calculate current dt and run if is greater
+      if last - task.last > task.dt {
+        task.last = last;
+        task.update(task.easing(progress) * (task.to - task.from) + task.from);
+      }
+    }
+    ++i;
+  }
+
+  animationFlag = animationQueue.length > 0;
+  if animationFlag {
+    requestAnimationFrame.call(window, animationFrame);
+  }
+}
+
+
+int animate(object update, object end, int time, int dt, int from, int to, Easing easing) {
+  object date = new Date();
+  begin = date.getTime();
+
+  object task = {
+    id: container.Hasher.generate(),
+    update: update,
+    end: end,
+    time: time,
+    dt: dt,
+    from: from,
+    to: to,
+    easing: easing,
+    begin: begin,
+    last: begin // last render time
+  };
+
+  animationQueue.push(task);
+  animateStart();
+
+  return task.id;
+}
+
+
+int animateBackward(string id, object end) {
+  object task = animateStop(id);
+  if task is null {
+    return 0;
+  }
+
+  object date = new Date();
+  float progress = (date.getTime() - task.begin) / task.time;
+
+  return animate(task.update, end,
+    task.time * progress, // time
+    task.to * progress, // from
+    task.from, // to
+    task.easing);
+}
+
+
+void animateStart() {
+  if !animationFlag {
+    animationFlag = true;
+    requestAnimationFrame.call(window, animationFrame);
+  }
+}
+
+
+void animatePause() {
+  animationFlag = false;
+}
+
+
+void animateStop(string id) {
+  object task = null;
+  string taskId;
+  for int i = 0; i < animationQueue.length; ++i {
+    taskId = animationQueue[i].id;
+
+    // TODO: fix bug
+    /* if animationQueue[i].id is id { */
+
+    if taskId is id {
+      task = animationQueue[i];
+      animationQueue.splice(i, 1);
+      break;
+    }
+  }
+
+  return task;
+}

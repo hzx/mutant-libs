@@ -1,0 +1,26 @@
+
+class ObservableCollection extends Collection {
+  object model = null;
+  auto eventUpdateId = new Event();
+  auto eventUpdate = new Event();
+  auto eventReset = new Event();
+  auto eventInsert = new Event();
+  auto eventAppend = new Event();
+  auto eventMove = new Event();
+  auto eventRemove = new Event();
+
+  override void insert(object obj) {
+  }
+
+  override void insertBefore(object obj, string beforeId) {
+  }
+
+  override void append(object obj) {
+  }
+
+  override void move(string id, string beforeId) {
+  }
+
+  override void remove(string id) {
+  }
+}

@@ -1,0 +1,6 @@
+
+ObservableCollection observableCollection(object model) {
+  auto collection = new ObservableCollection();
+  collection.model = model;
+  return collection;
+}

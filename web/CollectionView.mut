@@ -1,0 +1,55 @@
+
+class CollectionView extends View {
+  container.ObservableCollection collection = null; 
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+    
+    if collection {
+      collection.eventUpdateId.listen(onUpdateId);
+      collection.eventUpdate.listen(onUpdate);
+      collection.eventReset.listen(onReset);
+      collection.eventInsert.listen(onInsert);
+      collection.eventAppend.listen(onAppend);
+      collection.eventMove.listen(onMove);
+      collection.eventRemove.listen(onRemove);
+    }
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+    base.exit();
+
+    if collection {
+      collection.eventUpdateId.unlisten(onUpdateId);
+      collection.eventUpdate.unlisten(onUpdate);
+      collection.eventReset.unlisten(onReset);
+      collection.eventInsert.unlisten(onInsert);
+      collection.eventAppend.unlisten(onAppend);
+      collection.eventMove.unlisten(onMove);
+      collection.eventRemove.unlisten(onRemove);
+    }
+  }
+
+  bind void onUpdateId() {
+  }
+
+  bind void onUpdate() {
+  }
+
+  bind void onReset() {
+  }
+
+  bind void onInsert() {
+  }
+
+  bind void onAppend() {
+  }
+
+  bind void onMove() {
+  }
+
+  bind void onRemove() {
+  }
+}

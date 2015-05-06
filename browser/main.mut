@@ -1,0 +1,23 @@
+extern Date;
+extern arguments;
+extern document;
+extern window;
+extern console;
+extern XMLHttpRequest;
+extern ActiveXObject;
+extern parseInt;
+extern Math;
+extern setTimeout;
+extern clearTimeout;
+extern parseInt;
+extern encodeURIComponent;
+extern FormData;
+
+import container;
+
+
+void log(string msg) {
+  if console and console.log {
+    console.log(msg);
+  }
+}

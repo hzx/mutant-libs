@@ -1,0 +1,43 @@
+
+app {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  backgroundColor: #fbf6e7;
+}
+
+label {
+  fontFamily: "Open Sans", Tahoma, sans-serif;
+  fontSize: 12px;
+  color: #1a63c6;
+}
+
+block {
+  padding: 24px;
+}
+
+progressWrap {
+  width: 400px;
+  height: 24px;
+  border: 1px solid #1a63c6;
+  backgroundColor: #d8e9ff;
+}
+
+progress {
+  height: 100%;
+  width: 0%;
+  backgroundColor: #4d7dbe;
+}
+
+errors {
+  marginTop: 24px;
+}
+
+error {
+  marginBottom: 4px;
+  padding: 8px 16px;
+  color: #740505;
+  backgroundColor: #ffaaaa;
+}

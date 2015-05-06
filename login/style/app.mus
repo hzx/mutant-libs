@@ -1,0 +1,85 @@
+
+app {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  backgroundColor: #fbf6e7;
+}
+
+label {
+  fontFamily: "Open Sans", Tahoma, sans-serif;
+  fontSize: 14px;
+  color: #1a63c6;
+}
+
+block {
+  width: 400px;
+  margin: 24px auto;
+}
+
+progressWrap {
+  width: 400px;
+  height: 24px;
+  border: 1px solid #1a63c6;
+  backgroundColor: #d8e9ff;
+}
+
+progress {
+  height: 100%;
+  width: 0%;
+  backgroundColor: #4d7dbe;
+}
+
+edit {
+  marginBottom: 16px;
+  border: 1px solid #1a63c6;
+  backgroundColor: #eff4fa;
+  padding: 6px 8px;
+}
+
+editInput {
+  fontSize: 14px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  borderStyle: none;
+  outlineStyle: none;
+  color: #1a63c6;
+  backgroundColor: transparent;
+}
+
+buttons {
+  overflow: hidden;
+}
+
+sendButton {
+  float: left;
+  marginBottom: 16px;
+  padding: 6px 16px;
+  cursor: pointer;
+  /* backgroundColor: #808080; */
+  border: 1px solid #6ca0e7;
+  backgroundColor: #6ca0e7;
+}
+
+sendButton_hover {
+  borderColor: #1a63c6;
+}
+
+sendButton_active {
+  borderColor: #6ca0e7;
+  backgroundColor: #1a63c6;
+}
+
+errors {
+  margin: 24px;
+}
+
+error {
+  marginBottom: 4px;
+  padding: 8px 16px;
+  color: #740505;
+  backgroundColor: #ffaaaa;
+}

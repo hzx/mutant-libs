@@ -1,0 +1,78 @@
+
+class AppView extends web.View {
+  tag loginEdit = null;
+  tag passwordEdit = null;
+  tag sendButton = null;
+  tag errors = null;
+  auto eventSend = new container.Event();
+
+  override void create() {
+    loginEdit = <div style=style.edit>
+      <input type="text" style=style.editInput/>
+    </div>;
+
+    passwordEdit = <div style=style.edit>
+      <input type="password" style=style.editInput/>
+    </div>;
+
+    sendButton = <div style=style.sendButton
+        onclick=onSendButtonClick
+        onmousedown=onSendButtonMousedown
+        onmouseup=onSendButtonMouseup
+        onmouseenter=onSendButtonMouseenter
+        onmouseleave=onSendButtonMouseleave>
+      "OK"
+    </div>;
+
+    errors = <div style=style.errors></div>;
+
+    element = <div style=style.app>
+      <div style=style.block>
+        <div style=style.label> "Логин" </div>
+        {loginEdit}
+        <div style=style.label> "Пароль" </div>
+        {passwordEdit}
+        <div style=style.buttons>
+          {sendButton}
+        </div>
+      </div>
+      {errors}
+    </div>;
+  }
+
+  void showError(string msg) {
+    object error = <div style=style.error> msg </div>;
+    errors.append(error);
+  }
+
+  bind void onSendButtonClick(object e) {
+    errors.clear();
+    // collect and check data
+    string login = loginEdit.first.getNode().value;
+    string password = passwordEdit.first.getNode().value;
+    // send data
+    if login.length > 0 and password.length > 0 {
+      object data = { login: login, password: password };
+      eventSend.notify(data);
+    } else {
+      // TODO: check acceptable symbols
+      showError("Логин и Пароль не должны быть пустыми");
+    }
+  }
+
+  bind void onSendButtonMousedown(object e) {
+    sendButton.setStyle(style.sendButton_active);
+  }
+
+  bind void onSendButtonMouseup(object e) {
+    sendButton.setStyle(style.sendButton);
+  }
+
+  bind void onSendButtonMouseenter(object e) {
+    sendButton.setStyle(style.sendButton_hover);
+  }
+
+  bind void onSendButtonMouseleave(object e) {
+    sendButton.setStyle(style.sendButton);
+  }
+}

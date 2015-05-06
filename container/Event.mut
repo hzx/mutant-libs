@@ -1,0 +1,34 @@
+
+class Event implements Observable {
+  object handlers = {};
+
+  void listen(object handler) {
+    if !handler.hash {
+      handler.hash = Hasher.generate();
+    }
+
+    handlers[handler.hash] = handler;
+  }
+
+  void unlisten(object handler) {
+    if handler.hash {
+      delete handlers[handler.hash];
+    }
+  }
+
+  void notify(object e) {
+    object handler;
+    for string hash in handlers {
+      handler = handlers[hash];
+      handler(e);
+    }
+  }
+
+  void notify2(object e1, object e2) {
+    object handler;
+    for string hash in handlers {
+      handler = handlers[hash];
+      handler(e1, e2);
+    }
+  }
+}

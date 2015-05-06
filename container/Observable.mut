@@ -1,0 +1,7 @@
+
+interface Obaservable {
+  void listen(object handler);
+  void unlisten(object handler);
+  void notify(object e);
+  void notify2(object e1, object e2);
+}
