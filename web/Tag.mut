@@ -3,50 +3,27 @@
 
 class Tag implements Tagable {
   string id = container.Hasher.generate();
-  int tagableCode = TAGABLE_TAG;
   string name = null;
   object node = null;
-  object parent = null;
-  object first = null;
-  object last = null;
-  object next = null;
-  object prev = null;
+  Tagable parent = null;
+  Tagable first = null;
+  Tagable last = null;
+  Tagable next = null;
+  Tagable prev = null;
+
   bool isEnter = false;
-  object props = null;
   object events = [];
   string value = "";
   object idToChilds_ = {};
-  /* object childs_ = []; */
+
   object styleBackup = null; // need for saving temporary style changes
-
-  Tagable getParent() {
-    return parent;
-  }
-
-  Tagable getNext() {
-    return next;
-  }
-
-  Tagable getPrev() {
-    return prev;
-  }
-
-  Tagable getFirst() {
-    return first;
-  }
-
-  Tagable getLast() {
-    return last;
-  }
+  int state = STATE_NORMAL;
+  object style = null;
+  object styleHover = null;
+  object styleActive = null;
 
   void create() {
     node = document.createElement(name);
-
-    if props {
-      for int i = 0; i < props.length; i = i + 2 {
-        setProperty(props[i], props[i + 1]);
-      }
-    }
   }
 
   void destroy() {
@@ -60,7 +37,6 @@ class Tag implements Tagable {
       browser.addEvent(node, events[i], events[i+1]);
     }
 
-    /* for Tagable child: childs { child.enter(); } */
     Tagable cursor = first;
     while cursor isnot null {
       cursor.enter();
@@ -101,6 +77,7 @@ class Tag implements Tagable {
     node.insertChild(child.getNode());
     idToChilds_[child.getId()] = child;
     if isEnter { child.enter(); }
+    child.parent = this;
   }
 
   void insertBefore(Tagable child, string beforeHash) {
@@ -115,6 +92,7 @@ class Tag implements Tagable {
       if first is before { first = child; }
       node.insertBefore(child.getNode(), before.getNode());
       idToChilds_[child.getId()] = child;
+      child.parent = this;
     } else {
       insert(child);
     }
@@ -129,6 +107,7 @@ class Tag implements Tagable {
     node.appendChild(child.getNode());
     if isEnter { child.enter(); }
     idToChilds_[child.getId()] = child;
+    child.parent = this;
   }
 
   void remove() {
@@ -143,8 +122,6 @@ class Tag implements Tagable {
       node.removeChild(child.getNode());
 
       delete idToChilds_[hash];
-      /* int i = childs_.indexOf(child); */
-      /* childs_.splice(i, 1); */
 
       child.parent = null;
       child.next = null;
@@ -156,7 +133,7 @@ class Tag implements Tagable {
     Tagable child = first;
     Tagable nxt;
     while child isnot null {
-      nxt = child.getNext();
+      nxt = child.next;
       if isEnter { child.exit(); }
       node.removeChild(child.getNode());
       child = nxt;
@@ -164,7 +141,6 @@ class Tag implements Tagable {
     first = null;
     last = null;
     idToChilds_ = {};
-    /* childs_ = []; */
   }
 
   void setValue(string text) {
@@ -179,8 +155,14 @@ class Tag implements Tagable {
   void setProperty(string name, object value) {
     switch name {
       case "style":
+        style = value;
         setStyle(value);
         break;
+      case "hover":
+        styleHover = value;
+        break;
+      case "active":
+        styleActive = value;
       case "type":
         node.type = value;
         break;
@@ -193,11 +175,26 @@ class Tag implements Tagable {
     }
   }
 
-  void setStyle(object style) {
-    browser.setStyle(getNode(), style);
+  void setStyle(object stylee) {
+    browser.setStyle(getNode(), stylee);
   }
 
   void setStyleProperty(string name, string value) {
     browser.setStyleProperty(getNode(), name, value);
+  }
+
+  void setState(int statee) {
+    switch statee {
+      case STATE_NORMAL:
+        if style { setStyle(style); }
+        break;
+      case STATE_HOVER:
+        if styleHover { setStyle(styleHover); }
+        break;
+      case STATE_ACTIVE:
+        if styleActive { setStyle(styleActive); }
+        break;
+    }
+    state = statee;
   }
 }

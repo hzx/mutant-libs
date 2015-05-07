@@ -5,16 +5,17 @@ Tag tag(string name, object props, object events, object value, object childs) {
   Tag tg = new Tag();
   tg.name = name;
 
-  // TODO: set properties here
-  if props isnot null {
-    tg.props = props;
-  }
-
   if events isnot null {
     tg.events = events;
   }
 
   tg.create();
+
+  if props isnot null {
+    for int i = 0; i < props.length; i = i + 2 {
+      tg.setProperty(props[i], props[i + 1]);
+    }
+  }
 
   if childs isnot null {
     for object child: childs {

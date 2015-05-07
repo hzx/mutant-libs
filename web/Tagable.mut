@@ -1,13 +1,5 @@
 
-int TAGABLE_TAG = 1;
-int TAGABLE_VIEW = 2;
-
 interface Tagable {
-  Tagable getParent();
-  Tagable getNext();
-  Tagable getPrev();
-  Tagable getFirst();
-  Tagable getLast();
   void create();
   void destroy();
   void enter();
@@ -15,8 +7,8 @@ interface Tagable {
   string getId();
   object getNode();
   void insert(Tagable child);
+  void insertBefore(Tagable child, string beforeHash);
   void append(Tagable child);
-  void appendBefore(Tagable child, string beforeHash);
   void remove();
   void removeChild(string hash);
   void setValue(text);

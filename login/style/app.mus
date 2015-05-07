@@ -56,10 +56,14 @@ buttons {
 
 sendButton {
   float: left;
+  cssFloat: left;
   marginBottom: 16px;
   padding: 6px 16px;
   cursor: pointer;
-  /* backgroundColor: #808080; */
+  webkitUserSelect: none;
+  MozUserSelect: none;
+  msUserSelect: none;
+  userSelect: none;
   border: 1px solid #6ca0e7;
   backgroundColor: #6ca0e7;
 }

@@ -1,2 +1,7 @@
 import container;
 import browser;
+
+
+int STATE_NORMAL = 1;
+int STATE_HOVER = 2;
+int STATE_ACTIVE = 3;
