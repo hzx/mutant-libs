@@ -66,3 +66,12 @@ void appendTag(Tagable element) {
   document.body.appendChild(element.getNode());
   element.enter();
 }
+
+
+bool equalArrays(object left, object right) {
+  if left.length isnot right.length { return false; }
+  for int i = 0; i < left.length; ++i {
+    if left[i] isnot right[i] { return false; }
+  }
+  return true;
+}

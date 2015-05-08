@@ -1,6 +1,9 @@
 
 class Router {
+  object lastSlugs = [];
   object handlers_ = {};
+  bool skipNotify = false;
+  auto eventDispatch = new container.Event();
 
   void addHandler(string name, object handler) {
     handlers_[name] = handler;
@@ -11,11 +14,75 @@ class Router {
   }
 
   void enter() {
+    if "onhashchange" in window {
+      addEvent(window, "hashchange", this.onHashChange);
+    }
   }
 
   void exit() {
+    if "onhashchange" in window {
+      removeEvent(window, "hashchange", this.onHashChange);
+    }
   }
 
-  bind void onUrlChange() {
+  object parseSlugs(string url) {
+    object parts = url.split("/");
+
+    // add first
+    string slug = parts[0];
+    object slugs = [];
+    if slug.charAt(0) isnot "#" {
+      slugs.push(slug);
+    }
+
+    int max = parts.length - 1;
+    for int i = 1; i < max; ++i {
+      slug = parts[i];
+      if slug.length is 0 { continue; } // skip empty slug
+      slugs.push(slug);
+    }
+
+    // add last
+    slug = parts[max];
+    if parts.length > 1 {
+      int questPos = slug.indexOf("?");
+      if questPos >= 0 {
+        slug = slug.substr(questPos);
+      }
+      if slug.length > 0 { slugs.push(slug); }
+    }
+
+    if slugs.length is 0 { slugs.push(""); }
+    return slugs;
+  }
+
+  void dispatch(object slugs) {
+    if equalArrays(lastSlugs, slugs) { return; }
+    lastSlugs = slugs;
+    skipNotify = true;
+    window.location.hash = "/" + slugs.join("/");
+    eventDispatch.notify(slugs);
+  }
+
+  void dispatchInitial() {
+    object slugs = parseSlugs(window.location.hash);
+    eventDispatch.notify(slugs);
+  }
+
+  bind void onHashChange(object e) {
+    if skipNotify {
+      skipNotify = false;
+      return;
+    }
+    dispatchInitial();
+  }
+
+  static Router instance_ = null;
+
+  static Router instance() {
+    if Router.instance_ is null {
+      Router.instance_ = new Router();
+    }
+    return Router.instance_;
   }
 }
