@@ -24,9 +24,12 @@ class Tag implements Tagable {
 
   void create() {
     node = document.createElement(name);
+    node.element_ = this;
   }
 
   void destroy() {
+    node.element_ = null;
+    node = null;
   }
 
   void enter() {
