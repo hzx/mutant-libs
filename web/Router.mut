@@ -2,7 +2,7 @@
 class Router {
   object lastSlugs = [];
   object handlers_ = {};
-  bool skipNotify = false;
+  bool skipHashChange = false;
   auto eventDispatch = new container.Event();
 
   void addHandler(string name, object handler) {
@@ -15,13 +15,13 @@ class Router {
 
   void enter() {
     if "onhashchange" in window {
-      addEvent(window, "hashchange", this.onHashChange);
+      browser.addEvent(window, "hashchange", this.onHashChange);
     }
   }
 
   void exit() {
     if "onhashchange" in window {
-      removeEvent(window, "hashchange", this.onHashChange);
+      browser.removeEvent(window, "hashchange", this.onHashChange);
     }
   }
 
@@ -59,19 +59,20 @@ class Router {
   void dispatch(object slugs) {
     if equalArrays(lastSlugs, slugs) { return; }
     lastSlugs = slugs;
-    skipNotify = true;
+    skipHashChange = true;
     window.location.hash = "/" + slugs.join("/");
     eventDispatch.notify(slugs);
   }
 
   void dispatchInitial() {
     object slugs = parseSlugs(window.location.hash);
+    lastSlugs = slugs;
     eventDispatch.notify(slugs);
   }
 
   bind void onHashChange(object e) {
-    if skipNotify {
-      skipNotify = false;
+    if skipHashChange {
+      skipHashChange = false;
       return;
     }
     dispatchInitial();

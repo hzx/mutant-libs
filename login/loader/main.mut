@@ -5,7 +5,7 @@ extern window;
 
 
 void main() {
-  browser.addEvent(window, "load", void() {
+  browser.addEvent(window, "load", void () {
     apploader.App.instance().initUrl = "/login/init";
     apploader.App.instance().main();
   });
