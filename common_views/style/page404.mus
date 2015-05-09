@@ -1,0 +1,54 @@
+
+page404 {
+  position: absolute;
+  fontFamily: "Lucida Console",Monaco,monospace;
+  fontSize: 12px;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  zIndex: 100;
+  backgroundColor: #00a;
+  color: #a7a6ab;
+}
+
+block {
+  position: absolute;
+  width: 460px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  marginLeft: -230px;
+  marginTop: -100px;
+}
+
+title {
+  width: 160px;
+  padding: 4px 6px;
+  margin: 24px auto;
+  textAlign: center;
+  color: #00a;
+  backgroundColor: #a7a6ab;
+}
+
+url {
+  margin: 16px 0;
+}
+
+message {
+  lineHeight: 1.6;
+  marginBottom: 24px;
+}
+
+buttons {
+  overflow: hidden;
+}
+
+back {
+  float: left;
+  cssFloat: left;
+  padding: 4px 6px;
+  color: #00a;
+  backgroundColor: #a7a6ab;
+  cursor: pointer;
+}

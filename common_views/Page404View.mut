@@ -1,0 +1,30 @@
+
+class Page404View extends web.View {
+  string backSlugs = [""];
+  auto titleElement = <div style=style.title> "Страница не найдена" </div>;
+  auto urlElement = <div style=style.url></div>;
+  auto messageElement = <div style=style.message> "Страница не существует, была удалена или переименована. Попробуйте воспользоваться поиском на сайте." </div>;
+  auto backButton = <div style=style.back onclick=onBackClick> "<< Вернуться на сайт" </div>;
+
+  override void create() {
+    element = <div style=style.page404>
+      <div style=style.block>
+        {titleElement}
+        {urlElement}
+        {messageElement}
+        <div style=style.buttons>
+          {backButton}
+        </div>
+      </div>
+    </div>;
+  }
+
+  void setUrl(string url) {
+    urlElement.setValue(url);
+  }
+
+  bind void onBackClick(object e) {
+    /* browser.hide(element.getNode()); */
+    web.Router.instance().dispatch(backSlugs);
+  }
+}
