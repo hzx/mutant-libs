@@ -78,6 +78,16 @@ class Router {
     dispatchInitial();
   }
 
+  void connectDebug() {
+    object me = this;
+    browser.get("/debug", void (string response) { // never happen
+    }, void (int status, string response) { // zero
+      if status is 0 { // restart app only in debug build
+        window.location.reload();
+      }
+    }, void (object e) {});
+  }
+
   static Router instance_ = null;
 
   static Router instance() {

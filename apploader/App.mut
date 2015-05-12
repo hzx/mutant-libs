@@ -15,6 +15,8 @@ class App {
 
     view.errors.clear();
     browser.getCached(initUrl, onInit, onInitFail, onInitProgress);
+
+    web.Router.instance().connectDebug();
   }
 
   void hide() {
