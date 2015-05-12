@@ -7,7 +7,8 @@ class View implements Tagable {
   bool isEnter = false;
 
   void create() {
-    element = <div> "override View.create" </div>;
+    /* element = <div> "override View.create" </div>; */
+    element = tag("div", null, null, "override View.create", null);
   }
 
   void destroy() {
