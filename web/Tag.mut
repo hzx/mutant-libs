@@ -172,6 +172,8 @@ class Tag implements Tagable {
       case "value":
         node.value = value;
         break;
+      case "multiple":
+        node.multiple = value;
       default:
         web.log("unknown property name: " + name);
         break;
