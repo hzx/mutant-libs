@@ -310,3 +310,12 @@ void addJs(string content) {
   // TODO: make this work
   //document.getElementsByTagName("head")[0].appendChild(node);
 }
+
+void addJsUrl(string url) {
+  object node = document.createElement("script");
+  node.type = "text/javascript";
+  node.src = url;
+
+  object heads = document.getElementsByTagName("head");
+  heads[0].appendChild(node);
+}
