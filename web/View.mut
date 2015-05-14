@@ -5,9 +5,9 @@ class View implements Tagable {
   Tagable prev = null;
   Tagable element = null;
   bool isEnter = false;
+  object events = [];
 
   void create() {
-    /* element = <div> "override View.create" </div>; */
     element = tag("div", null, null, "override View.create", null);
   }
 
@@ -18,12 +18,20 @@ class View implements Tagable {
     if isEnter { return; }
     isEnter = true;
     element.enter();
+
+    for int i = 0; i < events.length; i = i + 2 {
+      this["event" + events[i]].listen(events[i+1]);
+    }
   }
 
   void exit() {
     if !isEnter { return; }
     isEnter = false;
     element.exit();
+
+    for int i = 0; i < events.length; i = i + 2 {
+      this["event" + events[i]].unlisten(events[i+1]);
+    }
   }
 
   string getId() {
@@ -32,6 +40,10 @@ class View implements Tagable {
 
   object getNode() {
     return element.getNode();
+  }
+
+  tag getChild(string id) {
+    return element.getChild(id);
   }
 
   void insert(Tagable child) {

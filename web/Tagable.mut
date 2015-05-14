@@ -6,6 +6,7 @@ interface Tagable {
   void exit();
   string getId();
   object getNode();
+  tag getChild(string id);
   void insert(Tagable child);
   void insertBefore(Tagable child, string beforeHash);
   void append(Tagable child);

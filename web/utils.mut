@@ -42,11 +42,7 @@ View view(object clas, object props, object events, object childs) {
   }
 
   if events isnot null {
-    log("view.events not implemented:");
-    log(events);
-    for int i = 0; i < events.length; i = i + 2 {
-      /* v["event" + events[i]] */
-    }
+    v.events = events;
   }
 
   v.create();
