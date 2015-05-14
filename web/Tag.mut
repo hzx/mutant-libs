@@ -71,6 +71,11 @@ class Tag implements Tagable {
     return node;
   }
 
+  tag getChild(string id) {
+    if id in idToChilds_ { return idToChilds_[id]; }
+    return null;
+  }
+
   void insert(Tagable child) {
     child.prev = null;
     child.next = first;
@@ -174,8 +179,9 @@ class Tag implements Tagable {
         break;
       case "multiple":
         node.multiple = value;
+        break;
       default:
-        web.log("unknown property name: " + name);
+        browser.log("unknown property name: " + name);
         break;
     }
   }

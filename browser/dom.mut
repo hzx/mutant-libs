@@ -169,28 +169,36 @@ GetStyle getStyle = null;
 
 
 object setStyleBackup(object node, object styles) {
-  object bak = {};
-  for string name in styles {
-    bak[name] = node.style[name];
-    node.style[name] = styles[name];
+  object bak = [];
+  for int i = 0; i < styles.length; i = i + 2 {
+    bak.push(styles[i]);
+    bak.push(styles[i + 1]);
+    node.style[styles[i]] = styles[i + 1];
   }
+  /* for string name in styles { */
+  /*   bak[name] = node.style[name]; */
+  /*   node.style[name] = styles[name]; */
+  /* } */
 
   return bak;
 }
 
 
 void setStyle(object node, object styles) {
-  for string name in styles {
-    node.style[name] = styles[name];
+  for int i = 0; i < styles.length; i = i + 2 {
+    node.style[styles[i]] = styles[i + 1];
   }
+  /* for string name in styles { */
+  /*   node.style[name] = styles[name]; */
+  /* } */
 }
 
 
-object fullStyle_ = {
-  "display": "",
-  "visibility": "hidden",
-  "position": "absolute",
-};
+object fullStyle_ = [
+  "display", "",
+  "visibility", "hidden",
+  "position", "absolute",
+];
 
 
 // Find the full, possible, width of an element (not the actual,
