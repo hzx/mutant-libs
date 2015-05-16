@@ -1,0 +1,122 @@
+
+bool isDrag = false;
+Tagable dragTarget = null;
+Tagable dragHandle = null;
+Tagable dropTarget = null;
+object dropTargets = [];
+int dragDx = 0;
+int dragDy = 0;
+object idToHandle = {}; // target.id to handle
+
+void dragInit(Tagable target, Tagable handle) {
+  idToHandle[target.getId()] = handle;
+
+  target.listen("mousedown", dragStart);
+}
+
+void dragUninit(Tagable target) {
+  target.unlisten("mousedown", dragStart);
+
+  delete idToHandle[target.getId()];
+}
+
+void dragStart(object e) {
+  isDrag = true;
+  dragTarget = e.target.element_;
+  dragHandle = idToHandle[dragTarget.getId()];
+  dragDx = browser.getWidth(dragHandle.node) + 2;
+  dragDy = browser.getHeight(dragHandle.node) + 2;
+
+  drag(e);
+  browser.show(dragHandle.node);
+
+  browser.addEvent(document, "mousemove", drag);
+  browser.addEvent(document, "mouseup", dragEnd);
+
+  e.preventDefault();
+  return false;
+}
+
+void dragEnd(object e) {
+  isDrag = false;
+  browser.hide(dragHandle.node);
+
+  browser.removeEvent(document, "mousemove", drag);
+  browser.removeEvent(document, "mouseup", dragEnd);
+
+  browser.log("dragEnd:");
+  browser.log(dropTarget);
+  if dropTarget isnot null {
+    dropTarget.setState(STATE_NORMAL);
+    // TODO: place x, y inside dropTarget
+    dropTarget.drop(dragTarget, e.offsetX, e.offsetY);
+    dropTarget = null;
+  }
+
+  return false;
+}
+
+void drag(object e) {
+  browser.setX(dragHandle.node, browser.mouseX(e) - dragDx);
+  browser.setY(dragHandle.node, browser.mouseY(e) - dragDy);
+
+  e.preventDefault();
+  return false;
+}
+
+void dropInit(Tagable target) {
+  target.listen("mouseenter", dropEnter);
+  target.listen("mouseover", dropEnter);
+  target.listen("mouseleave", dropLeave);
+  /* target.listen("mouseup", drop); */
+}
+
+void dropUninit(Tagable target) {
+  target.unlisten("mouseenter", dropEnter);
+  target.unlisten("mouseover", dropEnter);
+  target.unlisten("mouseleave", dropLeave);
+  /* target.unlisten("mouseup", drop); */
+}
+
+void dropEnter(object e) {
+  if isDrag is false or dropTarget is e.target.element_ { return; }
+  if dropTarget isnot null {
+    dropTarget.setState(STATE_NORMAL);
+  }
+  dropTarget = e.target.element_;
+  dropTarget.setState(STATE_HOVER);
+}
+
+void dropLeave(object e) {
+  if isDrag is false or dropTarget is e.target.element_ { return; }
+  if dropTarget isnot null {
+    dropTarget.setState(STATE_NORMAL);
+  }
+  dropTarget = null;
+}
+
+/* void dropInit(Tagable target) { */
+/*   dropTargets.push(target); */
+/* } */
+
+/* void dropUninit(Tagable target) { */
+/*   int index = dropTargets.indexOf(target); */
+/*   dropTargets.splice(index, 1); */
+/* } */
+
+/* void dragEnter(object e) { */
+/*   // TODO: search e.target against dropTargets */
+/*   browser.log("dragEnter:"); */
+/*   browser.log(e); */
+/* } */
+
+/* void dragLeave(object e) { */
+/*   // reset dropTarget */
+/*   browser.log("dragLeave:"); */
+/*   browser.log(e); */
+/*   if dropTarget is null { return; } */
+/* } */
+
+/* void drop() { */
+/*   if dropTarget is null { return; } */
+/* } */

@@ -78,3 +78,7 @@ FireClick clickInit_() {
     node.fireEvent("onclick", node.ownerDocument.createEventObject());
   };
 }
+
+
+object hoverInit_() {
+}
