@@ -1,0 +1,19 @@
+
+class Int extends Event { // TODO: make own typed instead Event
+  int value = 0;
+  bool has = false;
+
+  void init(int value_) {
+    value = value_;
+    has = true;
+  }
+
+  void set(int value_) {
+    has = true;
+    if value isnot value_ {
+      int old = value;
+      value = value_;
+      notify2(value, old);
+    }
+  }
+}

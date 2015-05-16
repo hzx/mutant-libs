@@ -1,0 +1,19 @@
+
+class Value extends Event {
+  object value = null;
+  bool has = false;
+
+  void init(object value_) {
+    value = value_;
+    has = true;
+  }
+
+  void set(object value_) {
+    has = true;
+    if value isnot value_ {
+      object old = value;
+      value = value_;
+      notify2(value_, old);
+    }
+  }
+}

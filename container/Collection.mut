@@ -6,6 +6,31 @@ class Collection {
   object next = null;
   object prev = null;
 
+  void updateId(string id, string old) {
+    if old in idToNodes_ {
+      object node = idToNodes_[old];
+      delete idToNodes_[old];
+
+      node.obj.getId() = id;
+      idToNodes_[id] = node;
+    }
+  }
+
+  void update(string id, object updates) {
+    if (id in idToNodes_) is false { return; }
+
+    object obj = idToNodes_[id].obj;
+    string name;
+    for int i = 0; i < updates.length; i = i + 2 {
+      name = updates[i];
+      if name is "1" {
+        updateId(name, updates[i + 1]);
+      } else {
+        obj[name] = updates[i + 1];
+      }
+    }
+  }
+
   void insert(object obj) {
     insertNode_({
       obj: obj,
@@ -53,7 +78,7 @@ class Collection {
   }
 
   void insertNode_(object node) {
-    if node.obj.id in idToNodes_ {
+    if node.obj.getId() in idToNodes_ {
       log("node with the same id exists");
       return ;
     }
@@ -62,11 +87,11 @@ class Collection {
     if first isnot null { first.prev = node; }
     if last is null { last = node; }
     first = node;
-    idToNodes_[node.obj.id] = node;
+    idToNodes_[node.obj.getId()] = node;
   }
 
   void insertBeforeNode_(object node, object before) {
-    if node.obj.id in idToNodes_ {
+    if node.obj.getId() in idToNodes_ {
       log("node with the same id exists");
       return ;
     }
@@ -76,11 +101,11 @@ class Collection {
     node.prev = before.prev;
     node.next = before;
     before.prev = node;
-    idToNodes_[node.obj.id] = node;
+    idToNodes_[node.obj.getId()] = node;
   }
 
   void appendNode_(object node) {
-    if node.obj.id in idToNodes_ {
+    if node.obj.getId() in idToNodes_ {
       log("node with the same id exists");
       return;
     }
@@ -89,7 +114,7 @@ class Collection {
     if first is null { first = node; }
     if last isnot null { last.next = node; }
     last = node;
-    idToNodes_[node.obj.id] = node;
+    idToNodes_[node.obj.getId()] = node;
   }
 
   object getNode_(string id) {
@@ -104,6 +129,6 @@ class Collection {
     if node.next isnot null { node.next.prev = node.prev; }
     node.next = null;
     node.prev = null;
-    delete idToNodes_[node.obj.id];
+    delete idToNodes_[node.obj.getId()];
   }
 }

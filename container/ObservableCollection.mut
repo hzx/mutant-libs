@@ -5,22 +5,43 @@ class ObservableCollection extends Collection {
   auto eventUpdate = new Event();
   auto eventReset = new Event();
   auto eventInsert = new Event();
+  auto eventInsertBefore = new Event();
   auto eventAppend = new Event();
   auto eventMove = new Event();
   auto eventRemove = new Event();
 
+  override void updateId(string id, string old) {
+    base.updateId(id, old);
+    eventUpdateId.notify2(id, old);
+  }
+
+  override void update(string id, object updates) {
+    base.update(id, updates);
+    eventUpdate.notify(id, updates);
+  }
+
   override void insert(object obj) {
+    base.insert(obj);
+    eventInsert.notify(obj);
   }
 
   override void insertBefore(object obj, string beforeId) {
+    base.insertBefore(obj, beforeId);
+    eventInsertBefore.notify2(obj, beforeId);
   }
 
   override void append(object obj) {
+    base.append(obj);
+    eventAppend.notify(obj);
   }
 
   override void move(string id, string beforeId) {
+    base.move(id, beforeId);
+    eventMove.notify2(id, beforeId);
   }
 
   override void remove(string id) {
+    base.remove(id);
+    eventRemove.notify(id);
   }
 }

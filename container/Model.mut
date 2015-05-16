@@ -1,0 +1,12 @@
+
+class Model {
+  // implement it
+  // int parseField(int code, string value);
+  void save(object buf) {
+  }
+
+  int init(string raw) {
+
+    return 0;
+  }
+}

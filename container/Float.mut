@@ -1,0 +1,19 @@
+
+class Float extends Event { // TODO: make own typed instead Event
+  float value = 0.0;
+  bool has = false;
+
+  void init(float value_) {
+    value = value_;
+    has = true;
+  }
+
+  void set(float value_) {
+    has = true;
+    if value isnot value_ {
+      float old = value;
+      value = value_;
+      notify2(value, old);
+    }
+  }
+}
