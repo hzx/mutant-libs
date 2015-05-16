@@ -22,6 +22,13 @@ class Tag implements Tagable {
   object styleHover = null;
   object styleActive = null;
 
+  /* object dragStart = dragStart_; */
+  /* object dragEnd = dragEnd_; */
+  /* object dragHover = dragHover_; */
+  object drop = drop_;
+
+  int code = 0; // for use data
+
   void create() {
     node = document.createElement(name);
     node.element_ = this;
@@ -156,6 +163,14 @@ class Tag implements Tagable {
     browser.setText(node, text);
   }
 
+  void listen(string name, object handler) {
+    browser.addEvent(node, name, handler);
+  }
+
+  void unlisten(string name, object handler) {
+    browser.removeEvent(node, name, handler);
+  }
+
   void setHtml(string html) {
     node.innerHTML = html;
   }
@@ -171,6 +186,9 @@ class Tag implements Tagable {
         break;
       case "active":
         styleActive = value;
+      case "code":
+        code = value;
+        break;
       case "type":
         node.type = value;
         break;
@@ -179,6 +197,15 @@ class Tag implements Tagable {
         break;
       case "multiple":
         node.multiple = value;
+        break;
+      case "src":
+        node.src = value;
+        break;
+      case "alt":
+        node.alt = value;
+        break;
+      case "drop":
+        drop = value;
         break;
       default:
         browser.log("unknown property name: " + name);

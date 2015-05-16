@@ -13,4 +13,6 @@ interface Tagable {
   void remove();
   void removeChild(string hash);
   void setValue(text);
+  void listen(string name, object handler);
+  void unlisten(string name, object handler);
 }

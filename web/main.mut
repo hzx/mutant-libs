@@ -5,3 +5,20 @@ import browser;
 int STATE_NORMAL = 1;
 int STATE_HOVER = 2;
 int STATE_ACTIVE = 3;
+
+void dragStart_(Tagable element, int x, int y) {
+  auto node = element.getNode();
+  browser.show(node);
+  browser.setX(node, x);
+  browser.setY(node, y);
+}
+
+void dragEnd_(Tagable element, int x, int y) {
+  browser.hide(element.getNode());
+}
+
+void dragHover_(Tagable target, Tagable element) {
+}
+
+void drop_(Tagable element, int x, int y) {
+}

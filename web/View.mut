@@ -71,4 +71,13 @@ class View implements Tagable {
   void setValue(string text) {
     element.setValue(text);
   }
+
+
+  void listen(string name, object handler) {
+    element.listen(name, handler);
+  }
+
+  void unlisten(string name, object handler) {
+    element.unlisten(name, handler);
+  }
 }
