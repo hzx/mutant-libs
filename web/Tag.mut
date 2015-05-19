@@ -28,6 +28,7 @@ class Tag implements Tagable {
   object drop = drop_;
 
   int code = 0; // for use data
+  object data = null;
 
   void create() {
     node = document.createElement(name);

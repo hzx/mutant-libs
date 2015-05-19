@@ -44,8 +44,6 @@ void dragEnd(object e) {
   browser.removeEvent(document, "mousemove", drag);
   browser.removeEvent(document, "mouseup", dragEnd);
 
-  browser.log("dragEnd:");
-  browser.log(dropTarget);
   if dropTarget isnot null {
     dropTarget.setState(STATE_NORMAL);
     // TODO: place x, y inside dropTarget
@@ -60,21 +58,23 @@ void drag(object e) {
   browser.setX(dragHandle.node, browser.mouseX(e) - dragDx);
   browser.setY(dragHandle.node, browser.mouseY(e) - dragDy);
 
-  e.preventDefault();
-  return false;
+  /* e.preventDefault(); */
+  /* return false; */
 }
 
 void dropInit(Tagable target) {
-  target.listen("mouseenter", dropEnter);
+  /* target.listen("mouseenter", dropEnter); */
+  /* target.listen("mouseleave", dropLeave); */
   target.listen("mouseover", dropEnter);
-  target.listen("mouseleave", dropLeave);
+  target.listen("mouseout", dropLeave);
   /* target.listen("mouseup", drop); */
 }
 
 void dropUninit(Tagable target) {
-  target.unlisten("mouseenter", dropEnter);
+  /* target.unlisten("mouseenter", dropEnter); */
+  /* target.unlisten("mouseleave", dropLeave); */
   target.unlisten("mouseover", dropEnter);
-  target.unlisten("mouseleave", dropLeave);
+  target.unlisten("mouseout", dropLeave);
   /* target.unlisten("mouseup", drop); */
 }
 
@@ -85,14 +85,27 @@ void dropEnter(object e) {
   }
   dropTarget = e.target.element_;
   dropTarget.setState(STATE_HOVER);
+  dropTargets.push(dropTarget);
+  return false;
 }
 
 void dropLeave(object e) {
-  if isDrag is false or dropTarget is e.target.element_ { return; }
+  Tagable dropTarget_ = null;
+  if dropTargets.length > 0 {
+    dropTarget_ = dropTargets.pop();
+  }
+
+  if isDrag is false { return; }
   if dropTarget isnot null {
     dropTarget.setState(STATE_NORMAL);
   }
-  dropTarget = null;
+  if dropTargets.length > 0 {
+    dropTarget = dropTargets[dropTargets.length - 1];
+    dropTarget.setState(STATE_HOVER);
+  } else {
+    dropTarget = null;
+  }
+  return false;
 }
 
 /* void dropInit(Tagable target) { */
