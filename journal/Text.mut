@@ -1,0 +1,6 @@
+
+class Text extends web.View {
+  override void create() {
+    element = <div> "text" </div>;
+  }
+}

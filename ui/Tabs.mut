@@ -1,0 +1,51 @@
+
+class Tabs extends web.View {
+  object idToContent_ = {};
+  tag tabsHeader = <div></div>;
+  tag tabsContent = <div style=style.tabsContent></div>;
+  tag selectedTab = null;
+
+  override void create() {
+    element = <div style=style.tabs>
+      <div style=style.tabsHeader>
+        {tabsHeader}
+        <div style=style.clear></div>
+      </div>
+      {tabsContent}
+    </div>;
+  }
+
+  void add(string name, tag content) {
+    tag newTab = <div style=style.tab onclick=onTabClick> name </div>;
+    idToContent_[newTab.id] = content;
+    tabsHeader.append(newTab);
+  }
+
+  void select(string id) {
+    auto tab = tabsHeader.getChild(id);
+    if tab is null { tab = tabsHeader.first; }
+    if tab isnot null { selectTab_(tab); }
+  }
+
+  string getSelected() {
+    if selectedTab is null { return null; }
+    return selectedTab.id;
+  }
+
+  void selectTab_(tag tab) {
+    if selectedTab is tab { return; }
+    if selectedTab isnot null {
+      selectedTab.setStyle(style.tab);
+    }
+    selectedTab = tab;
+    tab.setStyle(style.tabSelect);
+
+    tag content = idToContent_[tab.id];
+    tabsContent.clear();
+    tabsContent.append(content);
+  }
+
+  bind void onTabClick(object e) {
+    selectTab_(e.target.element_);
+  }
+}

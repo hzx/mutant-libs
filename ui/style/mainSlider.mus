@@ -1,0 +1,51 @@
+
+mainSlider {
+  position: relative;
+  height: 400px;
+}
+
+slideItem {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+slide1: slideItem {
+  backgroundColor: #ff0000;
+}
+
+slide2: slideItem {
+  display: none;
+  backgroundColor: #00ff00;
+}
+
+slide3: slideItem {
+  display: none;
+  backgroundColor: #0000ff;
+}
+
+slide4: slideItem {
+  display: none;
+  backgroundColor: #f0f000;
+}
+
+
+slidePrev {
+  position: absolute;
+  right: 64px; // 32 + 32;
+  bottom: 16px;
+  width: 32px;
+  height: 32px;
+  backgroundColor: #e0000e;
+}
+
+slideNext {
+  position: absolute;
+  right: 32px;
+  bottom: 16px;
+  width: 32px;
+  height: 32px;
+  backgroundColor: #e0000e;
+}

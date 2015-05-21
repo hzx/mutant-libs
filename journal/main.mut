@@ -1,0 +1,17 @@
+import browser;
+import web;
+import journal.style;
+
+enum ItemType {
+  BLOCK = 1,
+  CODE,
+  FILE,
+  GALLERY,
+  GOOGLE_MAP,
+  HEADER,
+  IMAGE,
+  LINK,
+  TEXT,
+  VIDEO,
+  GAP,
+}

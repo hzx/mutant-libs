@@ -1,0 +1,11 @@
+
+class Journal extends web.View {
+  object journal_ = []; // journal nodes
+  object items_ = []; // all nodes
+
+  override void create() {
+    element = <div style=style.journal>
+      "journal"
+    </div>;
+  }
+}

@@ -1,0 +1,6 @@
+
+class File extends web.View {
+  override void create() {
+    element = <div> "file" </div>;
+  }
+}

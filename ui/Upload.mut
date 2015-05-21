@@ -1,0 +1,29 @@
+
+class Upload extends web.View {
+  bool multiple = false;
+  bool isOpen = false;
+  auto eventChange = new container.Event();
+
+  tag input = <input type="file" multiple=multiple style=style.uploadInput onchange=onInputChange/>;
+
+  override void create() {
+    element = <div style=style.upload>
+      {input}
+    </div>;
+  }
+
+  void click() {
+    if isOpen { return; }
+    isOpen = true;
+    browser.click(input.node);
+    isOpen = false;
+  }
+
+  bind void onInputChange(object e) {
+    e.stopPropagation();
+
+    if e.target.files and e.target.files.length > 0 {
+      eventChange.notify(e.target.files);
+    }
+  }
+}

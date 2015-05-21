@@ -1,0 +1,14 @@
+
+upload {
+  position: relative;
+  width: 2px;
+  height: 2px;
+  overflow: hidden;
+  backgroundColor: #ff00ff;
+}
+
+uploadInput {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+}

@@ -1,0 +1,82 @@
+
+class GoogleMapApi {
+  static bool isStart = false;
+  static bool isLoad = false;
+  static object queue = [];
+
+  static void loadApi(object callback) {
+    if GoogleMapApi.isLoad {
+      callback();
+    } else {
+      GoogleMapApi.queue.push(callback);
+      if GoogleMapApi.isStart is false { // start load api
+        GoogleMapApi.isStart = true;
+        browser.addJsUrl("https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=mutant.journal.GoogleMapApi.onLoad");
+      }
+    }
+  }
+
+  static void onLoad() {
+    GoogleMapApi.isLoad = true;
+    for object func: GoogleMapApi.queue {
+      func();
+    }
+  }
+}
+
+
+class GoogleMap extends web.View {
+  // params here
+  string width = "400px";
+  string height = "300px";
+  float lat = 0;
+  float lng = 0;
+  int zoom = 16;
+  object map = null;
+
+  override void create() {
+    element = <div style=style.googleMap>
+    </div>;
+
+    element.setStyleProperty("width", width);
+    element.setStyleProperty("height", height);
+
+    GoogleMapApi.loadApi(onApiLoad);
+  }
+
+  bind void onApiLoad() {
+    // create map here
+
+    object options = {
+      disableDefaultUI: true,
+      panControl: true,
+      zoomControl: true,
+      zoomControlOptions: {
+        style: google.maps.ZoomControlStyle.LARGE
+      },
+      scrollwheel: false,
+      zoom: zoom,
+      center: new google.maps.LatLng(lat, lng)
+    };
+
+    map = new google.maps.Map(element.node, options);
+  
+    /* object options = { */
+    /*   disableDefaultUI: true, */
+    /*   panControl: true, */
+    /*   zoomControl: true, */
+    /*   zoomControlOptions: { */
+    /*     style: google.maps.ZoomControlStyle.LARGE */
+    /*   }, */
+    /*   scrollwheel: false, */
+    /*   zoom: zoom, */
+    /*   center: new google.maps.LatLng(lat, lng) */
+    /* }; */
+
+    /* map = new google.maps.Map(element.node, options); */
+
+    // add icons
+  }
+
+
+}

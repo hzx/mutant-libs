@@ -1,0 +1,9 @@
+
+class Video extends web.View {
+  string code = "";
+
+  override void create() {
+    element = <div> "video" </div>;
+    element.node.innerHTML = code;
+  }
+}

@@ -1,0 +1,61 @@
+
+class MainSlider extends web.View {
+  tag currentSlide = null;
+
+  tag slides = <div></div>;
+
+  override void create() {
+    element = <div style=style.mainSlider>
+      <div>
+        {slides}
+      </div>
+      <div style=style.slidePrev onclick=onPrevClick></div>
+      <div style=style.slideNext onclick=onNextClick></div>
+    </div>;
+
+    tag slide1 = <div style=style.slide1></div>;
+    tag slide2 = <div style=style.slide2></div>;
+    tag slide3 = <div style=style.slide3></div>;
+    tag slide4 = <div style=style.slide4></div>;
+
+    slides.append(slide1);
+    slides.append(slide2);
+    slides.append(slide3);
+    slides.append(slide4);
+
+    currentSlide = slide1;
+  }
+
+  void changeSlide(tag slide) {
+    if currentSlide is slide { return; }
+    currentSlide.setStyleProperty("display", "none");
+    slide.setStyleProperty("display", "block");
+    currentSlide = slide;
+  }
+
+  void slidePrev() {
+    auto prev = currentSlide.prev;
+    if prev is null {
+      prev = slides.last;
+    }
+    changeSlide(prev);
+  }
+
+  void slideNext() {
+    auto next = currentSlide.next;
+    if next is null {
+      next = slides.first;
+    }
+    changeSlide(next);
+  }
+
+  bind void onPrevClick(object e) {
+    if slides.first is null { return; }
+    slidePrev();
+  }
+
+  bind void onNextClick(object e) {
+    if slides.first is null { return; }
+    slideNext();
+  }
+}

@@ -1,0 +1,13 @@
+
+journalEditor {
+}
+
+toolbarPanel {
+  width: 40px;
+}
+
+pagePanel {
+}
+
+propsPanel {
+}

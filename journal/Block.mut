@@ -1,0 +1,6 @@
+
+class Block extends web.View {
+  override void create() {
+    element = <div style=style.block> "block" </div>;
+  }
+}

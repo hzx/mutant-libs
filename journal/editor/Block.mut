@@ -1,0 +1,64 @@
+
+class Block extends Node {
+  auto dragHandle = <div style=style.blockHandle></div>;
+  auto dragButton = <div style=style.blockDrag data=this></div>;
+
+  Block() {
+    code = journal.ItemType.BLOCK;
+  }
+
+  override void create() {
+    element = <div style=style.block hover=style.block_hover drop=onDrop>
+      <div style=style.nodeButtons>
+        {dragButton}
+        <div style=style.selectButton></div>
+        <div style=style.deleteButton onclick=onDeleteClick></div>
+      </div>
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    web.appendTag(dragHandle);
+    web.dragInit(dragButton, dragHandle);
+    web.dropInit(element);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    web.dragUninit(dragButton);
+    web.dropUninit(element);
+    dragHandle.remove();
+
+    base.exit();
+  }
+
+  bind void onDrop(Tagable element, int x, int y) {
+    auto node = null;
+
+    if element.data is null { // add new
+      node = createByCode(element.code);
+      if node is null { return; }
+    } else { // move
+      // TODO: send editor message with changes
+      node = element.data;
+      if node is this { return; } // dont self drop
+
+      if node.prev.code is journal.ItemType.GAP {
+        node.prev.remove();
+      }
+      node.remove();
+    }
+
+    auto gap = new Gap();
+    gap.create();
+    gap.parentBlock = this;
+
+    node.parentBlock = this;
+    append(gap);
+    append(node);
+  }
+}

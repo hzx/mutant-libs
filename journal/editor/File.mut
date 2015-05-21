@@ -1,0 +1,36 @@
+
+class File extends Node {
+  auto dragHandle = <div style=style.fileHandle></div>;
+  auto dragButton = <div style=style.fileDrag data=this></div>;
+
+  File() {
+    code = journal.ItemType.FILE;
+  }
+
+  override void create() {
+    element = <div style=style.file>
+      <div style=style.nodeButtons>
+        {dragButton}
+        <div style=style.selectButton></div>
+        <div style=style.deleteButton onclick=onDeleteClick></div>
+      </div>
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    web.appendTag(dragHandle);
+    web.dragInit(dragButton, dragHandle);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    web.dragUninit(dragButton);
+    dragHandle.remove();
+
+    base.exit();
+  }
+}

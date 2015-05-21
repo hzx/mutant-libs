@@ -1,0 +1,20 @@
+
+class Link extends web.View {
+  string text = "";
+  string src = "";
+
+  override void create() {
+    element = <div style=style.link onclick=onClick> text </div>;
+  }
+
+  bind void onClick(object e) {
+    e.stopPropagation();
+
+    browser.log("Link.onClick:");
+    browser.log(e);
+
+    web.Router.instance().dispatchUrl(src);
+
+    return e.preventDefault();
+  }
+}

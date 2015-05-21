@@ -1,0 +1,6 @@
+
+class Gallery extends web.View {
+  override void create() {
+    element = <div> "gallery" </div>;
+  }
+}

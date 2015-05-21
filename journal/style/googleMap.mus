@@ -1,0 +1,5 @@
+
+googleMap {
+  position: relative;
+  backgroundColor: #a0a0a0;
+}

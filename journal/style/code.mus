@@ -1,0 +1,5 @@
+
+code {
+  whiteSpace: pre;
+  fontFamily: monospace;
+}

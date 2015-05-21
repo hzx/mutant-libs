@@ -1,0 +1,8 @@
+
+class Code extends web.View {
+  string text = "";
+
+  override void create() {
+    element = <div style=style.code> text </div>;
+  }
+}

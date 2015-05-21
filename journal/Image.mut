@@ -1,0 +1,11 @@
+
+class Image extends web.View {
+  string src="";
+  string alt="";
+
+  override void create() {
+    element = <div>
+      <img src=src alt=alt/>
+    </div>;
+  }
+}
