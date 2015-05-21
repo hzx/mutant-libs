@@ -93,7 +93,7 @@ class Tag implements Tagable {
     node.insertChild(child.getNode());
     idToChilds_[child.getId()] = child;
     if isEnter { child.enter(); }
-    child.parent = this;
+    child.setParent(this);
   }
 
   void insertBefore(Tagable child, string beforeHash) {
@@ -108,7 +108,8 @@ class Tag implements Tagable {
       if first is before { first = child; }
       node.insertBefore(child.getNode(), before.getNode());
       idToChilds_[child.getId()] = child;
-      child.parent = this;
+      if isEnter { child.enter(); }
+      child.setParent(this);
     } else {
       insert(child);
     }
@@ -123,7 +124,7 @@ class Tag implements Tagable {
     node.appendChild(child.getNode());
     if isEnter { child.enter(); }
     idToChilds_[child.getId()] = child;
-    child.parent = this;
+    child.setParent(this);
   }
 
   void remove() {
@@ -139,7 +140,21 @@ class Tag implements Tagable {
 
       delete idToChilds_[hash];
 
-      child.parent = null;
+      if first is child {
+        first = child.next;
+      }
+      if last is child {
+        last = child.prev;
+      }
+
+      if child.next isnot null {
+        child.next.prev = child.prev;
+      }
+      if child.prev isnot null {
+        child.prev.next = child.next;
+      }
+
+      child.setParent(null);
       child.next = null;
       child.prev = null;
     }
@@ -162,6 +177,10 @@ class Tag implements Tagable {
   void setValue(string text) {
     value = text;
     browser.setText(node, text);
+  }
+
+  void setParent(Tagable parent_) {
+    parent = parent_;
   }
 
   void listen(string name, object handler) {
@@ -189,6 +208,9 @@ class Tag implements Tagable {
         styleActive = value;
       case "code":
         code = value;
+        break;
+      case "data":
+        data = value;
         break;
       case "type":
         node.type = value;

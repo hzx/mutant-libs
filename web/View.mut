@@ -72,6 +72,10 @@ class View implements Tagable {
     element.setValue(text);
   }
 
+  void setParent(Tagable parent_) {
+    parent = parent_;
+    element.setParent(parent_);
+  }
 
   void listen(string name, object handler) {
     element.listen(name, handler);

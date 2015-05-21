@@ -9,6 +9,7 @@ int dragDy = 0;
 object idToHandle = {}; // target.id to handle
 
 void dragInit(Tagable target, Tagable handle) {
+  // TODO: appendTag(handle);
   idToHandle[target.getId()] = handle;
 
   target.listen("mousedown", dragStart);
