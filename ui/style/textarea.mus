@@ -1,0 +1,34 @@
+
+/* $border_color: #c3c3c3; */
+/* $focus_border_color: #188dc3; */
+/* $button_bg_color: #cccccc; */
+/* $color: #585858; */
+/* $bg_color: #efefef; */
+/* $bg_color2: #e0e0e0; */
+/* $error_bg_color: #efcccc; */
+/* $error_color: #581c1c; */
+
+textarea {
+  padding: 4px 8px;
+  backgroundColor: #efefef;
+  border: 1px solid #c3c3c3;
+}
+
+textarea_active {
+  borderColor: #188dc3;
+}
+
+textareaInput {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  fontSize: inherit;
+  fontFamily: Tahoma, Arial, sans-serif;
+  borderStyle: none;
+  outlineStyle: none;
+  resize: none;
+  overflow: hidden;
+  color: #585858;
+  backgroundColor: transparent;
+}

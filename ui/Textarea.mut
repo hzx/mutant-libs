@@ -1,0 +1,106 @@
+
+class Textarea extends web.View {
+  static int HEIGHT_DELTA = 24;
+
+  auto value = new container.String();
+  auto eventBlur = new container.Event();
+
+  auto textarea_ = <textarea style=style.textareaInput
+      onkeyup=onKeyup
+      onchange=onChange
+      onfocus=onFocus
+      onblur=onBlur/>;
+
+  override void create() {
+    element = <div style=style.textarea active=style.textarea_active onclick=onClick>
+      {textarea_}
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    value.listen(onValueChange);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    value.unlisten(onValueChange);
+
+    base.exit();
+  }
+
+  void focus() {
+    element.setState(web.STATE_ACTIVE);
+    textarea_.node.focus();
+  }
+
+  void clear() {
+    value.set("");
+    textarea_.node.value = "";
+    shrinkHeight();
+  }
+
+  void tuneHeight() {
+    int scroll = textarea_.node.scrollHeight;
+    int client = textarea_.node.clientHeight;
+
+    if scroll > client {
+      element.node.style.height = (scroll + Textarea.HEIGHT_DELTA) + "px";
+    }
+  }
+
+  void shrinkHeight() {
+    // try minimal size
+    element.node.style.height = "auto";
+    tuneHeight();
+  }
+
+  bind void onValueChange(string newValue, string oldValue) {
+    browser.log("Textarea.onValueChange:");
+    browser.log(newValue);
+    browser.log(oldValue);
+
+    if web.trimString(textarea_.node.value) is newValue { return; }
+    textarea_.node.value = newValue;
+    tuneHeight();
+  }
+
+  bind void onClick(object e) {
+    focus();
+  }
+
+  bind void onKeyup(object e) {
+    switch e.keyCode {
+      case 27: // escape
+        browser.log("Textarea.onKeyup escape");
+        clear();
+        break;
+      case 8: // backspace
+      case 46: // delete
+        shrinkHeight();
+        break;
+      default:
+        tuneHeight();
+        break;
+    }
+    value.set(web.trimString(textarea_.node.value));
+  }
+
+  bind void onChange(object e) {
+    value.set(web.trimString(textarea_.node.value));
+    browser.log("Textarea.onChange:");
+    browser.log(textarea_.node.value);
+    browser.log(value);
+  }
+
+  bind void onFocus(object e) {
+    focus();
+  }
+
+  bind void onBlur(object e) {
+    element.setState(web.STATE_NORMAL);
+  }
+}
