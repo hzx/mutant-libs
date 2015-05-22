@@ -60,8 +60,11 @@ class View implements Tagable {
 
   void remove() {
     if parent is null { return; }
+    if isEnter { exit(); }
     element.remove();
     parent = null;
+    prev = null;
+    next = null;
   }
 
   void removeChild(string hash) {
