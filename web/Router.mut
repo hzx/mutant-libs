@@ -87,7 +87,9 @@ class Router {
     browser.get("/debug", void (string response) { // never happen
     }, void (int status, string response) { // zero
       if status is 0 or status is 502 { // restart app only in debug build
-        window.location.reload();
+        window.setTimeout(function() {
+          window.location.reload();
+        }, 1000);
       }
     }, void (object e) {});
   }

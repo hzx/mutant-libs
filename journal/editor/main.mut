@@ -1,56 +1,6 @@
 import browser;
 import web;
+import container;
 import journal;
 import journal.editor.style;
-
-
-Node createByCode(int code) {
-  Node node = null;
-  switch code {
-    case journal.ItemType.BLOCK:
-      node = new Block();
-      node.create();
-      break;
-    case journal.ItemType.CODE:
-      node = new Code();
-      node.create();
-      break;
-    case journal.ItemType.FILE:
-      node = new File();
-      node.create();
-      break;
-    case journal.ItemType.GALLERY:
-      node = new Gallery();
-      node.create();
-      break;
-    case journal.ItemType.GOOGLE_MAP:
-      node = new GoogleMap();
-      node.create();
-      break;
-    case journal.ItemType.HEADER:
-      node = new Header();
-      node.create();
-      break;
-    case journal.ItemType.IMAGE:
-      node = new Image();
-      node.create();
-      break;
-    case journal.ItemType.LINK:
-      node = new Link();
-      node.create();
-      break;
-    case journal.ItemType.TEXT:
-      node = new Text();
-      node.create();
-      break;
-    case journal.ItemType.VIDEO:
-      node = new Video();
-      node.create();
-      break;
-    default:
-      browser.log("createByCode, unknown code: " + code);
-      break;
-  }
-
-  return node;
-}
+import ui;

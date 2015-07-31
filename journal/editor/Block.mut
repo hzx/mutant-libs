@@ -1,64 +1,168 @@
 
 class Block extends Node {
-  auto dragHandle = <div style=style.blockHandle></div>;
-  auto dragButton = <div style=style.blockDrag data=this></div>;
-
+  object nodes = [];
+  Editor editor = null;
+  
   Block() {
-    code = journal.ItemType.BLOCK;
+    code = journal.NodeType.BLOCK;
   }
 
   override void create() {
-    element = <div style=style.block hover=style.block_hover drop=onDrop>
-      <div style=style.nodeButtons>
-        {dragButton}
-        <div style=style.selectButton></div>
-        <div style=style.deleteButton onclick=onDeleteClick></div>
-      </div>
+    element = <div style=style.block ondragenter=onDragenter ondragleave=onDragleave ondragover=onDragover ondrop=onDrop>
     </div>;
   }
 
-  override void enter() {
-    if isEnter { return; }
-    base.enter();
-
-    web.appendTag(dragHandle);
-    web.dragInit(dragButton, dragHandle);
-    web.dropInit(element);
-  }
-
-  override void exit() {
-    if !isEnter { return; }
-
-    web.dragUninit(dragButton);
-    web.dropUninit(element);
-    dragHandle.remove();
-
-    base.exit();
-  }
-
-  bind void onDrop(Tagable element, int x, int y) {
-    auto node = null;
-
-    if element.data is null { // add new
-      node = createByCode(element.code);
-      if node is null { return; }
-    } else { // move
-      // TODO: send editor message with changes
-      node = element.data;
-      if node is this { return; } // dont self drop
-
-      if node.prev.code is journal.ItemType.GAP {
-        node.prev.remove();
-      }
-      node.remove();
+  override string serialize() {
+    object buf = [];
+    object node;
+    for int i = 0; i < nodes.length; ++i {
+      node = nodes[i];
+      buf.push(node.serialize());
     }
 
-    auto gap = new Gap();
-    gap.create();
-    gap.parentBlock = this;
+    return buf.join(container.DELIM_ROW);
+  }
 
-    node.parentBlock = this;
-    append(gap);
-    append(node);
+  override void unserialize(object fields) {
+    object rows = data.split(container.DELIM_ROW);
+    string col;
+    object fields;
+    object newNode;
+    int code;
+
+    for int i = 0; i < rows.length; ++i {
+      col = rows[i];
+      fields = col.split(container.DELIM_FIELD);
+
+      if fields.length is 0 { continue; }
+      code = parseInt(fields[0]);
+
+      newNode = createNodeByCode(code);
+      if newNode isnot null {
+        newNode.unserialize(code);
+        nodes.push(newNode); // use this for data only?
+        element.append(newNode);
+      }
+    }
+  }
+
+  Node createNodeByCode(int code) {
+    switch code {
+      case journal.NodeType.BLOCK:
+        // not implemented yet
+        break;
+      case journal.NodeType.H1:
+        return new Header1();
+      case journal.NodeType.H2:
+        return new Header2();
+      case journal.NodeType.TEXT:
+        return new Text();
+      case journal.NodeType.CODE:
+        return new Code();
+      case journal.NodeType.LINK:
+        return new Link();
+      case journal.NodeType.VIDEO:
+        return new Video();
+      case journal.NodeType.GOOGLE_MAP:
+        return new GoogleMap();
+      case journal.NodeType.FILE:
+        return new File();
+      case journal.NodeType.IMAGE:
+        return new Image();
+      case journal.NodeType.GALLERY:
+        return new Gallery();
+      case journal.NodeType.BIG_SLIDER:
+        return new BigSlider();
+      case journal.NodeType.MINI_SLIDER:
+        return new MiniSlider();
+    }
+
+    return null;
+  }
+
+  Node findNode(string id) {
+    Node cur;
+    for int i = 0; i < nodes.length; ++i {
+      cur = nodes[i];
+      if cur.id is id { return cur; }
+    }
+
+    return null;
+  }
+
+  void addBeforeNode(Node node, Node before) {
+    object buf = [];
+    Node cur;
+    for int i = 0; i < nodes.length; ++i {
+      cur = nodes[i];
+      if cur is before {
+        buf.push(node);
+      }
+      buf.push(cur);
+    }
+    nodes = buf;
+  }
+
+  void removeNode(string id) {
+    Node cur;
+    for int i = 0; i < nodes.length; ++i {
+      cur = nodes[i];
+      if cur.id is id {
+        nodes.splice(i, 1);
+        cur.element.remove();
+        return;
+      }
+    }
+  }
+
+  void insertNodeBefore(Node node, string id) {
+    auto before = findNode(id);
+    if before is null {
+      appendNode(node);
+    } else {
+      addBeforeNode(node, before);
+      element.insertBefore(node.element.node, before.element.getId());
+    }
+  }
+
+  void appendNode(Node node) {
+    nodes.push(node);
+    element.append(node.element);
+  }
+
+  bind void onDragenter(object e) {
+    e.preventDefault();
+  }
+
+  bind void onDragleave(object e) {
+  }
+
+  bind void onDragover(object e) {
+    e.preventDefault();
+  }
+
+  bind void onDrop(object e) {
+    e.preventDefault();
+    string data = e.dataTransfer.getData("text/plain");
+
+    object fields = data.split(":");
+    if fields.length < 2 or editor is null { return; }
+
+    int nodeType = window.parseInt(fields[1]);
+
+    // determine drop side - top or bottom
+    int height = browser.getHeight(element.node);
+    Node before = null; // TODO: detect it
+    if e.clientY < height / 2 {
+    }
+
+    switch fields[0] { // operation type
+      case "add":
+        editor.addNode(nodeType, before);
+        break;
+      case "move":
+        editor.moveNode(nodeType, before);
+        break;
+    }
   }
 }

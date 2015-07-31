@@ -1,0 +1,88 @@
+
+namespace scrollbar {
+
+
+bar {
+  position: absolute;
+  width: 8px;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  /* padding: 16px 0; */
+  backgroundColor: #d7e7f7;
+  zIndex: 100;
+}
+
+bar_hover {
+  width: 32px;
+}
+
+up {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  right: 0;
+  top: 0;
+  /* backgroundColor: #eb5d8f; */
+  background: url(img/up.png) center center no-repeat transparent;
+  display: none;
+  zIndex: 2;
+}
+
+up_hover {
+  display: block;
+}
+
+down {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  right: 0;
+  bottom: 0;
+  /* backgroundColor: #eb5d5d; */
+  background: url(img/down.png) center center no-repeat transparent;
+  display: none;
+  zIndex: 2;
+}
+
+down_hover {
+  display: block;
+}
+
+field {
+  position: absolute;
+  left: 0;
+  /* top: 16px; */
+  top: 0;
+  right: 0;
+  /* bottom: 16px; */
+  bottom: 0;
+  backgroundColor: #ebdff9;
+  zIndex: 1;
+}
+
+field_hover {
+  width: 32px;
+}
+
+progress {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  backgroundColor: #3885d4;
+  zIndex: 2;
+}
+
+progress_hover {
+  /* backgroundColor: #; */
+  width: 32px;
+}
+
+progress_active {
+  backgroundColor: #0c7df0;
+}
+
+
+} // end namespace scrollbar

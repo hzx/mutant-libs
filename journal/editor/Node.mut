@@ -1,15 +1,27 @@
 
+
+class Props {
+  string margin = "";
+  string padding = "";
+  string color = "#808080";
+  string bgColor = "transparent";
+}
+
+
 class Node extends web.View {
-  BlockNode parentBlock = null;
-  int code = 0;
+  Node parent = null; // parent block node TODO: rename to parentBlock
+  Editor editor = null;
+  string id = container.Hasher.generate();
+  int code = journal.NodeType.NONE;
+  auto props = new Props();
+  bool isChanged = false;
 
-  bind void onSelectClick(object e) {
+  string serialize() {
+    browser.log("Node serialize not implemented");
   }
 
-  bind void onDeleteClick(object e) {
-    if prev isnot null and prev.code is journal.ItemType.GAP {
-      prev.remove();
-    }
-    remove();
+  void unserialize(object fields) {
+    browser.log("Node unserialize not implemented");
   }
+
 }

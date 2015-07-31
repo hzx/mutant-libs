@@ -1,0 +1,11 @@
+
+file {
+  backgroundColor: #fafafa;
+}
+
+fileForm {
+  padding: 8px;
+}
+
+fileChangeButton: changeButton {
+}

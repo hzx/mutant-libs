@@ -1,0 +1,16 @@
+
+class Events {
+  auto eventAdd = new container.Event();
+  auto eventMove = new container.Event();
+  auto eventDelete = new container.Event();
+  auto eventChange = new container.Event();
+
+  static Events instance_ = null;
+
+  static Events instance() {
+    if Events.instance_ is null {
+      Events.instance_ = new Events();
+    }
+    return Events.instance_;
+  }
+}

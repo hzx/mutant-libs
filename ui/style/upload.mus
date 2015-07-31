@@ -1,8 +1,10 @@
 
 upload {
   position: relative;
-  width: 2px;
-  height: 2px;
+  /* width: 2px; */
+  /* height: 2px; */
+  width: 0;
+  height: 0;
   overflow: hidden;
   backgroundColor: #ff00ff;
 }

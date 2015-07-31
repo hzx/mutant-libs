@@ -1,0 +1,15 @@
+
+root {
+  width: 1200px;
+  minHeight: 400px;
+  padding: 16px;
+  /* paddingBottom: 16px; */
+  border: 1px solid #f0ffff;
+  //backgroundColor: #f0ffff;
+  //backgroundColor: #ffffff;
+  background: url(img/root_bg.png) left top repeat transparent;
+}
+
+root_hover {
+  backgroundColor: #e9f7f1;
+}

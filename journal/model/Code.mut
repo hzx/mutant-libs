@@ -1,0 +1,22 @@
+
+class Code {
+  static int TEXT = 2;
+
+  auto id = new container.String();
+  auto text = new container.String();
+
+  string getId() {
+    return id.value;
+  }
+
+  void setField(int name, string value) {
+    switch name {
+      case 1:
+        id.init(value);
+        break;
+      case Code.TEXT:
+        text.init(value);
+        break;
+    }
+  }
+}

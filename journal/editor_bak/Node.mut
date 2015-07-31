@@ -1,0 +1,15 @@
+
+class Node extends web.View {
+  BlockNode parentBlock = null;
+  int code = 0;
+
+  bind void onSelectClick(object e) {
+  }
+
+  bind void onDeleteClick(object e) {
+    if prev isnot null and prev.code is journal.ItemType.GAP {
+      prev.remove();
+    }
+    remove();
+  }
+}

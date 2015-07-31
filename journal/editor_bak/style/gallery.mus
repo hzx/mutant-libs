@@ -1,0 +1,43 @@
+
+gallery {
+  backgroundColor: #f7f7f7;
+}
+
+galleryImages {
+  overflow: hidden;
+  minHeight: 120px;
+}
+
+galleryImageSource {
+  float: left;
+  cssFloat: left;
+  width: 396px;
+  height: 224px;
+  margin: 1px;
+  border: 1px solid #87dda3;
+  background: url(img/gallery_source_icon.png) center center no-repeat #9fffbf;
+  cursor: pointer;
+}
+
+galleryGap {
+  float: left;
+  cssFloat: left;
+  height: 224px;
+  backgroundColor: transparent;
+}
+
+galleryGap_hover {
+  backgroundColor: #ff8080;
+}
+
+galleryImage {
+  float: left;
+  cssFloat: left;
+  width: 396px;
+  height: 224px;
+}
+
+galleryImg {
+  width: 100%;
+  height: 100%;
+}

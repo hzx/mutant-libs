@@ -1,0 +1,32 @@
+
+class GoogleMap {
+  static int ZOOM = 2;
+  static int LAT = 3;
+  static int LNG = 4;
+
+  auto id = new container.String();
+  auto zoom = new container.Int();
+  auto lat = new container.Float();
+  auto lng = new container.Float();
+
+  string getId() {
+    return id.value;
+  }
+
+  void setField(int name, string value) {
+    switch name {
+      case 1:
+        id.init(value);
+        break;
+      case GoogleMap.ZOOM:
+        zoom.init(parseInt(value));
+        break;
+      case GoogleMap.LAT:
+        lat.init(parseFloat(value));
+        break;
+      case GoogleMap.LNG:
+        lng.init(parseFloat(value));
+        break;
+    }
+  }
+}

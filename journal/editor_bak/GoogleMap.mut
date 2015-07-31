@@ -1,0 +1,61 @@
+
+class GoogleMap extends Node {
+  auto dragHandle = <div style=style.googleMapHandle></div>;
+  auto dragButton = <div style=style.googleMapDrag data=this></div>;
+  auto zoomEdit = <ui.Edit/>;
+  auto latEdit = <ui.Edit/>;
+  auto lngEdit = <ui.Edit/>;
+  auto iconUpload = <ui.Upload onChange=onIconChange/>;
+
+  GoogleMap() {
+    code=journal.ItemType.GOOGLE_MAP;
+  }
+
+  override void create() {
+    element = <div style=style.googleMap>
+      <div style=style.nodeButtons>
+        {dragButton}
+        <div style=style.selectButton></div>
+        <div style=style.deleteButton onclick=onDeleteClick></div>
+      </div>
+      <div style=style.googleMapForm>
+        <div> "Зум" </div>
+        {zoomEdit}
+        <div> "Широта" </div>
+        {latEdit}
+        <div> "Долгота" </div>
+        {lngEdit}
+        <div> "Иконка, размер картинки 32x42" </div>
+        <img src="" style=style.googleMapMarker onclick=onChangeIconClick/>
+      </div>
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    iconUpload.enter();
+    web.appendTag(dragHandle);
+    web.dragInit(dragButton, dragHandle);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    iconUpload.exit();
+    web.dragUninit(dragButton);
+    dragHandle.remove();
+
+    base.exit();
+  }
+
+  bind void onIconChange(object files) {
+    browser.log("GoogleMap.onIconChange:");
+    browser.log(files);
+  }
+
+  bind void onChangeIconClick(object e) {
+    iconUpload.click();
+  }
+}

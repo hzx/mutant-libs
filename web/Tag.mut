@@ -224,11 +224,23 @@ class Tag implements Tagable {
       case "src":
         node.src = value;
         break;
+      case "href":
+        node.href = value;
+        break;
+      case "target":
+        node.target = value;
+        break;
       case "alt":
         node.alt = value;
         break;
+      case "accept":
+        node.accept = value;
+        break;
       case "drop":
         drop = value;
+        break;
+      case "draggable":
+        node.draggable = value;
         break;
       default:
         browser.log("unknown property name: " + name);

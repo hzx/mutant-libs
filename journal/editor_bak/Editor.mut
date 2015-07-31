@@ -1,0 +1,152 @@
+
+class Editor extends web.View {
+  auto blockAdd = <div style=style.blockAdd code=journal.ItemType.BLOCK></div>;
+  auto blockHandle = <div style=style.blockHandle></div>;
+  auto codeAdd = <div style=style.codeAdd code=journal.ItemType.CODE></div>;
+  auto codeHandle = <div style=style.codeHandle></div>;
+  auto fileAdd = <div style=style.fileAdd code=journal.ItemType.FILE></div>;
+  auto fileHandle = <div style=style.fileHandle></div>;
+  auto galleryAdd = <div style=style.galleryAdd code=journal.ItemType.GALLERY></div>;
+  auto galleryHandle = <div style=style.galleryHandle></div>;
+  auto googleMapAdd = <div style=style.googleMapAdd code=journal.ItemType.GOOGLE_MAP></div>;
+  auto googleMapHandle = <div style=style.googleMapHandle></div>;
+  auto headerAdd = <div style=style.headerAdd code=journal.ItemType.HEADER></div>;
+  auto headerHandle = <div style=style.headerHandle></div>;
+  auto imageAdd = <div style=style.imageAdd code=journal.ItemType.IMAGE></div>;
+  auto imageHandle = <div style=style.imageHandle></div>;
+  auto linkAdd = <div style=style.linkAdd code=journal.ItemType.LINK></div>;
+  auto linkHandle = <div style=style.linkHandle></div>;
+  auto textAdd = <div style=style.textAdd code=journal.ItemType.TEXT></div>;
+  auto textHandle = <div style=style.textHandle></div>;
+  auto videoAdd = <div style=style.videoAdd code=journal.ItemType.VIDEO></div>;
+  auto videoHandle = <div style=style.videoHandle></div>;
+
+/* hover=style.editorBlocks_hover drop=onBlocksDrop */
+  auto editorBlocks = <div style=style.editorBlocks>
+    <Root/>
+  </div>;
+
+  override void create() {
+    web.appendTag(blockHandle);
+    web.appendTag(codeHandle);
+    web.appendTag(fileHandle);
+    web.appendTag(galleryHandle);
+    web.appendTag(googleMapHandle);
+    web.appendTag(headerHandle);
+    web.appendTag(imageHandle);
+    web.appendTag(linkHandle);
+    web.appendTag(textHandle);
+    web.appendTag(videoHandle);
+
+    element = <div style=style.editor>
+      <div style=style.editorToolbar>
+        {blockAdd}
+        {codeAdd}
+        {fileAdd}
+        {galleryAdd}
+        {googleMapAdd}
+        {headerAdd}
+        {imageAdd}
+        {linkAdd}
+        {textAdd}
+        {videoAdd}
+      </div>
+      /* <div style=style.editorProps></div> // not implement now */
+      {editorBlocks}
+    </div>;
+  }
+
+  Tagable createGap() {
+    return <div style=style.gap hover=style.gap_hover drop=onGapDrop>
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    auto evs = Events.instance();
+    evs.eventAdd.listen(onNodeAdd);
+    evs.eventMove.listen(onNodeMove);
+    evs.eventDelete.listen(onNodeDelete);
+    evs.eventChange.listen(onNodeChange);
+
+    web.dragInit(blockAdd, blockHandle);
+    web.dragInit(codeAdd, codeHandle);
+    web.dragInit(fileAdd, fileHandle);
+    web.dragInit(galleryAdd, galleryHandle);
+    web.dragInit(googleMapAdd, googleMapHandle);
+    web.dragInit(headerAdd, headerHandle);
+    web.dragInit(imageAdd, imageHandle);
+    web.dragInit(linkAdd, linkHandle);
+    web.dragInit(textAdd, textHandle);
+    web.dragInit(videoAdd, videoHandle);
+
+    web.dropInit(editorBlocks);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+    base.exit();
+
+    auto evs = Events.instance();
+    evs.eventAdd.unlisten(onNodeAdd);
+    evs.eventMove.unlisten(onNodeMove);
+    evs.eventDelete.unlisten(onNodeDelete);
+    evs.eventChange.unlisten(onNodeChange);
+
+    web.dragUninit(blockAdd);
+    web.dragUninit(codeAdd);
+    web.dragUninit(fileAdd);
+    web.dragUninit(galleryAdd);
+    web.dragUninit(googleMapAdd);
+    web.dragUninit(headerAdd);
+    web.dragUninit(imageAdd);
+    web.dragUninit(linkAdd);
+    web.dragUninit(textAdd);
+    web.dragUninit(videoAdd);
+
+    web.dropUninit(editorBlocks);
+  }
+
+  bind void onBlocksDrop(Tagable element, int x, int y) {
+    auto node = null;
+
+    if element.data is null { // add new
+      node = createByCode(element.code);
+      if node is null { return; }
+    } else { // move
+      // TODO: send editor message with changes
+      node = element.data;
+
+      if node.prev.code is journal.ItemType.GAP {
+        node.prev.remove();
+      }
+      node.remove();
+    }
+
+    auto gap = new Gap();
+    gap.create();
+    gap.parentBlock = this;
+
+    node.parentBlock = this;
+    editorBlocks.append(gap);
+    editorBlocks.append(node);
+  }
+
+  bind void onNodeAdd(Node node, string before) {
+    browser.log("onNodeAdd not implemented");
+  }
+
+  bind void onNodeMove(Node node, string before) {
+    browser.log("onNodeMove not implemented");
+  }
+
+  bind void onNodeDelete(Node node) {
+    browser.log("onNodeDelete not implemented");
+  }
+
+  bind void onNodeChange(Node node) {
+    browser.log("onNodeChange not implemented");
+  }
+}

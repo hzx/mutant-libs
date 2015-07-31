@@ -1,36 +1,210 @@
 
 class GoogleMap extends Node {
-  auto dragHandle = <div style=style.googleMapHandle></div>;
-  auto dragButton = <div style=style.googleMapDrag data=this></div>;
+  tag latInput = null;
+  tag latNode = null;
+  tag lngInput = null;
+  tag lngNode = null;
+  tag zoomInput = null;
+  tag zoomNode = null;
+  tag widthNode = null;
+  tag widthInput = null;
+  tag heightNode = null;
+  tag heightInput = null;
+  tag iconNode = null;
 
   GoogleMap() {
-    code=journal.ItemType.GOOGLE_MAP;
+    code = journal.NodeType.GOOGLE_MAP;
   }
 
   override void create() {
-    element = <div style=style.googleMap>
-      <div style=style.nodeButtons>
-        {dragButton}
-        <div style=style.selectButton></div>
-        <div style=style.deleteButton onclick=onDeleteClick></div>
+    latInput = <input style=style_.input onfocus=onLatFocus onblur=onLatBlur/>;
+    latNode = <div style=style_.latNode active=style_.node_active onclick=onLatClick>
+      <div style=style_.wrap>
+        <div style=style_.label> "широта:" </div>
+        {latInput}
       </div>
     </div>;
+
+    lngInput = <input style=style_.input onfocus=onLngFocus onblur=onLngBlur/>;
+    lngNode = <div style=style_.lngNode active=style_.node_active onclick=onLngClick>
+      <div style=style_.wrap>
+        <div style=style_.label> "долгота:" </div>
+        {lngInput}
+      </div>
+    </div>;
+
+    zoomInput = <input style=style_.input onfocus=onZoomFocus onblur=onZoomBlur/>;
+    zoomNode = <div style=style_.zoomNode active=style_.node_active onclick=onZoomClick>
+      <div style=style_.wrap>
+        <div style=style_.label> "масштаб:" </div>
+        {zoomInput}
+      </div>
+    </div>;
+
+    widthInput = <input style=style_.input onfocus=onWidthFocus onblur=onWidthBlur/>;
+    widthNode = <div style=style_.widthNode active=style_.node_active onclick=onWidthClick>
+      <div style=style_.wrap>
+        <div style=style_.label> "ширина:" </div>
+        {widthInput}
+      </div>
+    </div>;
+
+    heightInput = <input style=style_.input onfocus=onHeightFocus onblur=onHeightBlur/>;
+    heightNode = <div style=style_.heightNode active=style_.node_active onclick=onHeightClick>
+      <div style=style_.wrap>
+        <div style=style_.label> "высота:" </div>
+        {heightInput}
+      </div>
+    </div>;
+
+    iconNode = <div style=style_.iconNode>
+    </div>;
+
+    element = <div style=style_.node>
+      <div style=style_.move draggable=true ondragstart=onDragstart></div>
+      <div style=style_.row>
+        {latNode}
+        {lngNode}
+        {zoomNode}
+        {widthNode}
+        {heightNode}
+      </div>
+      <a style=style_.a href="http://maps.google.com" target="_blank"> "maps.google.com" </a>
+      {iconNode}
+    </div>;
+
+    // set default values
+    zoomInput.node.value = "16";
+    widthInput.node.value = "1200";
+    heightInput.node.value = "360";
   }
 
-  override void enter() {
-    if isEnter { return; }
-    base.enter();
+  override string serialize() {
+    object buf = [];
+    buf.push(code);
+    buf.push(latInput.node.value);
+    buf.push(lngInput.node.value);
+    buf.push(zoomInput.node.value);
+    buf.push(widthInput.node.value);
+    buf.push(heightInput.node.value);
 
-    web.appendTag(dragHandle);
-    web.dragInit(dragButton, dragHandle);
+    return buf.join(container.DELIM_FIELD);
   }
 
-  override void exit() {
-    if !isEnter { return; }
+  override void unserialize(object fields) {
+    latInput.node.value = fields[1];
+    lngInput.node.value = fields[2];
+    zoomInput.node.value = fields[3];
+    widthInput.node.value = fields[4];
+    heightInput.node.value = fields[5];
+  }
 
-    web.dragUninit(dragButton);
-    dragHandle.remove();
+  void focusLat() {
+    latNode.setState(web.STATE_ACTIVE);
+    latInput.node.focus();
+  }
 
-    base.exit();
+  void focusLng() {
+    lngNode.setState(web.STATE_ACTIVE);
+    lngInput.node.focus();
+  }
+
+  void focusZoom() {
+    zoomNode.setState(web.STATE_ACTIVE);
+    zoomInput.node.focus();
+  }
+
+  void focusWidth() {
+    widthNode.setState(web.STATE_ACTIVE);
+    widthInput.node.focus();
+  }
+
+  void focusHeight() {
+    heightNode.setState(web.STATE_ACTIVE);
+    heightInput.node.focus();
+  }
+
+  void blurLat() {
+    latNode.setState(web.STATE_NORMAL);
+  }
+
+  void blurLng() {
+    lngNode.setState(web.STATE_NORMAL);
+  }
+
+  void blurZoom() {
+    zoomNode.setState(web.STATE_NORMAL);
+  }
+
+  void blurWidth() {
+    widthNode.setState(web.STATE_NORMAL);
+  }
+
+  void blurHeight() {
+    heightNode.setState(web.STATE_NORMAL);
+  }
+
+  bind void onDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "move:" + id);
+  }
+
+  bind void onLatFocus(object e) {
+    focusLat();
+  }
+
+  bind void onLatBlur(object e) {
+    blurLat();
+  }
+
+  bind void onLatClick(object e) {
+    focusLat();
+  }
+
+  bind void onLngFocus(object e) {
+    focusLng();
+  }
+
+  bind void onLngBlur(object e) {
+    blurLng();
+  }
+
+  bind void onLngClick(object e) {
+    focusLng();
+  }
+
+  bind void onZoomFocus(object e) {
+    focusZoom();
+  }
+
+  bind void onZoomBlur(object e) {
+    blurZoom();
+  }
+
+  bind void onZoomClick(object e) {
+    focusZoom();
+  }
+
+  bind void onWidthFocus(object e) {
+    focusWidth();
+  }
+
+  bind void onWidthBlur(object e) {
+    blurWidth();
+  }
+
+  bind void onWidthClick(object e) {
+    focusWidth();
+  }
+
+  bind void onHeightFocus(object e) {
+    focusHeight();
+  }
+
+  bind void onHeightBlur(object e) {
+    blurHeight();
+  }
+
+  bind void onHeightClick(object e) {
+    focusHeight();
   }
 }

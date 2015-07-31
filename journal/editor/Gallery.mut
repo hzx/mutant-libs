@@ -1,36 +1,57 @@
 
 class Gallery extends Node {
-  auto dragHandle = <div style=style.galleryHandle></div>;
-  auto dragButton = <div style=style.galleryDrag data=this></div>;
+  tag fileDialog = null;
+  tag userImages = null;
 
   Gallery() {
-    code = journal.ItemType.GALLERY;
+    code = journal.NodeType.GALLERY;
   }
 
   override void create() {
-    element = <div style=style.gallery>
-      <div style=style.nodeButtons>
-        {dragButton}
-        <div style=style.selectButton></div>
-        <div style=style.deleteButton onclick=onDeleteClick></div>
+    fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
+    userImages = <div></div>;
+
+    element = <div style=style_.node>
+      {fileDialog}
+      <div style=style_.move draggable=true ondragstart=onDragstart></div>
+      <div style=style_.images>
+        {userImages}
+        <div style=style_.add onclick=onAddClick></div>
       </div>
     </div>;
   }
 
-  override void enter() {
-    if isEnter { return; }
-    base.enter();
-
-    web.appendTag(dragHandle);
-    web.dragInit(dragButton, dragHandle);
+  override string serialize() {
+    browser.log("serialize not implemented");
+    return "";
   }
 
-  override void exit() {
-    if !isEnter { return; }
+  override void unserialize(object fields) {
+    browser.log("unserialize not implemented");
+  }
 
-    web.dragUninit(dragButton);
-    dragHandle.remove();
+  tag createImage(string id, string url, string alt) {
+    return <img id=id src=url alt=alt style=style_.image draggable=true ondragstart=onImageDragstart/>;
+  }
 
-    base.exit();
+  bind void onDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "move:" + id);
+  }
+
+  bind void onUploadBtnClick(object e) {
+    fileDialog.click();
+  }
+
+  bind void onFileChange(object files) {
+    if files.length < 1 { return; }
+    /* file = files[0]; */
+
+    /* browser.setText(filename.node, file.name); */
+  }
+
+  bind void onImageDragstart(object e) {
+  }
+
+  bind void onAddClick(object e) {
   }
 }

@@ -1,3 +1,34 @@
 
-gallery {
+namespace gallery {
+
+
+node {
+  position: relative;
+  /* margin: 16px; */
+  padding: 28px 8px 8px 8px;
+  /* borderBottomStyle: none; */
+  /* backgroundColor: #f7f7f7; */
+  borderBottom: 1px dotted #38569a;
 }
+
+move {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: url(img/gallery_small.png) center center no-repeat transparent;
+  cursor: pointer;
+}
+
+images {
+}
+
+add {
+}
+
+image {
+}
+
+
+} // end namespace gallery

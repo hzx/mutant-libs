@@ -1,0 +1,7 @@
+
+image {
+  width: 1200px;
+  //height: 675px;
+  minHeight: 200px;
+  backgroundColor: #ffffff;
+}

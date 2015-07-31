@@ -1,0 +1,15 @@
+
+class Image extends web.View {
+  string src = "";
+  int width = 360;
+  int height = 120;
+
+  void create() {
+    element = <div style=style.image>
+      <img src=src/>
+    </div>;
+
+    element.node.style.width = width + "px";
+    element.node.style.height = height + "px";
+  }
+}

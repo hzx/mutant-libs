@@ -1,36 +1,74 @@
 
-class Header extends Node {
-  auto dragHandle = <div style=style.headerHandle></div>;
-  auto dragButton = <div style=style.headerDrag data=this></div>;
+class Header1 extends Node {
+  tag input_ = null;
 
-  Header() {
-    code=journal.ItemType.HEADER;
+  Header1() {
+    code = journal.NodeType.H1;
   }
 
   override void create() {
-    element = <div style=style.header>
-      <div style=style.nodeButtons>
-        {dragButton}
-        <div style=style.selectButton></div>
-        <div style=style.deleteButton onclick=onDeleteClick></div>
+    input_ = <input style=style_.headerInput onfocus=onFocus onblur=onBlur/>;
+
+    element = <div style=style_.h1 active=style_.header_active onclick=onClick>
+      <div style=style_.wrap>
+        <div style=style_.h1Move draggable=true ondragstart=onDragstart></div>
+        {input_}
       </div>
     </div>;
   }
 
-  override void enter() {
-    if isEnter { return; }
-    base.enter();
+  override string serialize() {
+    object buf = [];
+    buf.push(code);
+    buf.push(input_.node.value);
 
-    web.appendTag(dragHandle);
-    web.dragInit(dragButton, dragHandle);
+    return buf.join(container.DELIM_FIELD);
   }
 
-  override void exit() {
-    if !isEnter { return; }
+  override void unserialize(object fields) {
+    input_.node.value = fields[1];
+  }
 
-    web.dragUninit(dragButton);
-    dragHandle.remove();
+  void focus() {
+    element.setState(web.STATE_ACTIVE);
+    input_.node.focus();
+  }
 
-    base.exit();
+  void blur() {
+    element.setState(web.STATE_NORMAL);
+  }
+
+  bind void onClick(object e) {
+    focus();
+  }
+
+  bind void onFocus(object e) {
+    focus();
+  }
+
+  bind void onBlur(object e) {
+    blur();
+  }
+
+  bind void onDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "move:" + id);
+  }
+}
+
+
+class Header2 extends Header1 {
+  Header2() {
+    code = journal.NodeType.H2;
+  }
+
+  override void create() {
+    input_ = <input style=style_.headerInput onfocus=onFocus onblur=onBlur/>;
+
+    element = <div style=style_.h2 active=style_.header_active onclick=onClick>
+      <div style=style_.wrap>
+        <div style=style_.h2Move draggable=true ondragstart=onDragstart></div>
+        {input_}
+      </div>
+    </div>;
   }
 }

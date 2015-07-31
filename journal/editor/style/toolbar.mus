@@ -1,0 +1,93 @@
+
+toolbar {
+  overflow: hidden;
+  position: absolute;
+  left: 16px;
+  top: 4px;
+  width: 1200px;
+  height: 32px;
+  zIndex: 200;
+}
+
+toolbarBtn {
+  float: left;
+  cssFloat: left;
+  width: 32px;
+  height: 32px;
+  backgroundColor: #8fb9e5;
+  marginRight: 4px;
+  cursor: pointer;
+}
+
+blockBtn: toolbarBtn {
+  display: none;
+  /* background: url(img/ */
+}
+
+h1Btn: toolbarBtn {
+  background: url(img/h1.png) center center no-repeat transparent;
+}
+
+h2Btn: toolbarBtn {
+  background: url(img/h2.png) center center no-repeat transparent;
+}
+
+textBtn: toolbarBtn {
+  background: url(img/text.png) center center no-repeat transparent;
+}
+
+codeBtn: toolbarBtn {
+  background: url(img/code.png) center center no-repeat transparent;
+}
+
+linkBtn: toolbarBtn {
+  background: url(img/link.png) center center no-repeat transparent;
+}
+
+videoBtn: toolbarBtn {
+  background: url(img/video.png) center center no-repeat transparent;
+}
+
+googleMapBtn: toolbarBtn {
+  background: url(img/google_map.png) center center no-repeat transparent;
+}
+
+fileBtn: toolbarBtn {
+  background: url(img/file.png) center center no-repeat transparent;
+}
+
+imageBtn: toolbarBtn {
+  background: url(img/image.png) center center no-repeat transparent;
+}
+
+galleryBtn: toolbarBtn {
+  background: url(img/gallery.png) center center no-repeat transparent;
+}
+
+bigSliderBtn: toolbarBtn {
+  background: url(img/big_slider.png) center center no-repeat transparent;
+}
+
+miniSliderBtn: toolbarBtn {
+  background: url(img/mini_slider.png) center center no-repeat transparent;
+}
+
+trashBtn {
+  float: right;
+  cssFloat: right;
+  width: 732px; // 12 buttons + trash + save
+  height: 32px;
+  /* backgroundColor: #f7f7f7; */
+  background: url(img/trash.png) center center no-repeat #fcf3c3;
+}
+
+saveBtn {
+  float: right;
+  cssFloat: right;
+  width: 32px;
+  height: 32px;
+  marginLeft: 4px;
+  /* backgroundColor: #8fb9e5; */
+  background: url(img/save.png) center center no-repeat transparent;
+  cursor: pointer;
+}

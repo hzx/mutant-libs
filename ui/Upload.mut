@@ -1,12 +1,15 @@
 
 class Upload extends web.View {
   bool multiple = false;
+  string accept = "";
   bool isOpen = false;
   auto eventChange = new container.Event();
 
-  tag input = <input type="file" multiple=multiple style=style.uploadInput onchange=onInputChange/>;
+  tag input = null;
 
   override void create() {
+    input = <input type="file" multiple=multiple accept=accept style=style.uploadInput onchange=onInputChange/>;
+
     element = <div style=style.upload>
       {input}
     </div>;

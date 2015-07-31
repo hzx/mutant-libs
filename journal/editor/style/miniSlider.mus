@@ -1,0 +1,32 @@
+
+namespace miniSlider {
+
+
+node {
+  position: relative;
+  /* margin: 16px; */
+  padding: 28px 8px 8px 8px;
+  /* borderBottomStyle: none; */
+  /* backgroundColor: #f7f7f7; */
+  borderBottom: 1px dotted #38569a;
+}
+
+node_active {
+  backgroundColor: #f0f0f0;
+}
+
+move {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: url(img/mini_slider_small.png) center center no-repeat transparent;
+  cursor: pointer;
+}
+
+wrap {
+}
+
+
+} // end namespace miniSlider

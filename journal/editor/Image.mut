@@ -1,36 +1,96 @@
 
 class Image extends Node {
-  auto dragHandle = <div style=style.imageHandle></div>;
-  auto dragButton = <div style=style.imageDrag data=this></div>;
+  tag fileDialog = null;
+  tag filename = null;
+  tag altInput = null;
+  tag altNode = null;
+  tag picNode = null;
+
+  object file = null;
 
   Image() {
-    code=journal.ItemType.IMAGE;
+    code = journal.NodeType.IMAGE;
   }
 
   override void create() {
-    element = <div style=style.image>
-      <div style=style.nodeButtons>
-        {dragButton}
-        <div style=style.selectButton></div>
-        <div style=style.deleteButton onclick=onDeleteClick></div>
+    fileDialog = <ui.Upload onChange=onFileChange accept="image/\*"/>;
+
+    filename = <div style=style_.filename></div>;
+    
+    altInput = <input style=style_.input onfocus=onAltFocus onblur=onAltBlur/>;
+
+    altNode = <div style=style_.altNode active=style_.node_active onclick=onAltClick>
+      <div style=style_.wrap>
+        <div style=style_.label> "подсказка:" </div>
+        {altInput}
       </div>
+    </div>;
+
+    picNode = <div style=style_.pic>
+    </div>;
+
+    element = <div style=style_.node>
+      <div style=style_.move draggable=true ondragstart=onDragstart></div>
+      <div style=style_.buttons>
+        <div style=style_.uploadBtn onclick=onUploadBtnClick>
+          {fileDialog}
+          <span> "выбрать" </span>
+        </div>
+      </div>
+      <div style=style_.filenameNode>
+        <div style=style_.label> "новый файл:" </div>
+        {filename}
+      </div>
+      {altNode}
+      {picNode}
     </div>;
   }
 
-  override void enter() {
-    if isEnter { return; }
-    base.enter();
-
-    web.appendTag(dragHandle);
-    web.dragInit(dragButton, dragHandle);
+  override string serialize() {
+    object buf = [];
+    buf.push(code);
+    buf.push(altInput.node.value);
+    // TODO: push file hash here
+    return buf.join(container.DELIM_FIELD);
   }
 
-  override void exit() {
-    if !isEnter { return; }
+  override void unserialize(object fields) {
+    altInput.node.value = fields[1];
+  }
 
-    web.dragUninit(dragButton);
-    dragHandle.remove();
+  void focusAlt() {
+    altNode.setState(web.STATE_ACTIVE);
+    altInput.node.focus();
+  }
 
-    base.exit();
+  void blurAlt() {
+    altNode.setState(web.STATE_NORMAL);
+  }
+
+  bind void onFileChange(object files) {
+    if files.length < 1 { return; }
+    file = files[0];
+
+    browser.setText(filename.node, file.name);
+  }
+
+  bind void onAltClick(object e) {
+    focusAlt();
+  }
+
+  bind void onAltFocus(object e) {
+    focusAlt();
+  }
+
+  bind void onAltBlur(object e) {
+    blurAlt();
+  }
+
+  bind void onDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "move:" + id);
+  }
+
+  bind void onUploadBtnClick(object e) {
+    fileDialog.click();
   }
 }

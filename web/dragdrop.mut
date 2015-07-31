@@ -64,18 +64,22 @@ void drag(object e) {
 }
 
 void dropInit(Tagable target) {
-  /* target.listen("mouseenter", dropEnter); */
-  /* target.listen("mouseleave", dropLeave); */
-  target.listen("mouseover", dropEnter);
-  target.listen("mouseout", dropLeave);
+  target.listen("mouseenter", dropEnter);
+  target.listen("mouseleave", dropLeave);
+
+  /* target.listen("mouseover", dropEnter); */
+  /* target.listen("mouseout", dropLeave); */
+
   /* target.listen("mouseup", drop); */
 }
 
 void dropUninit(Tagable target) {
-  /* target.unlisten("mouseenter", dropEnter); */
-  /* target.unlisten("mouseleave", dropLeave); */
-  target.unlisten("mouseover", dropEnter);
-  target.unlisten("mouseout", dropLeave);
+  target.unlisten("mouseenter", dropEnter);
+  target.unlisten("mouseleave", dropLeave);
+
+  /* target.unlisten("mouseover", dropEnter); */
+  /* target.unlisten("mouseout", dropLeave); */
+
   /* target.unlisten("mouseup", drop); */
 }
 

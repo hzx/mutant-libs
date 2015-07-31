@@ -1,61 +1,25 @@
 
 class Editor extends web.View {
-  auto blockAdd = <div style=style.blockAdd code=journal.ItemType.BLOCK></div>;
-  auto blockHandle = <div style=style.blockHandle></div>;
-  auto codeAdd = <div style=style.codeAdd code=journal.ItemType.CODE></div>;
-  auto codeHandle = <div style=style.codeHandle></div>;
-  auto fileAdd = <div style=style.fileAdd code=journal.ItemType.FILE></div>;
-  auto fileHandle = <div style=style.fileHandle></div>;
-  auto galleryAdd = <div style=style.galleryAdd code=journal.ItemType.GALLERY></div>;
-  auto galleryHandle = <div style=style.galleryHandle></div>;
-  auto googleMapAdd = <div style=style.googleMapAdd code=journal.ItemType.GOOGLE_MAP></div>;
-  auto googleMapHandle = <div style=style.googleMapHandle></div>;
-  auto headerAdd = <div style=style.headerAdd code=journal.ItemType.HEADER></div>;
-  auto headerHandle = <div style=style.headerHandle></div>;
-  auto imageAdd = <div style=style.imageAdd code=journal.ItemType.IMAGE></div>;
-  auto imageHandle = <div style=style.imageHandle></div>;
-  auto linkAdd = <div style=style.linkAdd code=journal.ItemType.LINK></div>;
-  auto linkHandle = <div style=style.linkHandle></div>;
-  auto textAdd = <div style=style.textAdd code=journal.ItemType.TEXT></div>;
-  auto textHandle = <div style=style.textHandle></div>;
-  auto videoAdd = <div style=style.videoAdd code=journal.ItemType.VIDEO></div>;
-  auto videoHandle = <div style=style.videoHandle></div>;
+  tag scrollarea = null;
+  int toolbarTop = 0;
 
-  auto editorBlocks = <div style=style.editorBlocks hover=style.editorBlocks_hover drop=onBlocksDrop>
-  </div>;
+  auto toolbar = createToolbar();
+  auto root = new Block();
 
-  override void create() {
-    web.appendTag(blockHandle);
-    web.appendTag(codeHandle);
-    web.appendTag(fileHandle);
-    web.appendTag(galleryHandle);
-    web.appendTag(googleMapHandle);
-    web.appendTag(headerHandle);
-    web.appendTag(imageHandle);
-    web.appendTag(linkHandle);
-    web.appendTag(textHandle);
-    web.appendTag(videoHandle);
+  // data
+  string journalId = null;
 
-    element = <div style=style.editor>
-      <div style=style.editorToolbar>
-        {blockAdd}
-        {codeAdd}
-        {fileAdd}
-        {galleryAdd}
-        {googleMapAdd}
-        {headerAdd}
-        {imageAdd}
-        {linkAdd}
-        {textAdd}
-        {videoAdd}
-      </div>
-      <div style=style.editorProps></div>
-      {editorBlocks}
-    </div>;
+  auto eventSave = new container.Event();
+
+  Editor() {
+    root.create();
+    root.editor = this;
   }
 
-  Tagable createGap() {
-    return <div style=style.gap hover=style.gap_hover drop=onGapDrop>
+  override void create() {
+    element = <div style=style.editor>
+      {toolbar}
+      {root}
     </div>;
   }
 
@@ -63,61 +27,238 @@ class Editor extends web.View {
     if isEnter { return; }
     base.enter();
 
-    web.dragInit(blockAdd, blockHandle);
-    web.dragInit(codeAdd, codeHandle);
-    web.dragInit(fileAdd, fileHandle);
-    web.dragInit(galleryAdd, galleryHandle);
-    web.dragInit(googleMapAdd, googleMapHandle);
-    web.dragInit(headerAdd, headerHandle);
-    web.dragInit(imageAdd, imageHandle);
-    web.dragInit(linkAdd, linkHandle);
-    web.dragInit(textAdd, textHandle);
-    web.dragInit(videoAdd, videoHandle);
+    /* toolbarTop = browser.posY(toolbar.node); */
+    toolbarTop = 4; // take this value from style
 
-    web.dropInit(editorBlocks);
+    if scrollarea isnot null {
+      browser.addEvent(scrollarea, "scroll", onScroll);
+    }
   }
 
   override void exit() {
     if !isEnter { return; }
-    base.exit();
 
-    web.dragUninit(blockAdd);
-    web.dragUninit(codeAdd);
-    web.dragUninit(fileAdd);
-    web.dragUninit(galleryAdd);
-    web.dragUninit(googleMapAdd);
-    web.dragUninit(headerAdd);
-    web.dragUninit(imageAdd);
-    web.dragUninit(linkAdd);
-    web.dragUninit(textAdd);
-    web.dragUninit(videoAdd);
-
-    web.dropUninit(blockOne);
-    web.dropUninit(blockTwo);
-  }
-
-  bind void onBlocksDrop(Tagable element, int x, int y) {
-    auto node = null;
-
-    if element.data is null { // add new
-      node = createByCode(element.code);
-      if node is null { return; }
-    } else { // move
-      // TODO: send editor message with changes
-      node = element.data;
-
-      if node.prev.code is journal.ItemType.GAP {
-        node.prev.remove();
-      }
-      node.remove();
+    if scrollarea isnot null {
+      browser.addEvent(scrollarea, "scroll", onScroll);
     }
 
-    auto gap = new Gap();
-    gap.create();
-    gap.parentBlock = this;
+    toolbar.node.style.top = toolbarTop + "px";
 
-    node.parentBlock = this;
-    editorBlocks.append(gap);
-    editorBlocks.append(node);
+    base.exit();
+  }
+
+  tag createToolbar() {
+    return <div style=style.toolbar>
+      <div style=style.blockBtn draggable=true ondragstart=onBlockDragstart></div>
+      <div style=style.h1Btn draggable=true ondragstart=onH1Dragstart></div>
+      <div style=style.h2Btn draggable=true ondragstart=onH2Dragstart></div>
+      <div style=style.textBtn draggable=true ondragstart=onTextDragstart></div>
+      <div style=style.codeBtn draggable=true ondragstart=onCodeDragstart></div>
+      <div style=style.linkBtn draggable=true ondragstart=onLinkDragstart></div>
+      <div style=style.videoBtn draggable=true ondragstart=onVideoDragstart></div>
+      <div style=style.googleMapBtn draggable=true ondragstart=onGoogleMapDragstart></div>
+      <div style=style.fileBtn draggable=true ondragstart=onFileDragstart></div>
+      <div style=style.imageBtn draggable=true ondragstart=onImageDragstart></div>
+      <div style=style.galleryBtn draggable=true ondragstart=onGalleryDragstart></div>
+      <div style=style.bigSliderBtn draggable=true ondragstart=onBigSliderDragstart></div>
+      <div style=style.miniSliderBtn draggable=true ondragstart=onMiniSliderDragstart></div>
+      <div style=style.saveBtn onclick=onSaveClick></div>
+      <div style=style.trashBtn ondragenter=onTrashDragenter ondragleave=onTrashDragleave ondragover=onTrashDragover ondrop=onTrashDrop></div>
+    </div>;
+  }
+
+  // interface methods for Node
+
+  bool isH1Exists() {
+    Node node;
+    for int i = 0; i < root.nodes.length; ++i {
+      node = root.nodes[i];
+      if node.code is journal.NodeType.H1 {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+  void addNode(int nodeType, Node before) {
+    Node node = null;
+
+    switch nodeType {
+      case journal.NodeType.BLOCK:
+        node = new Block();
+        node.style_ = style.block;
+        break;
+      case journal.NodeType.H1:
+        // check h1 already added, add only once
+        if isH1Exists() { return; }
+        node = new Header1();
+        node.style_ = style.header;
+        break;
+      case journal.NodeType.H2:
+        node = new Header2();
+        node.style_ = style.header;
+        break;
+      case journal.NodeType.TEXT:
+        node = new Text();
+        node.style_ = style.text;
+        break;
+      case journal.NodeType.CODE:
+        node = new Code();
+        node.style_ = style.code;
+        break;
+      case journal.NodeType.LINK:
+        node = new Link();
+        node.style_ = style.link;
+        break;
+      case journal.NodeType.VIDEO:
+        node = new Video();
+        node.style_ = style.video;
+        break;
+      case journal.NodeType.GOOGLE_MAP:
+        node = new GoogleMap();
+        node.style_ = style.googleMap;
+        break;
+      case journal.NodeType.FILE:
+        node = new File();
+        node.style_ = style.file;
+        break;
+      case journal.NodeType.IMAGE:
+        node = new Image();
+        node.style_ = style.image;
+        break;
+      case journal.NodeType.GALLERY:
+        node = new Gallery();
+        node.style_ = style.gallery;
+        break;
+      case journal.NodeType.BIG_SLIDER:
+        node = new BigSlider();
+        node.style_ = style.bigSlider;
+        break;
+      case journal.NodeType.MINI_SLIDER:
+        node = new MiniSlider();
+        node.style_ = style.miniSlider;
+        break;
+      default: // unknown nodeType, do nothing
+        return;
+    }
+
+    node.parent = root;
+    node.create();
+
+    // TODO: add node in nodes
+    // set state changed
+
+    if before isnot null {
+      root.insertNodeBefore(node, before.getId());
+    } else { // add to the end
+      root.appendNode(node);
+    }
+  }
+
+  void moveNode(int nodeType, Node before) {
+    // TODO implement
+  }
+
+  void removeNode(string id) {
+    // TODO implement
+  }
+
+  // end interface for Node
+
+  bind void onScroll(object e) {
+    int scroll = scrollarea.scrollTop;
+    if scroll > toolbarTop {
+      toolbar.node.style.top = scroll + "px";
+    } else {
+      toolbar.node.style.top = toolbarTop + "px";
+    }
+  }
+
+  bind void onBlockDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.BLOCK);
+  }
+
+  bind void onH1Dragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.H1);
+  }
+
+  bind void onH2Dragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.H2);
+  }
+
+  bind void onTextDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.TEXT);
+  }
+
+  bind void onCodeDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.CODE);
+  }
+
+  bind void onLinkDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.LINK);
+  }
+
+  bind void onVideoDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.VIDEO);
+  }
+
+  bind void onGoogleMapDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.GOOGLE_MAP);
+  }
+
+  bind void onFileDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.FILE);
+  }
+
+  bind void onImageDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.IMAGE);
+  }
+
+  bind void onGalleryDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.GALLERY);
+  }
+
+  bind void onBigSliderDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.BIG_SLIDER);
+  }
+
+  bind void onMiniSliderDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.MINI_SLIDER);
+  }
+
+  bind void onSaveClick(object e) {
+    string data = root.serialize();
+    eventSave.notify2(journalId, data);
+  }
+
+  bind void onTrashDragenter(object e) {
+    e.preventDefault();
+  }
+
+  bind void onTrashDragleave(object e) {
+  }
+
+  bind void onTrashDragover(object e) {
+    e.preventDefault();
+  }
+
+  bind void onTrashDrop(object e) {
+    e.preventDefault();
+    string data = e.dataTransfer.getData("text/plain");
+
+    if data is null or data.length is 0 { return; }
+
+    object fields = data.split(":");
+    if fields.length < 2 { return; }
+
+    string action = fields[0];
+    if action isnot "move" { return; }
+
+    string id = fields[1];
+    
+    root.removeNode(id);
+
+    browser.log("onTrashDrop, remove item with id: " + id);
   }
 }

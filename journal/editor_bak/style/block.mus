@@ -1,0 +1,10 @@
+
+block {
+  minHeight: 32px;
+  backgroundColor: #fff0f0;
+  paddingBottom: 16px;
+}
+
+block_hover {
+  backgroundColor: #ff8080;
+}

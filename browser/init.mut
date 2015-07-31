@@ -9,6 +9,7 @@ MousePos mouseX = null;
 MousePos mouseY = null;
 MousePos mouseElementX = null;
 MousePos mouseElementY = null;
+string wheelEventName = "";
 
 
 // call after document loaded (in window.onload)
@@ -25,4 +26,10 @@ void init() {
   createXhr = createXhrInit_();
   requestAnimationFrame = requestAnimationFrameInit_();
   cancelAnimationFrame = cancelAnimationFrameInit_();
+
+  if document.body.onwheel is null {
+    wheelEventName = "wheel";
+  } else {
+    wheelEventName = "mousewheel";
+  }
 }

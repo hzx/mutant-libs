@@ -1,0 +1,311 @@
+
+editor {
+}
+
+editorToolbar {
+  float: left;
+  cssFloat: left;
+  paddingLeft: 2px;
+  width: 40px;
+}
+
+editorBlocks {
+  // left = 2 + 40 + 8
+  /* margin: 0 280px 0 50px; // not implement now */
+  margin: 0 0 0 50px;
+  minWidth: 1200px;
+  minHeight: 300px;
+  /* border: 1px solid #f0ffff; */
+  /* backgroundColor: #f0ffff; */
+}
+
+editorBlocks_hover {
+  /* borderColor: #80ffff; */
+  /* borderColor: #8f8f00; */
+}
+
+editorProps {
+  float: right;
+  cssFloat: right;
+  width: 280px;
+  minHeight: 600px;
+  backgroundColor: #fff0ff;
+}
+
+
+commonAdd {
+  float: left;
+  cssFloat: left;
+  width: 40px;
+  height: 40px;
+  marginBottom: 2px;
+  /* backgroundColor: #0fff00; */
+  cursor: pointer;
+}
+
+commonDrag {
+  float: left;
+  cssFloat: left;
+  width: 24px;
+  height: 24px;
+  cursor: move;
+}
+
+commonHandle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  zIndex: 150;
+  display: none;
+  /* backgroundColor: #ff00a0; */
+  cursor: move;
+}
+
+commonHandle24 {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  zIndex: 150;
+  display: none;
+  cursor: move;
+}
+
+commonBlock {
+  minHeight: 200px;
+  /* margin: 8px; */
+  /* padding: 8px; */
+  // top = 24 + 2
+  padding: 26px 0 0 0;
+  border: 1px solid #ffff80;
+  backgroundColor: #ffffa0;
+}
+
+nodeButtons {
+  backgroundColor: #e0e0e0;
+  overflow: hidden;
+}
+
+commonBlock_hover: commonBlock {
+  borderColor: #8f8f00;
+}
+
+deleteIcon {
+  width: 24px;
+  height: 24px;
+  background: url(img/delete_icon.png) center center no-repeat transparent;
+}
+
+dragIcon {
+  width: 24px;
+  height: 24px;
+  background: url(img/drag.png) center center no-repeat transparent;
+}
+
+selectIcon {
+  width: 24px;
+  height: 24px;
+  background: url(img/select.png) center center no-repeat transparent;
+}
+
+blockIcon {
+  background: url(img/block.png) center center no-repeat transparent;
+}
+
+blockIcon24 {
+  background: url(img/block24.png) center center no-repeat transparent;
+}
+
+blockAdd: commonAdd, blockIcon {
+  display: none; // not realize until now
+}
+
+blockHandle: commonHandle, blockIcon {
+}
+
+blockDrag: commonDrag, blockIcon24 {
+}
+
+codeIcon {
+  background: url(img/code.png) center center no-repeat transparent;
+}
+
+codeIcon24 {
+  background: url(img/code24.png) center center no-repeat transparent;
+}
+
+codeAdd: commonAdd, codeIcon {
+}
+
+codeHandle: commonHandle, codeIcon {
+}
+
+codeDrag: commonDrag, codeIcon24 {
+}
+
+fileIcon {
+  background: url(img/file.png) center center no-repeat transparent;
+}
+
+fileIcon24 {
+  background: url(img/file24.png) center center no-repeat transparent;
+}
+
+fileAdd: commonAdd, fileIcon {
+}
+
+fileHandle: commonHandle, fileIcon {
+}
+
+fileDrag: commonDrag, fileIcon24 {
+}
+
+galleryIcon {
+  background: url(img/gallery.png) center center no-repeat transparent;
+}
+
+galleryIcon24 {
+  background: url(img/gallery24.png) center center no-repeat transparent;
+}
+
+galleryAdd: commonAdd, galleryIcon {
+}
+
+galleryHandle: commonHandle, galleryIcon {
+}
+
+galleryDrag: commonDrag, galleryIcon24 {
+}
+
+googleMapIcon {
+  background: url(img/map.png) center center no-repeat transparent;
+}
+
+googleMapIcon24 {
+  background: url(img/map24.png) center center no-repeat transparent;
+}
+
+googleMapAdd: commonAdd, googleMapIcon {
+}
+
+googleMapHandle: commonHandle, googleMapIcon {
+}
+
+googleMapDrag: commonDrag, googleMapIcon24 {
+}
+
+headerIcon {
+  background: url(img/header.png) center center no-repeat transparent;
+}
+
+headerIcon24 {
+  background: url(img/header24.png) center center no-repeat transparent;
+}
+
+headerAdd: commonAdd, headerIcon {
+}
+
+headerHandle: commonHandle, headerIcon {
+}
+
+headerDrag: commonDrag, headerIcon24 {
+}
+
+imageIcon {
+  background: url(img/image.png) center center no-repeat transparent;
+}
+
+imageIcon24 {
+  background: url(img/image24.png) center center no-repeat transparent;
+}
+
+imageAdd: commonAdd, imageIcon {
+}
+
+imageHandle: commonHandle, imageIcon {
+}
+
+imageDrag: commonDrag, imageIcon24 {
+}
+
+linkIcon {
+  background: url(img/link.png) center center no-repeat transparent;
+}
+
+linkIcon24 {
+  background: url(img/link24.png) center center no-repeat transparent;
+}
+
+linkAdd: commonAdd, linkIcon {
+}
+
+linkHandle: commonHandle, linkIcon {
+}
+
+linkDrag: commonDrag, linkIcon24 {
+}
+
+textIcon {
+  background: url(img/text.png) center center no-repeat transparent;
+}
+
+textIcon24 {
+  background: url(img/text24.png) center center no-repeat transparent;
+}
+
+textAdd: commonAdd, textIcon {
+}
+
+textHandle: commonHandle, textIcon {
+}
+
+textDrag: commonDrag, textIcon24 {
+}
+
+videoIcon {
+  background: url(img/video.png) center center no-repeat transparent;
+}
+
+videoIcon24 {
+  background: url(img/video24.png) center center no-repeat transparent;
+}
+
+videoAdd: commonAdd, videoIcon {
+}
+
+videoHandle: commonHandle, videoIcon {
+}
+
+videoDrag: commonDrag, videoIcon24 {
+}
+
+deleteButton: deleteIcon {
+  float: right;
+  cssFloat: right;
+  marginLeft: 24px;
+  cursor: pointer;
+}
+
+dragButton: dragIcon {
+  float: left;
+  cssFloat: left;
+}
+
+dragHandle: dragIcon {
+  position: absolute;
+  left: 0;
+  top: 0;
+  zIndex: 150;
+  display: none;
+}
+
+selectButton: selectIcon {
+  display: none; // not implement now
+  float: left;
+  cssFloat: left;
+  marginLeft: 8px;
+  cursor: pointer;
+}

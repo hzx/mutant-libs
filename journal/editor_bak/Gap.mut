@@ -41,6 +41,8 @@ class Gap extends Node {
       node.remove();
     }
 
+    // TODO: some hangout bug here
+
     auto gap = new Gap();
     gap.create();
     gap.parentBlock = parentBlock;

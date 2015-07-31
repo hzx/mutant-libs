@@ -1,0 +1,41 @@
+
+class MiniSlider extends Node {
+  tag fileDialog = null;
+
+  MiniSlider() {
+    code = journal.NodeType.MINI_SLIDER;
+  }
+
+  override void create() {
+    fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
+
+    element = <div style=style_.node>
+      {fileDialog}
+      <div style=style_.move draggable=true ondragstart=onDragstart></div>
+    </div>;
+  }
+
+  override string serialize() {
+    browser.log("serialize not implemented");
+    return "";
+  }
+
+  override void unserialize(object fields) {
+    browser.log("unserialize not implemented");
+  }
+
+  bind void onDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "move:" + id);
+  }
+
+  bind void onUploadBtnClick(object e) {
+    fileDialog.click();
+  }
+
+  bind void onFileChange(object files) {
+    if files.length < 1 { return; }
+    /* file = files[0]; */
+
+    /* browser.setText(filename.node, file.name); */
+  }
+}

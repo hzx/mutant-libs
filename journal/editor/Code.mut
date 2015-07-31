@@ -1,36 +1,19 @@
 
-class Code extends Node {
-  auto dragHandle = <div style=style.codeHandle></div>;
-  auto dragButton = <div style=style.codeDrag data=this></div>;
-
+class Code extends Text {
   Code() {
-    code = journal.ItemType.CODE;
+    code = journal.NodeType.CODE;
   }
 
-  override void create() {
-    element = <div style=style.code>
-      <div style=style.nodeButtons>
-        {dragButton}
-        <div style=style.selectButton></div>
-        <div style=style.deleteButton onclick=onDeleteClick></div>
-      </div>
-    </div>;
-  }
+  /* override void create() { */
+  /*   element = <div style=style_.node> */
+  /*     <div style=style_.wrap> */
+  /*       <div style=style_.move draggable=true ondragstart=onDragstart></div> */
+  /*       <textarea style=style_.area/> */
+  /*     </div> */
+  /*   </div>; */
+  /* } */
 
-  override void enter() {
-    if isEnter { return; }
-    base.enter();
-
-    web.appendTag(dragHandle);
-    web.dragInit(dragButton, dragHandle);
-  }
-
-  override void exit() {
-    if !isEnter { return; }
-
-    web.dragUninit(dragButton);
-    dragHandle.remove();
-
-    base.exit();
-  }
+  /* bind void onDragstart(object e) { */
+  /*   e.dataTransfer.setData("text/plain", "move:" + id); */
+  /* } */
 }

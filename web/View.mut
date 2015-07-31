@@ -4,6 +4,7 @@ class View implements Tagable {
   Tagable next = null;
   Tagable prev = null;
   Tagable element = null;
+  object style_ = null;
   bool isEnter = false;
   object events = [];
 

@@ -6,6 +6,7 @@ class Textarea extends web.View {
   auto eventBlur = new container.Event();
 
   auto textarea_ = <textarea style=style.textareaInput
+      onkeydown=onKeydown
       onkeyup=onKeyup
       onchange=onChange
       onfocus=onFocus
@@ -59,11 +60,7 @@ class Textarea extends web.View {
   }
 
   bind void onValueChange(string newValue, string oldValue) {
-    browser.log("Textarea.onValueChange:");
-    browser.log(newValue);
-    browser.log(oldValue);
-
-    if web.trimString(textarea_.node.value) is newValue { return; }
+    if textarea_.node.value is newValue { return; }
     textarea_.node.value = newValue;
     tuneHeight();
   }
@@ -72,12 +69,26 @@ class Textarea extends web.View {
     focus();
   }
 
+  bind void onKeydown(object e) {
+    switch e.keyCode {
+      case 9: // tab
+        e.preventDefault();
+        break;
+    }
+  }
+
   bind void onKeyup(object e) {
     switch e.keyCode {
       case 27: // escape
-        browser.log("Textarea.onKeyup escape");
         clear();
         break;
+      case 9: // tab
+        e.preventDefault();
+        int selstart = textarea_.node.selectionStart;
+        textarea_.node.value = value.value.substring(0, selstart) + "\t"
+          + value.value.substring(textarea_.node.selectionEnd);
+        textarea_.node.selectionEnd = selstart + 1;
+        return;
       case 8: // backspace
       case 46: // delete
         shrinkHeight();
@@ -86,14 +97,11 @@ class Textarea extends web.View {
         tuneHeight();
         break;
     }
-    value.set(web.trimString(textarea_.node.value));
+    value.set(textarea_.node.value);
   }
 
   bind void onChange(object e) {
-    value.set(web.trimString(textarea_.node.value));
-    browser.log("Textarea.onChange:");
-    browser.log(textarea_.node.value);
-    browser.log(value);
+    value.set(textarea_.node.value);
   }
 
   bind void onFocus(object e) {

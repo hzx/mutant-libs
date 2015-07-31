@@ -1,0 +1,38 @@
+
+class Header extends Node {
+  auto dragHandle = <div style=style.headerHandle></div>;
+  auto dragButton = <div style=style.headerDrag data=this></div>;
+  auto edit = <ui.Edit/>;
+
+  Header() {
+    code=journal.ItemType.HEADER;
+  }
+
+  override void create() {
+    element = <div style=style.header>
+      <div style=style.nodeButtons>
+        {dragButton}
+        <div style=style.selectButton></div>
+        <div style=style.deleteButton onclick=onDeleteClick></div>
+      </div>
+      {edit}
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    web.appendTag(dragHandle);
+    web.dragInit(dragButton, dragHandle);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    web.dragUninit(dragButton);
+    dragHandle.remove();
+
+    base.exit();
+  }
+}

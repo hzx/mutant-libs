@@ -1,0 +1,22 @@
+
+class File {
+  static int FILENAME = 2;
+
+  auto id = new container.String();
+  auto filename = new container.String();
+
+  string getId() {
+    return id.value;
+  }
+
+  void setField(int name, string value) {
+    switch name {
+      case 1:
+        id.init(value);
+        break;
+      case File.FILENAME:
+        filename.init(value);
+        break;
+    }
+  }
+}

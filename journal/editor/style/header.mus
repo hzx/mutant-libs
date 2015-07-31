@@ -1,3 +1,69 @@
 
+namespace header {
+
+
 header {
+  position: relative;
+  fontWeight: bold;
+  /* margin: 16px; */
+  padding: 28px 8px 8px 8px;
+  /* borderBottomStyle: none; */
+  /* backgroundColor: #f7f7f7; */
+  borderBottom: 1px dotted #38569a;
 }
+
+header_active {
+  /* paddingBottom: 7px; */
+  /* borderBottom: 1px solid #153958; */
+}
+
+wrap {
+}
+
+h1: header {
+  fontSize: 32px;
+}
+
+h1Move {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: url(img/h1_small.png) center center no-repeat transparent;
+  cursor: pointer;
+}
+
+h2: header {
+  fontSize: 24px;
+}
+
+h2Move {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: url(img/h2_small.png) center center no-repeat transparent;
+  cursor: pointer;
+}
+
+headerInput {
+  margin: 0;
+  padding: 0;
+  borderStyle: none;
+  outlineStyle: none;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  fontSize: inherit;
+  fontFamily: inherit;
+  /* color: #585858; */
+  backgroundColor: transparent;
+}
+
+headerMoveIcon {
+}
+
+
+} // end namespace header

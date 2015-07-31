@@ -2,16 +2,35 @@ import browser;
 import web;
 import journal.style;
 
-enum ItemType {
-  BLOCK = 1,
-  CODE,
-  FILE,
-  GALLERY,
-  GOOGLE_MAP,
-  HEADER,
-  IMAGE,
-  LINK,
+
+enum NodeType {
+  NONE = 0,
+  BLOCK,
+  H1,
+  H2,
   TEXT,
+  CODE,
+  LINK,
   VIDEO,
-  GAP,
+  GOOGLE_MAP,
+  FILE,
+  IMAGE,
+  GALLERY,
+  BIG_SLIDER,
+  MINI_SLIDER,
 }
+
+/* enum ItemType { */
+/*   ROOT = 1, */
+/*   BLOCK, */
+/*   CODE, */
+/*   FILE, */
+/*   GALLERY, */
+/*   GOOGLE_MAP, */
+/*   HEADER, */
+/*   IMAGE, */
+/*   LINK, */
+/*   TEXT, */
+/*   VIDEO, */
+/*   GAP, */
+/* } */

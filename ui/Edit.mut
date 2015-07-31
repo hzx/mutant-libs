@@ -1,0 +1,74 @@
+
+class Edit extends web.View {
+  auto value = new container.String();
+
+  auto input_ = <input style=style.editInput
+      onkeyup=onKeyup
+      onchange=onChange
+      onfocus=onFocus
+      onblur=onBlur/>;
+
+  override void create() {
+    element = <div style=style.edit active=style.edit_active onclick=onClick>
+      <div style=style.editWrap>
+        {input_}
+      </div>
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    value.listen(onValueChange);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    value.unlisten(onValueChange);
+
+    base.exit();
+  }
+
+  void focus() {
+    element.setState(web.STATE_ACTIVE);
+    input_.node.focus();
+  }
+
+  void clear() {
+    value.set("");
+    input_.node.value = "";
+  }
+
+  bind void onValueChange(string newValue, string old) {
+    if input_.node.value is newValue { return; }
+    input_.node.value = newValue;
+  }
+
+  bind void onClick(object e) {
+    focus();
+  }
+
+  bind void onKeyup(object e) {
+    switch e.keyCode {
+      case 27:
+        clear();
+        break;
+    }
+
+    value.set(input_.node.value);
+  }
+
+  bind void onChange(object e) {
+    value.set(input_.node.value);
+  }
+
+  bind void onFocus(object e) {
+    focus();
+  }
+
+  bind void onBlur(object e) {
+    element.setState(web.STATE_NORMAL);
+  }
+}

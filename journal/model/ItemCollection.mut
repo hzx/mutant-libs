@@ -1,0 +1,80 @@
+
+class ItemCollection {
+  static int BLOCK = 1;
+  static int CODE = 2;
+  static int FILE = 3;
+  static int GALLERY = 4;
+  static int GOOGLE_MAP = 5;
+  static int HEADER = 6;
+  static int IMAGE = 7;
+  static int LINK = 8;
+  static int TEXT = 9;
+  static int VIDEO = 10;
+
+  object createItem(int name) {
+    switch name {
+      case BLOCK:
+        return new Block();
+      case CODE:
+        return new Code();
+      case FILE:
+        return new File();
+      case GALLERY:
+        return new Gallery();
+      case GOOGLE_MAP:
+        return new GoogleMap();
+      case HEADER:
+        return new Header();
+      case IMAGE:
+        return new Image();
+      case LINK:
+        return new Link();
+      case TEXT:
+        return new Text();
+      case VIDEO:
+        return new Video();
+    }
+    
+    return null;
+  }
+
+  void init(object rows, int left, int right) {
+    for int i = left; i < right ++i {
+      object fields = rows[i].split(container.DELIM_FIELD);
+      if fields.length < 2 { continue; };
+
+      /* auto group = new WareGroup(); */
+      for int j = 0; j < fields.length; j++ {
+        int name = parseInt(fields[j]);
+        string value = fields[j + 1];
+        object item = null;
+
+        if item isnot null {
+          item.setField(name, value);
+        }
+      }
+      append(group);
+    }
+  }
+
+  void updateId(string id, string old) {
+  }
+
+  void update(string id, object updates) {
+  }
+
+  void insert(WareGroup group) {
+  }
+
+  void insertBefore(WareGroup group, string beforeId) {
+  }
+
+  void append(WareGroup group) {
+  }
+
+  void move(string id, string beforeId) {
+  }
+
+  void remove(string id) {
+  }
+}

@@ -1,0 +1,212 @@
+
+class Scrollbar extends web.View {
+  static int DELTA_Y = 50;
+  int scrollprogressHeight = 20;
+  int touchStartY = 0;
+  bool isMousedown = false;
+  tag scrollarea = null;
+  tag scrollup = null;
+  tag scrolldown = null;
+  tag scrollprogress = null;
+  tag scrollfield = null;
+  int lastScrollHeight = 0;
+  /* int lastTop = 0; */
+
+  override void create() {
+    scrollup = <div style=style_.up hover=style_.up_hover onclick=onScrollupClick></div>;
+    scrolldown = <div style=style_.down hover=style_.down_hover onclick=onScrolldownClick></div>;
+    scrollprogress = <div style=style_.progress></div>;
+    scrollfield = <div style=style_.field>
+      {scrollprogress}
+    </div>;
+
+    element = <div style=style_.bar hover=style_.bar_hover onmouseenter=onScrollbarMouseenter onmouseleave=onScrollbarMouseleave>
+      {scrollup}
+      {scrollfield}
+      {scrolldown}
+    </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    browser.addEvent(scrollprogress.node, "mousedown", onScrollprogressMousedown);
+    browser.addEvent(element.node, browser.wheelEventName, onScrollareaWheel);
+    browser.addEvent(scrollarea, browser.wheelEventName, onScrollareaWheel);
+    browser.addEvent(scrollarea, "touchstart", onScrollareaTouchstart);
+    browser.addEvent(scrollarea, "touchmove", onScrollareaTouchmove);
+    browser.addEvent(scrollarea, "touchend", onScrollareaTouchend);
+    /* browser.addEvent(scrollarea, "keyup", onScrollareaKeyup); */
+    /* browser.addEvent(scrollarea, "keypress", onScrollareaKeypress); */
+    browser.addEvent(scrollarea, "resize", onScrollparentResize);
+    browser.addEvent(window, "resize", onScrollparentResize);
+
+    tuneBarHeight();
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    browser.removeEvent(scrollprogress.node, "mousedown", onScrollprogressMousedown);
+    browser.removeEvent(element.node, browser.wheelEventName, onScrollareaWheel);
+    browser.removeEvent(scrollarea, browser.wheelEventName, onScrollareaWheel);
+    browser.removeEvent(scrollarea, "touchstart", onScrollareaTouchstart);
+    browser.removeEvent(scrollarea, "touchmove", onScrollareaTouchmove);
+    browser.removeEvent(scrollarea, "touchend", onScrollareaTouchend);
+    /* browser.removeEvent(scrollarea, "keyup", onScrollareaKeyup); */
+    /* browser.removeEvent(scrollarea, "keypress", onScrollareaKeypress); */
+    browser.removeEvent(scrollarea, "resize", onScrollparentResize);
+    browser.removeEvent(window, "resize", onScrollparentResize);
+
+    if isMousedown {
+      isMousedown = false;
+      unlistenDocument();
+    }
+
+    base.exit();
+  }
+
+  // get scroll area size and scrollprogress area size
+  // bar size will be proportional relation
+  void tuneBarHeight() {
+    /* int area = browser.scrollY(scrollarea); */
+    int area = scrollarea.scrollHeight;
+    lastScrollHeight = area;
+    /* int area = 2000; */
+    int field = browser.getHeight(scrollfield.node);
+    float k = field / (area + 0.0);
+
+    int height = field;
+
+    if k < 1.0 {
+      height = Math.round(k * field);
+    }
+
+    scrollprogressHeight = height;
+    scrollprogress.node.style.height = height + "px";
+  }
+
+  void tuneBarPos() {
+    int scroll = scrollarea.scrollHeight;
+    int top = browser.scrollY(scrollarea);
+
+    int field = browser.getHeight(scrollfield.node);
+
+    int hidden = scroll - field;
+    int pos = 0;
+
+    if (hidden > 0) {
+      pos = Math.round(top / (hidden + 0.0) * (field - scrollprogressHeight));
+    }
+
+    scrollprogress.node.style.top = pos + "px";
+
+    if scroll isnot lastScrollHeight {
+      tuneBarHeight();
+    }
+  }
+
+  void listenDocument() {
+    browser.addEvent(document, "mousemove", onDocumentMousemove);
+    browser.addEvent(document, "mouseup", onDocumentMouseup);
+  }
+
+  void unlistenDocument() {
+    browser.removeEvent(document, "mousemove", onDocumentMousemove);
+    browser.removeEvent(document, "mouseup", onDocumentMouseup);
+  }
+
+  bind void onScrollbarMouseenter(object e) {
+    element.setState(web.STATE_HOVER);
+    scrollup.setState(web.STATE_HOVER);
+    scrolldown.setState(web.STATE_HOVER);
+  }
+
+  bind void onScrollbarMouseleave(object e) {
+    element.setState(web.STATE_NORMAL);
+    scrollup.setState(web.STATE_NORMAL);
+    scrolldown.setState(web.STATE_NORMAL);
+  }
+
+  bind void onScrollprogressMousedown(object e) {
+    isMousedown = true;
+    listenDocument();
+  }
+
+  // if delta > 0 go up else go down
+  bind void onScrollareaWheel(object e) {
+    // e.wheelDelta supported not all browsers (mozilla not support)
+    int top;
+    int delta = e.deltaY or 0 - e.wheelDelta;
+
+    // -wheelDelta work only for IE
+    if delta > 0 {
+      top = scrollarea.scrollTop + Scrollbar.DELTA_Y;
+    } else {
+      top = scrollarea.scrollTop - Scrollbar.DELTA_Y;
+    }
+
+    if top < 0 {
+      top = 0;
+    }
+
+    scrollarea.scrollTop = top;
+    tuneBarPos();
+  }
+
+  bind void onScrollareaTouchstart(object e) {
+  }
+
+  bind void onScrollareaTouchmove(object e) {
+    e.preventDefault();
+
+    // get last touch y
+    object touches = e.changedTouches;
+    /* int firstY = touches[0].pageY; */
+    int lastY = touches[touches.length - 1].pageY;
+
+    int top = scrollarea.scrollTop + lastY/* - firstY*/;
+    if top < 0 { top = 0; }
+
+    scrollarea.scrollTop = top;
+    tuneBarPos();
+  }
+
+  bind void onScrollareaTouchend(object e) {
+  }
+
+  bind void onScrollareaKeyup(object e) {
+    browser.log("onScrollareaKeyup: " + e.keyCode);
+  }
+
+  bind void onScrollareaKeypress(object e) {
+    browser.log("onScrollareaKeypress: " + e.keyCode);
+  }
+
+  bind void onScrollparentResize(object e) {
+    tuneBarHeight();
+  }
+
+  bind void onDocumentMousemove(object e) {
+    // TODO: implement
+    /* int y = e.pageY or e.clientY; */
+    /* scrollarea.scrollTop = scrollarea. */
+    tuneBarPos();
+  }
+
+  bind void onDocumentMouseup(object e) {
+    isMousedown = false;
+    unlistenDocument();
+  }
+
+  bind void onScrollupClick(object e) {
+    scrollarea.scrollTop = scrollarea.scrollTop - Scrollbar.DELTA_Y;
+    tuneBarPos();
+  }
+
+  bind void onScrolldownClick(object e) {
+    scrollarea.scrollTop = scrollarea.scrollTop + Scrollbar.DELTA_Y;
+    tuneBarPos();
+  }
+}
