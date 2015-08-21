@@ -2,18 +2,25 @@
 class String extends Event { // TODO: make own typed instead Event
   string value = "";
   bool has = false;
+  int updateTime = 0;
 
   void init(string value_) {
-    value = value_;
-    has = true;
+    set_(value_);
   }
 
   void set(string value_) {
-    has = true;
     if value isnot value_ {
       string old = value;
-      value = value_;
+      set_(value_);
       notify2(value, old);
     }
+  }
+
+  void set_(string value_) {
+    value = value_;
+    has = true;
+
+    auto date = new Date();
+    updateTime = date.getTime();
   }
 }

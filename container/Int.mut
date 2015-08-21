@@ -2,18 +2,25 @@
 class Int extends Event { // TODO: make own typed instead Event
   int value = 0;
   bool has = false;
+  int updateTime = 0;
 
   void init(int value_) {
-    value = value_;
-    has = true;
+    set_(value_);
   }
 
   void set(int value_) {
-    has = true;
     if value isnot value_ {
       int old = value;
-      value = value_;
+      set_(value_);
       notify2(value, old);
     }
+  }
+
+  void set_(int value_) {
+    value = value_;
+    has = true;
+
+    auto date = new Date();
+    updateTime = date.getTime();
   }
 }

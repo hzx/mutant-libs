@@ -2,18 +2,25 @@
 class Float extends Event { // TODO: make own typed instead Event
   float value = 0.0;
   bool has = false;
+  int updateTime = 0;
 
   void init(float value_) {
-    value = value_;
-    has = true;
+    set_(value_);
   }
 
   void set(float value_) {
-    has = true;
     if value isnot value_ {
       float old = value;
-      value = value_;
+      set_(value_);
       notify2(value, old);
     }
+  }
+
+  void set_(float value_) {
+    value = value_;
+    has = true;
+
+    auto date = new Date();
+    updateTime = date.getTime();
   }
 }

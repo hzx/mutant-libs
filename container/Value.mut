@@ -2,18 +2,23 @@
 class Value extends Event {
   object value = null;
   bool has = false;
+  int updateTime = 0;
 
   void init(object value_) {
-    value = value_;
-    has = true;
+    set_(value_);
   }
 
   void set(object value_) {
-    has = true;
     if value isnot value_ {
       object old = value;
-      value = value_;
+      set_(value_);
       notify2(value_, old);
     }
+  }
+
+  void set_(object value_) {
+    value = value_;
+    has = true;
+    updateTime = 
   }
 }
