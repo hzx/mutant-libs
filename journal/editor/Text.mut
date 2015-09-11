@@ -21,7 +21,7 @@ class Text extends Node {
   }
 
   override void create() {
-    textarea_ = <textarea style=style_.area onkeydown=onKeydown onkeyup=onKeyup onchange=onChange onfocus=onFocus onblur=onBlur/>;
+    textarea_ = <textarea style=style_.area active=style_.area_active onkeydown=onKeydown onkeyup=onKeyup onchange=onChange onfocus=onFocus onblur=onBlur/>;
     wrap = <div style=style_.wrap> {textarea_} </div>;
 
     element = <div style=style_.node active=style_.node_active onclick=onClick>
@@ -32,11 +32,13 @@ class Text extends Node {
 
   void focus() {
     element.setState(web.STATE_ACTIVE);
+    textarea_.setState(web.STATE_ACTIVE);
     textarea_.node.focus();
   }
 
   void blur() {
     element.setState(web.STATE_NORMAL);
+    textarea_.setState(web.STATE_NORMAL);
   }
 
   void tuneHeight() {

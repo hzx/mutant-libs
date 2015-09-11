@@ -30,7 +30,12 @@ area {
   tabSize: 2;
   overflow: hidden;
   /* color: #585858; */
-  backgroundColor: transparent;
+  /* backgroundColor: transparent; */
+  backgroundColor: #f5f5f5;
+}
+
+area_active {
+  backgroundColor: #f0f0f0;
 }
 
 move {
