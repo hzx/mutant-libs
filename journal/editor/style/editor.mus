@@ -1,7 +1,6 @@
 
 editor {
   width: 1200px;
-  margin: 40px 16px 16px 16px;
+  padding: 40px 16px 16px 16px;
   backgroundColor: #ffffff;
-  /* padding: 1px 0; */
 }

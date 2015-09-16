@@ -39,7 +39,7 @@ class Editor extends web.View {
     if !isEnter { return; }
 
     if scrollarea isnot null {
-      browser.addEvent(scrollarea, "scroll", onScroll);
+      browser.removeEvent(scrollarea, "scroll", onScroll);
     }
 
     toolbar.node.style.top = toolbarTop + "px";
