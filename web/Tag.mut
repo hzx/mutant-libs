@@ -18,7 +18,7 @@ class Tag implements Tagable {
 
   object styleBackup = null; // need for saving temporary style changes
   int state = STATE_NORMAL;
-  object style_ = null;
+  object style = null;
   object styleHover = null;
   object styleActive = null;
 
