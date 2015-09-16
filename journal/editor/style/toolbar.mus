@@ -6,7 +6,7 @@ toolbar {
   top: 4px;
   width: 1200px;
   height: 32px;
-  zIndex: 200;
+  zIndex: 10;
 }
 
 toolbarBtn {
