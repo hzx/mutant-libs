@@ -4,3 +4,4 @@ import container;
 import journal;
 import journal.editor.style;
 import ui;
+import ui.style as ui_style;

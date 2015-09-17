@@ -53,19 +53,4 @@ move {
   cursor: pointer;
 }
 
-input {
-  margin: 0;
-  padding: 0;
-  borderStyle: none;
-  outlineStyle: none;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  fontSize: inherit;
-  fontFamily: inherit;
-  /* color: #585858; */
-  color: inherit;
-  backgroundColor: transparent;
-}
-
 } // end namespace link

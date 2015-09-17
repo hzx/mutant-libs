@@ -259,6 +259,7 @@ class Editor extends web.View {
     
     root.removeNode(id);
 
+    // debug
     browser.log("onTrashDrop, remove item with id: " + id);
   }
 }

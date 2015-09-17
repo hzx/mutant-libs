@@ -32,7 +32,7 @@ buttons {
   overflow: hidden;
 }
 
-uploadBtn {
+uploadBtn: ui_style.button {
   float: left;
   cssFloat: left;
   padding: 4px 6px;
@@ -40,7 +40,6 @@ uploadBtn {
   fontFamily: Ubuntu, sans-serif;
   color: #ffffff;
   backgroundColor: #38569a;
-  cursor: pointer;
 }
 
 a {
@@ -55,21 +54,6 @@ label {
 }
 
 filename {
-}
-
-input {
-  margin: 0;
-  padding: 0;
-  borderStyle: none;
-  outlineStyle: none;
-  overflow: hidden;
-  width: 100%;
-  height: 100%;
-  fontSize: inherit;
-  fontFamily: inherit;
-  /* color: #585858; */
-  color: inherit;
-  backgroundColor: transparent;
 }
 
 textNode {

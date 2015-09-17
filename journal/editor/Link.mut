@@ -14,7 +14,7 @@ class Link extends Node {
   override void create() {
     /* urlInput = <input style=style_.input onfocus=onUrlFocus onblur=onUrlBlur/>; */
     /* textInput = <input style=style_.input onfocus=onTextFocus onblur=onTextBlur/>; */
-    urlInput = <input style=style_.input onfocus=onUrlFocus onblur=onUrlBlur/>;
+    urlInput = <input style=ui_style.nestedInput onfocus=onUrlFocus onblur=onUrlBlur/>;
 
     urlNode = <div style=style_.urlNode active=style_.node_active onclick=onUrlClick>
       <div style=style_.wrap>
@@ -23,7 +23,7 @@ class Link extends Node {
       </div>
     </div>;
 
-    textInput = <input style=style_.input onfocus=onTextFocus onblur=onTextBlur/>;
+    textInput = <input style=ui_style.nestedInput onfocus=onTextFocus onblur=onTextBlur/>;
 
     textNode = <div style=style_.textNode active=style_.node_active onclick=onTextClick>
       <div style=style_.wrap>
@@ -32,7 +32,7 @@ class Link extends Node {
       </div>
     </div>;
 
-    altInput = <input style=style_.input onfocus=onAltFocus onblur=onAltBlur/>;
+    altInput = <input style=ui_style.nestedInput onfocus=onAltFocus onblur=onAltBlur/>;
 
     altNode = <div style=style_.altNode active=style_.node_active onclick=onAltClick>
       <div style=style_.wrap>

@@ -17,7 +17,7 @@ class Image extends Node {
 
     filename = <div style=style_.filename></div>;
     
-    altInput = <input style=style_.input onfocus=onAltFocus onblur=onAltBlur/>;
+    altInput = <input style=ui_style.nestedInput onfocus=onAltFocus onblur=onAltBlur/>;
 
     altNode = <div style=style_.altNode active=style_.node_active onclick=onAltClick>
       <div style=style_.wrap>

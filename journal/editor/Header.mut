@@ -7,9 +7,10 @@ class Header1 extends Node {
   }
 
   override void create() {
-    input_ = <input style=style_.headerInput onfocus=onFocus onblur=onBlur/>;
+    input_ = <input style=style_.headerInput active=style_.headerInput_active onfocus=onFocus onblur=onBlur/>;
 
-    element = <div style=style_.h1 active=style_.header_active onclick=onClick>
+    // TODO: think about ondragmove
+    element = <div style=style_.h1 active=style_.header_active onclick=onClick ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
       <div style=style_.wrap>
         <div style=style_.h1Move draggable=true ondragstart=onDragstart></div>
         {input_}
@@ -31,11 +32,13 @@ class Header1 extends Node {
 
   void focus() {
     element.setState(web.STATE_ACTIVE);
+    input_.setState(web.STATE_ACTIVE);
     input_.node.focus();
   }
 
   void blur() {
     element.setState(web.STATE_NORMAL);
+    input_.setState(web.STATE_NORMAL);
   }
 
   bind void onClick(object e) {
@@ -53,6 +56,25 @@ class Header1 extends Node {
   bind void onDragstart(object e) {
     e.dataTransfer.setData("text/plain", "move:" + id);
   }
+
+  bind void onDragover(object e) {
+    e.preventDefault();
+  }
+
+  bind void onDragenter(object e) {
+    e.preventDefault();
+    // TODO: show drop placeholder
+  }
+
+  bind void onDragleave(object e) {
+    // TODO: hide drop placeholder
+  }
+
+  bind void onDrop(object e) {
+    e.preventDefault();
+    // TODO: send parent message to drop node
+    // TODO: hide drop placeholder
+  }
 }
 
 
@@ -62,7 +84,7 @@ class Header2 extends Header1 {
   }
 
   override void create() {
-    input_ = <input style=style_.headerInput onfocus=onFocus onblur=onBlur/>;
+    input_ = <input style=style_.headerInput active=style_.headerInput_active onfocus=onFocus onblur=onBlur/>;
 
     element = <div style=style_.h2 active=style_.header_active onclick=onClick>
       <div style=style_.wrap>
