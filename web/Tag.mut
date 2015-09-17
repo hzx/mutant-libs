@@ -21,6 +21,7 @@ class Tag implements Tagable {
   object style = null;
   object styleHover = null;
   object styleActive = null;
+  object styleDisable = null;
 
   /* object dragStart = dragStart_; */
   /* object dragEnd = dragEnd_; */
@@ -206,6 +207,10 @@ class Tag implements Tagable {
         break;
       case "active":
         styleActive = value;
+        break;
+      case "disable":
+        styleDisable = value;
+        break;
       case "code":
         code = value;
         break;
@@ -266,6 +271,9 @@ class Tag implements Tagable {
         break;
       case STATE_ACTIVE:
         if styleActive { setStyle(styleActive); }
+        break;
+      case STATE_DISABLE:
+        if styleDisable { setStyle(styleDisable); }
         break;
     }
     state = statee;

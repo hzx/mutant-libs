@@ -2,9 +2,11 @@ import container;
 import browser;
 
 
+// TODO: create enum from this
 int STATE_NORMAL = 1;
 int STATE_HOVER = 2;
 int STATE_ACTIVE = 3;
+int STATE_DISABLE = 4;
 
 void dragStart_(Tagable element, int x, int y) {
   auto node = element.getNode();
