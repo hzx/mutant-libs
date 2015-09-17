@@ -1,0 +1,30 @@
+
+nestedInput {
+  margin: 0;
+  padding: 0;
+  borderStyle: none;
+  outlineStyle: none;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  fontSize: inherit;
+  fontFamily: inherit;
+  color: inherit;
+  backgroundColor: transparent;
+}
+
+
+nestedTextarea {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  fontSize: inherit;
+  fontFamily: inherit;
+  borderStyle: none;
+  outlineStyle: none;
+  resize: none;
+  tabSize: 2;
+  overflow: hidden;
+  backgroundColor: transparent;
+}
