@@ -1,0 +1,17 @@
+
+noselect {
+  webkitTouchCallout: none;
+  webkitUserSelect: none;
+  khtmlUserSelect: none;
+  MozUserSelect: none;
+  msUserSelect: none;
+  userSelect: none;
+}
+
+button: noselect {
+  cursor: pointer;
+}
+
+button_disabled {
+  cursor: default;
+}
