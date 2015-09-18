@@ -3,6 +3,24 @@ void SetText(object node, string text);
 string GetText(object node);
 string GetStyle(object node, string name);
 
+auto scrollNodes_ = [];
+object scrollNode = null;
+
+void pushScrollNode(object node) {
+  scrollNodes_.push(node);
+  scrollNode = node;
+}
+
+void popScrollNode() {
+  scrollNodes_.pop();
+
+  // reassign current scrollNode from stack
+  if scrollNodes_.length is 0 {
+    scrollNode = null;
+  } else {
+    scrollNode = scrollNodes_[scrollNodes_.length - 1];
+  }
+}
 
 SetText setTextInit_() {
   if "textContent" in document.body { // W3C
@@ -326,4 +344,15 @@ void addJsUrl(string url) {
 
   object heads = document.getElementsByTagName("head");
   heads[0].appendChild(node);
+}
+
+// get mouse x coordinate for node
+int mouseNodeX(object node, object e) {
+  return e.clientX + scrollX(scrollNode) - pageX(node);
+}
+
+// get mouse y coordinate for node
+// clientY + scrollY - pageY
+int mouseNodeY(object node, object e) {
+  return e.clientY + scrollY(scrollNode) - pageY(node);
 }
