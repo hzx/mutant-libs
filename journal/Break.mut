@@ -1,0 +1,6 @@
+
+class Break extends web.View {
+  override void create() {
+    element = <div> "break" </div>;
+  }
+}

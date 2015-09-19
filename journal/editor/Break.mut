@@ -1,0 +1,31 @@
+
+class Break extends Node {
+  Break() {
+    code = journal.NodeType.BREAK;
+  }
+
+  override void create() {
+    element = <div style=style_.node>
+      <div style=style_.move draggable=true ondragstart=onDragstart></div>
+    </div>;
+  }
+
+  override string serialize() {
+    object buf = [];
+
+    return buf.join(container.DELIM_FIELD);
+  }
+
+  override void unserialize(object fields) {
+  }
+
+  void focus() {
+  }
+
+  void blur() {
+  }
+
+  bind void onDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "move:" + id);
+  }
+}

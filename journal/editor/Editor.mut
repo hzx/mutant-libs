@@ -62,6 +62,8 @@ class Editor extends web.View {
       <div style=style.galleryBtn draggable=true ondragstart=onGalleryDragstart></div>
       <div style=style.bigSliderBtn draggable=true ondragstart=onBigSliderDragstart></div>
       <div style=style.miniSliderBtn draggable=true ondragstart=onMiniSliderDragstart></div>
+      <div style=style.anchorBtn draggable=true ondragstart=onAnchorDragstart></div>
+      <div style=style.breakBtn draggable=true ondragstart=onBreakDragstart></div>
       <div style=style.saveBtn onclick=onSaveClick></div>
       <div style=style.trashBtn ondragenter=onTrashDragenter ondragleave=onTrashDragleave ondragover=onTrashDragover ondrop=onTrashDrop></div>
     </div>;
@@ -138,6 +140,14 @@ class Editor extends web.View {
       case journal.NodeType.MINI_SLIDER:
         node = new MiniSlider();
         node.style_ = style.miniSlider;
+        break;
+      case journal.NodeType.ANCHOR:
+        node = new Anchor();
+        node.style_ = style.anchor;
+        break;
+      case journal.NodeType.BREAK:
+        node = new Break();
+        node.style_ = style.break_;
         break;
       default: // unknown nodeType, do nothing
         return;
@@ -225,6 +235,14 @@ class Editor extends web.View {
 
   bind void onMiniSliderDragstart(object e) {
     e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.MINI_SLIDER);
+  }
+
+  bind void onAnchorDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.ANCHOR);
+  }
+
+  bind void onBreakDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.BREAK);
   }
 
   bind void onSaveClick(object e) {

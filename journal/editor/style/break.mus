@@ -1,0 +1,20 @@
+
+namespace break_ {
+
+node {
+  position: relative;
+  padding: 28px 8px 8px 8px;
+  borderBottom: 1px dotted #38569a;
+}
+
+move {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: url(img/break_small.png) center center no-repeat transparent;
+  cursor: pointer;
+}
+
+}

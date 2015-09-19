@@ -1,6 +1,7 @@
 
 class Header1 extends Node {
   tag input_ = null;
+  tag dropPlaceholder = null;
 
   Header1() {
     code = journal.NodeType.H1;
@@ -58,6 +59,12 @@ class Header1 extends Node {
   }
 
   bind void onDragover(object e) {
+    // debug
+    browser.log("y=" + browser.mouseNodeY(element.node, e));
+    browser.log(e);
+
+    int my = browser.mouseNodeY(element.node, e);
+
     e.preventDefault();
   }
 
@@ -86,7 +93,7 @@ class Header2 extends Header1 {
   override void create() {
     input_ = <input style=style_.headerInput active=style_.headerInput_active onfocus=onFocus onblur=onBlur/>;
 
-    element = <div style=style_.h2 active=style_.header_active onclick=onClick>
+    element = <div style=style_.h2 active=style_.header_active onclick=onClick ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
       <div style=style_.wrap>
         <div style=style_.h2Move draggable=true ondragstart=onDragstart></div>
         {input_}

@@ -1,0 +1,6 @@
+
+class Anchor extends web.View {
+  override void create() {
+    element = <div> "anchor" </div>;
+  }
+}

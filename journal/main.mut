@@ -18,6 +18,8 @@ enum NodeType {
   GALLERY,
   BIG_SLIDER,
   MINI_SLIDER,
+  ANCHOR,
+  BREAK,
 }
 
 /* enum ItemType { */

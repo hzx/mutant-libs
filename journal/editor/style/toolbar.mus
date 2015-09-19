@@ -72,10 +72,18 @@ miniSliderBtn: toolbarBtn {
   background: url(img/mini_slider.png) center center no-repeat transparent;
 }
 
+anchorBtn: toolbarBtn {
+  background: url(img/anchor.png) center center no-repeat transparent;
+}
+
+breakBtn: toolbarBtn {
+  background: url(img/break.png) center center no-repeat transparent;
+}
+
 trashBtn {
   float: right;
   cssFloat: right;
-  width: 732px; // 12 buttons + trash + save
+  width: 660px; // 14 buttons + trash + save
   height: 32px;
   /* backgroundColor: #f7f7f7; */
   background: url(img/trash.png) center center no-repeat #fcf3c3;
