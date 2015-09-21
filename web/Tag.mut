@@ -5,35 +5,39 @@ class Tag implements Tagable {
   string id = container.Hasher.generate();
   string name = null;
   object node = null;
-  Tagable parent = null;
-  Tagable first = null;
-  Tagable last = null;
-  Tagable next = null;
-  Tagable prev = null;
+  Tag parent = null;
+  Tag first = null;
+  Tag last = null;
+  Tag next = null;
+  Tag prev = null;
 
   bool isEnter = false;
   object events = [];
+  object events__ = []; // n
   string value = "";
   object idToChilds_ = {};
+  object idToChilds__ = {}; // n
 
   object styleBackup = null; // need for saving temporary style changes
+  object styleBackup__ = null; // n
   int state = STATE_NORMAL;
   object style = null;
   object styleHover = null;
   object styleActive = null;
   object styleDisable = null;
 
+  object styleStates__ = {}; // n
+
   /* object dragStart = dragStart_; */
   /* object dragEnd = dragEnd_; */
   /* object dragHover = dragHover_; */
-  object drop = drop_;
+  /* object drop = drop_; */
 
-  int code = 0; // for use data
-  object data = null;
+  /* int code = 0; // for use data */
+  /* object data = null; */
 
   void create() {
     node = document.createElement(name);
-    node.element_ = this;
   }
 
   void destroy() {
@@ -49,10 +53,10 @@ class Tag implements Tagable {
       browser.addEvent(node, events[i], events[i+1]);
     }
 
-    Tagable cursor = first;
+    Tag cursor = first;
     while cursor isnot null {
       cursor.enter();
-      cursor = cursor.next;
+      cursor = cursor.getNext();
     }
   }
 
@@ -64,11 +68,11 @@ class Tag implements Tagable {
       browser.removeEvent(node, events[i], events[i+1]);
     }
 
-    /* for Tagable child: childs { child.exit(); } */
-    Tagable cursor = first;
+    /* for Tag child: childs { child.exit(); } */
+    Tag cursor = first;
     while cursor isnot null {
       cursor.exit();
-      cursor = cursor.next;
+      cursor = cursor.getNext();
     }
   }
 
@@ -80,18 +84,42 @@ class Tag implements Tagable {
     return node;
   }
 
-  tag getChild(string id) {
+  Tagable getFirst() {
+    return first;
+  }
+
+  Tagable getLast() {
+    return last;
+  }
+
+  Tagble getNext() {
+    return next;
+  }
+
+  Tagable getPrev() {
+    return prev;
+  }
+
+  Tagable getParent() {
+    return parent;
+  }
+
+  Tagable getChild(string id) {
     if id in idToChilds_ { return idToChilds_[id]; }
     return null;
   }
 
   void insert(Tagable child) {
-    child.prev = null;
-    child.next = first;
-    if first isnot null { first.prev = child; }
+    child.setPrev(null);
+    child.setNext(first);
+    if first isnot null {
+      node.insertBefore(child.getNode(), first.getNode());
+      first.prev = child;
+    } else {
+      node.insertBefore(child.getNode(), null);
+    }
     if last is null { last = first; }
     first = child;
-    node.insertChild(child.getNode());
     idToChilds_[child.getId()] = child;
     if isEnter { child.enter(); }
     child.setParent(this);
@@ -100,12 +128,12 @@ class Tag implements Tagable {
   void insertBefore(Tagable child, string beforeHash) {
     if beforeHash in idToChilds_ {
       Tagable before = idToChilds_[beforeHash];
-      child.prev = before.prev;
-      child.next = before;
-      if before.prev isnot null {
-        before.prev.next = child;
+      child.setPrev(before.getPrev());
+      child.setNext(before);
+      if before.getPrev() isnot null {
+        before.getPrev().setNext(child);
       }
-      before.prev = child;
+      before.setPrev(child);
       if first is before { first = child; }
       node.insertBefore(child.getNode(), before.getNode());
       idToChilds_[child.getId()] = child;
@@ -117,10 +145,10 @@ class Tag implements Tagable {
   }
 
   void append(Tagable child) {
-    child.prev = last;
-    child.next = null;
+    child.setPrev(last);
+    child.setNext(null);
     if first is null { first = child; }
-    if last isnot null { last.next = child; }
+    if last isnot null { last.setNext(child); }
     last = child;
     node.appendChild(child.getNode());
     if isEnter { child.enter(); }
@@ -142,22 +170,22 @@ class Tag implements Tagable {
       delete idToChilds_[hash];
 
       if first is child {
-        first = child.next;
+        first = child.getNext();
       }
       if last is child {
-        last = child.prev;
+        last = child.getPrev();
       }
 
-      if child.next isnot null {
-        child.next.prev = child.prev;
+      if child.getNext() isnot null {
+        child.getNext().setPrev(child.getPrev());
       }
-      if child.prev isnot null {
-        child.prev.next = child.next;
+      if child.getPrev() isnot null {
+        child.getPrev().setNext(child.getNext());
       }
 
       child.setParent(null);
-      child.next = null;
-      child.prev = null;
+      child.setNext(null);
+      child.setPrev(null);
     }
   }
 
@@ -165,7 +193,7 @@ class Tag implements Tagable {
     Tagable child = first;
     Tagable nxt;
     while child isnot null {
-      nxt = child.next;
+      nxt = child.getNext();
       if isEnter { child.exit(); }
       node.removeChild(child.getNode());
       child = nxt;
@@ -178,6 +206,14 @@ class Tag implements Tagable {
   void setValue(string text) {
     value = text;
     browser.setText(node, text);
+  }
+
+  void setNext(Tagable node_) {
+    next = node_;
+  }
+
+  void setPrev(Tagable node_) {
+    prev = node_;
   }
 
   void setParent(Tagable parent_) {
@@ -196,6 +232,7 @@ class Tag implements Tagable {
     node.innerHTML = html;
   }
 
+  // TODO: think about refactoring this
   void setProperty(string name, object value) {
     switch name {
       case "style":

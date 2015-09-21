@@ -1,8 +1,5 @@
 
 class View implements Tagable {
-  Tagable parent = null;
-  Tagable next = null;
-  Tagable prev = null;
   Tagable element = null;
   object style_ = null;
   bool isEnter = false;
@@ -43,6 +40,26 @@ class View implements Tagable {
     return element.getNode();
   }
 
+  Tagable getFirst() {
+    return element.getFirst();
+  }
+
+  Tagable getLast() {
+    return element.getLast();
+  }
+
+  Tagable getNext() {
+    return element.getNext();
+  }
+
+  Tagable getPrev() {
+    return element.getPrev();
+  }
+
+  Tagable getParent() {
+    return element.getParent();
+  }
+
   tag getChild(string id) {
     return element.getChild(id);
   }
@@ -60,12 +77,8 @@ class View implements Tagable {
   }
 
   void remove() {
-    if parent is null { return; }
     if isEnter { exit(); }
     element.remove();
-    parent = null;
-    prev = null;
-    next = null;
   }
 
   void removeChild(string hash) {
@@ -76,8 +89,15 @@ class View implements Tagable {
     element.setValue(text);
   }
 
+  void setNext(Tagable node_) {
+    element.setNext(node_);
+  }
+
+  void setPrev(Tagable node_) {
+    element.setPrev(node_);
+  }
+
   void setParent(Tagable parent_) {
-    parent = parent_;
     element.setParent(parent_);
   }
 
