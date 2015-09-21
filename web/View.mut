@@ -85,6 +85,10 @@ class View implements Tagable {
     element.removeChild(hash);
   }
 
+  void moveChild(Tagable node, string beforeId) {
+    element.moveChild(node, beforeId);
+  }
+
   void setValue(string text) {
     element.setValue(text);
   }

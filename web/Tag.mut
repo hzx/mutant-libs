@@ -113,7 +113,7 @@ class Tag implements Tagable {
     child.setPrev(null);
     child.setNext(first);
     if first isnot null {
-      node.insertBefore(child.getNode(), first.getNode());
+      node.insertBefore(child.getNode(), first.getId());
       first.prev = child;
     } else {
       node.insertBefore(child.getNode(), null);
@@ -186,6 +186,13 @@ class Tag implements Tagable {
       child.setParent(null);
       child.setNext(null);
       child.setPrev(null);
+    }
+  }
+
+  void moveChild(Tagable node, string beforeId) {
+    if beforeId in idToChilds_ {
+      removeChild(node.getId());
+      insertBefore(node, beforeId);
     }
   }
 
