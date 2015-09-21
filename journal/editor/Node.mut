@@ -131,11 +131,6 @@ class VerticalNode extends Node {
       return this;
     }
 
-    // debug
-    browser.log("Node.getBeforeDrop:");
-    browser.log("isShowBottomPlaceholder_: " + isShowBottomPlaceholder_);
-    browser.log(getNext());
-
     if isShowBottomPlaceholder_ {
       return getNext();
     }
@@ -148,15 +143,17 @@ class VerticalNode extends Node {
     object fields = data.split(":");
     if fields.length < 2 or editor is null { return; }
 
-    int nodeType = window.parseInt(fields[1]);
     auto before = getBeforeDrop();
 
     switch fields[0] { // operation type
       case "add":
+        int nodeType = window.parseInt(fields[1]);
         editor.addNode(nodeType, before);
         break;
       case "move":
-        editor.moveNode(this, before);
+        string id = fields[1];
+        if id is getId() { return; } // dont allow drop on yourself
+        editor.moveNode(id, before);
         break;
       default:
         browser.log("VerticalNode.dropNode unknown operation type: " + fields[0]);
@@ -220,11 +217,11 @@ class HorizontalNode extends Node {
 
   tag getBeforeDrop() {
     if isShowLeftPlaceholder_ {
-      return element;
+      return this;
     }
 
     if isShowRightPlaceholder_ {
-      return element.next;
+      return getNext();
     }
 
     return null;

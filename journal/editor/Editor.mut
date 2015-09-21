@@ -160,11 +160,6 @@ class Editor extends web.View {
     // TODO: add node in nodes
     // set state changed
 
-    // debug
-    browser.log("Editor.addNode insertNodeBefore");
-    browser.log(node);
-    browser.log(before);
-
     if before isnot null {
       /* root.insertNodeBefore(node, before.getId()); */
       // TODO: use block method
@@ -176,12 +171,21 @@ class Editor extends web.View {
     }
   }
 
-  void moveNode(int nodeType, Node before) {
-    // TODO implement
+  void moveNode(string nodeId, Node before) {
+    auto node = root.getChild(nodeId);
+
+    if before isnot null {
+      root.moveChild(node, before.getId());
+    } else {
+      root.moveChild(node, null);
+    }
+    // move in collection
   }
 
   void removeNode(string id) {
     // TODO implement
+    // remove from collection
+    root.removeChild(id);
   }
 
   // end interface for Node
@@ -285,7 +289,8 @@ class Editor extends web.View {
 
     string id = fields[1];
     
-    root.removeNode(id);
+    root.removeChild(id);
+    // TODO: remove from collection
 
     // debug
     browser.log("onTrashDrop, remove item with id: " + id);
