@@ -1,18 +1,12 @@
 
 
-class Props {
-  string margin = "";
-  string padding = "";
-  string color = "#808080";
-  string bgColor = "transparent";
-}
-
-
 class Node extends web.View {
   Node parent = null; // parent block node TODO: rename to parentBlock
   Editor editor = null;
   int code = journal.NodeType.NONE;
-  auto props = new Props();
+  string styleClass = "";
+  string padding = "";
+  string margin = "";
   bool isChanged = false;
 
   int cachedWidth_ = 0; // init in onDragenter
