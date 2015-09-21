@@ -5,7 +5,6 @@ namespace gallery {
 node {
   position: relative;
   /* margin: 16px; */
-  padding: 28px 8px 8px 8px;
   /* borderBottomStyle: none; */
   /* backgroundColor: #f7f7f7; */
   borderBottom: 1px dotted #38569a;
@@ -19,6 +18,10 @@ move {
   height: 24px;
   background: url(img/gallery_small.png) center center no-repeat transparent;
   cursor: pointer;
+}
+
+wrap {
+  padding: 28px 8px 8px 8px;
 }
 
 images {

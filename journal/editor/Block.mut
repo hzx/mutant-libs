@@ -80,16 +80,18 @@ class Block extends Node {
     return null;
   }
 
+  // TODO: extract array of tags utils method
   Node findNode(string id) {
     Node cur;
     for int i = 0; i < nodes.length; ++i {
       cur = nodes[i];
-      if cur.id is id { return cur; }
+      if cur.getId() is id { return cur; }
     }
 
     return null;
   }
 
+  // TODO: extract array of tags utils method
   void addBeforeNode(Node node, Node before) {
     object buf = [];
     Node cur;
@@ -103,31 +105,36 @@ class Block extends Node {
     nodes = buf;
   }
 
+  // TODO: extract array of tags utils method
   void removeNode(string id) {
     Node cur;
     for int i = 0; i < nodes.length; ++i {
       cur = nodes[i];
-      if cur.id is id {
+      if cur.getId() is id {
         nodes.splice(i, 1);
-        cur.element.remove();
+        cur.remove();
         return;
       }
     }
   }
 
+  // TODO: use childs element methods instead?!
   void insertNodeBefore(Node node, string id) {
     auto before = findNode(id);
     if before is null {
       appendNode(node);
     } else {
       addBeforeNode(node, before);
-      element.insertBefore(node.element.node, before.element.getId());
+      /* element.insertBefore(node.element.getNode(), before.element.getId()); */
+      element.insertBefore(node, before);
     }
   }
 
+  // TODO: use childs element methods instead?!
   void appendNode(Node node) {
     nodes.push(node);
-    element.append(node.element);
+    /* element.append(node.element); */
+    element.append(node);
   }
 
   bind void onDragenter(object e) {
@@ -148,20 +155,17 @@ class Block extends Node {
     object fields = data.split(":");
     if fields.length < 2 or editor is null { return; }
 
-    int nodeType = window.parseInt(fields[1]);
-
-    // determine drop side - top or bottom
-    int height = browser.getHeight(element.node);
-    Node before = null; // TODO: detect it
-    if e.clientY < height / 2 {
-    }
 
     switch fields[0] { // operation type
       case "add":
-        editor.addNode(nodeType, before);
+        // fields[1] contains node type
+        int nodeType = window.parseInt(fields[1]);
+        editor.addNode(nodeType, null);
         break;
       case "move":
-        editor.moveNode(nodeType, before);
+        // fields[1] contains node id
+        Node node = element.getChild(fields[1]);
+        editor.moveNode(node, null);
         break;
     }
   }

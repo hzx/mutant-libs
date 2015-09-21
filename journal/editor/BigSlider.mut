@@ -1,5 +1,5 @@
 
-class BigSlider extends Node {
+class BigSlider extends VerticalNode {
   tag fileDialog = null;
 
   BigSlider() {
@@ -7,11 +7,17 @@ class BigSlider extends Node {
   }
 
   override void create() {
+    createPlaceholders();
+
     fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
 
-    element = <div style=style_.node>
+    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
       {fileDialog}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
+      <div style=style_.wrap>
+      </div>
     </div>;
   }
 
@@ -22,10 +28,6 @@ class BigSlider extends Node {
 
   override void unserialize(object fields) {
     browser.log("unserialize not implemented");
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 
   bind void onUploadBtnClick(object e) {

@@ -1,12 +1,18 @@
 
-class Break extends Node {
+class Break extends VerticalNode {
   Break() {
     code = journal.NodeType.BREAK;
   }
 
   override void create() {
-    element = <div style=style_.node>
+    createPlaceholders();
+
+    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
+      <div style=style_.wrap>
+      </div>
     </div>;
   }
 
@@ -23,9 +29,5 @@ class Break extends Node {
   }
 
   void blur() {
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 }

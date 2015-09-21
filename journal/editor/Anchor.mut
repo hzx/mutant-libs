@@ -1,7 +1,19 @@
 
-class Anchor extends Node {
+class Anchor extends VerticalNode {
   Anchor() {
     code = journal.NodeType.ANCHOR;
+  }
+
+  override void create() {
+    createPlaceholders();
+
+    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
+      <div style=style_.move draggable=true ondragstart=onDragstart></div>
+      <div style=style_.wrap>
+      </div>
+    </div>;
   }
 
   override string serialize() {
@@ -13,19 +25,9 @@ class Anchor extends Node {
   override void unserialize(object fields) {
   }
 
-  override void create() {
-    element = <div style=style_.node>
-      <div style=style_.move draggable=true ondragstart=onDragstart></div>
-    </div>;
-  }
-
   void focus() {
   }
 
   void blur() {
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 }

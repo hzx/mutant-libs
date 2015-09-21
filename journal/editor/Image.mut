@@ -1,5 +1,5 @@
 
-class Image extends Node {
+class Image extends VerticalNode {
   tag fileDialog = null;
   tag filename = null;
   tag altInput = null;
@@ -13,6 +13,8 @@ class Image extends Node {
   }
 
   override void create() {
+    createPlaceholders();
+
     fileDialog = <ui.Upload onChange=onFileChange accept="image/\*"/>;
 
     filename = <div style=style_.filename></div>;
@@ -20,7 +22,7 @@ class Image extends Node {
     altInput = <input style=ui_style.nestedInput onfocus=onAltFocus onblur=onAltBlur/>;
 
     altNode = <div style=style_.altNode active=style_.node_active onclick=onAltClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "подсказка:" </div>
         {altInput}
       </div>
@@ -29,20 +31,24 @@ class Image extends Node {
     picNode = <div style=style_.pic>
     </div>;
 
-    element = <div style=style_.node>
+    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
-      <div style=style_.buttons>
-        <div style=style_.uploadBtn onclick=onUploadBtnClick>
-          {fileDialog}
-          <span> "выбрать" </span>
+      <div style=style_.wrap>
+        <div style=style_.buttons>
+          <div style=style_.uploadBtn onclick=onUploadBtnClick>
+            {fileDialog}
+            <span> "выбрать" </span>
+          </div>
         </div>
+        <div style=style_.filenameNode>
+          <div style=style_.label> "новый файл:" </div>
+          {filename}
+        </div>
+        {altNode}
+        {picNode}
       </div>
-      <div style=style_.filenameNode>
-        <div style=style_.label> "новый файл:" </div>
-        {filename}
-      </div>
-      {altNode}
-      {picNode}
     </div>;
   }
 
@@ -84,10 +90,6 @@ class Image extends Node {
 
   bind void onAltBlur(object e) {
     blurAlt();
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 
   bind void onUploadBtnClick(object e) {

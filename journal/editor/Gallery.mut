@@ -1,5 +1,5 @@
 
-class Gallery extends Node {
+class Gallery extends VerticalNode {
   tag fileDialog = null;
   tag userImages = null;
 
@@ -8,15 +8,21 @@ class Gallery extends Node {
   }
 
   override void create() {
+    createPlaceholders();
+
     fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
     userImages = <div></div>;
 
-    element = <div style=style_.node>
-      {fileDialog}
+    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
-      <div style=style_.images>
-        {userImages}
-        <div style=style_.add onclick=onAddClick></div>
+      {fileDialog}
+      <div style=style_.wrap>
+        <div style=style_.images>
+          {userImages}
+          <div style=style_.add onclick=onAddClick></div>
+        </div>
       </div>
     </div>;
   }
@@ -32,10 +38,6 @@ class Gallery extends Node {
 
   tag createImage(string id, string url, string alt) {
     return <img id=id src=url alt=alt style=style_.image draggable=true ondragstart=onImageDragstart/>;
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 
   bind void onUploadBtnClick(object e) {

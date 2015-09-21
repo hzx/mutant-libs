@@ -3,7 +3,6 @@ namespace anchor {
 
 node {
   position: relative;
-  padding: 28px 8px 8px 8px;
   borderBottom: 1px dotted #38569a;
 }
 
@@ -15,6 +14,10 @@ move {
   height: 24px;
   background: url(img/anchor_small.png) center center no-repeat transparent;
   cursor: pointer;
+}
+
+wrap {
+  padding: 28px 8px 8px 8px;
 }
 
 }

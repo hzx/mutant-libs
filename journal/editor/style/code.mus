@@ -7,12 +7,15 @@ node {
   fontFamily: Ubuntu Mono, monospace;
   fontSize: 14px;
   /* margin: 16px; */
-  padding: 28px 8px 8px 8px;
   /* backgroundColor: #f7f7f7; */
   borderBottom: 1px dotted #38569a;
 }
 
 wrap {
+  padding: 28px 8px 8px 8px;
+}
+
+areawrap {
 }
 
 area: ui_style.nestedTextarea {

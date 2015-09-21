@@ -1,5 +1,5 @@
 
-class Link extends Node {
+class Link extends VerticalNode {
   tag urlInput = null;
   tag urlNode = null;
   tag textInput = null;
@@ -12,12 +12,12 @@ class Link extends Node {
   }
 
   override void create() {
-    /* urlInput = <input style=style_.input onfocus=onUrlFocus onblur=onUrlBlur/>; */
-    /* textInput = <input style=style_.input onfocus=onTextFocus onblur=onTextBlur/>; */
+    createPlaceholders();
+
     urlInput = <input style=ui_style.nestedInput onfocus=onUrlFocus onblur=onUrlBlur/>;
 
     urlNode = <div style=style_.urlNode active=style_.node_active onclick=onUrlClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "адрес:" </div>
         {urlInput}
       </div>
@@ -26,7 +26,7 @@ class Link extends Node {
     textInput = <input style=ui_style.nestedInput onfocus=onTextFocus onblur=onTextBlur/>;
 
     textNode = <div style=style_.textNode active=style_.node_active onclick=onTextClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "текст:" </div>
         {textInput}
       </div>
@@ -35,17 +35,21 @@ class Link extends Node {
     altInput = <input style=ui_style.nestedInput onfocus=onAltFocus onblur=onAltBlur/>;
 
     altNode = <div style=style_.altNode active=style_.node_active onclick=onAltClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "подсказка:" </div>
         {altInput}
       </div>
     </div>;
 
-    element = <div style=style_.node active=style_.node_active>
+    element = <div style=style_.node active=style_.node_active ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
-      {urlNode}
-      {textNode}
-      {altNode}
+      <div style=style_.wrap>
+        {urlNode}
+        {textNode}
+        {altNode}
+      </div>
     </div>;
   }
 
@@ -126,9 +130,5 @@ class Link extends Node {
 
   bind void onAltBlur(object e) {
     blurAlt();
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 }

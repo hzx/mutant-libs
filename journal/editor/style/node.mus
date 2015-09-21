@@ -1,0 +1,58 @@
+
+verticalNode {
+  position: relative;
+}
+
+horizontalNode {
+  float: left;
+  cssFloat: left;
+  position: relative;
+}
+
+topPlaceholder {
+  display: none;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  left: 0;
+  top: -4px;
+  backgroundColor: #8888ff;
+  opacity: 0.6;
+  zIndex: 2;
+}
+
+bottomPlaceholder {
+  display: none;
+  position: absolute;
+  height: 4px;
+  width: 100%;
+  left: 0;
+  bottom: -4px;
+  backgroundColor: #8888ff;
+  opacity: 0.6;
+  zIndex: 2;
+}
+
+leftPlaceholder {
+  display: none;
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  left: -4px;
+  top: 0;
+  backgroundColor: #8888ff;
+  opacity: 0.6;
+  zIndex: 2;
+}
+
+rightPlaceholder {
+  display: none;
+  position: absolute;
+  width: 4px;
+  height: 100%;
+  right: -4px;
+  top: 0;
+  backgroundColor: #8888ff;
+  opacity: 0.6;
+  zIndex: 2;
+}

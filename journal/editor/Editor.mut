@@ -30,16 +30,16 @@ class Editor extends web.View {
     /* toolbarTop = browser.posY(toolbar.node); */
     toolbarTop = 4; // take this value from style
 
-    if scrollarea isnot null {
-      browser.addEvent(scrollarea, "scroll", onScroll);
+    if browser.scrollNode isnot null {
+      browser.addEvent(browser.scrollNode, "scroll", onScroll);
     }
   }
 
   override void exit() {
     if !isEnter { return; }
 
-    if scrollarea isnot null {
-      browser.removeEvent(scrollarea, "scroll", onScroll);
+    if browser.scrollNode isnot null {
+      browser.removeEvent(browser.scrollNode, "scroll", onScroll);
     }
 
     toolbar.node.style.top = toolbarTop + "px";
@@ -154,15 +154,25 @@ class Editor extends web.View {
     }
 
     node.parent = root;
+    node.editor = this;
     node.create();
 
     // TODO: add node in nodes
     // set state changed
 
+    // debug
+    browser.log("Editor.addNode insertNodeBefore");
+    browser.log(node);
+    browser.log(before);
+
     if before isnot null {
-      root.insertNodeBefore(node, before.getId());
+      /* root.insertNodeBefore(node, before.getId()); */
+      // TODO: use block method
+      root.insertBefore(node, before.getId());
     } else { // add to the end
-      root.appendNode(node);
+      /* root.appendNode(node); */
+      // TODO: use block method
+      root.append(node);
     }
   }
 

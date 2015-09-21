@@ -1,8 +1,8 @@
 
-class Text extends Node {
+class Text extends VerticalNode {
   static int HEIGHT_DELTA = 24;
   tag textarea_ = null;
-  tag wrap = null;
+  tag areawrap = null;
 
   Text() {
     code = journal.NodeType.TEXT;
@@ -21,12 +21,18 @@ class Text extends Node {
   }
 
   override void create() {
-    textarea_ = <textarea style=style_.area active=style_.area_active onkeydown=onKeydown onkeyup=onKeyup onchange=onChange onfocus=onFocus onblur=onBlur/>;
-    wrap = <div style=style_.wrap> {textarea_} </div>;
+    createPlaceholders();
 
-    element = <div style=style_.node active=style_.node_active onclick=onClick>
+    textarea_ = <textarea style=style_.area active=style_.area_active onkeydown=onKeydown onkeyup=onKeyup onchange=onChange onfocus=onFocus onblur=onBlur/>;
+    areawrap = <div style=style_.areawrap> {textarea_} </div>;
+
+    element = <div style=style_.node active=style_.node_active onclick=onClick ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
-      {wrap}
+      <div style=style_.wrap>
+        {areawrap}
+      </div>
     </div>;
   }
 
@@ -43,21 +49,17 @@ class Text extends Node {
 
   void tuneHeight() {
     int scroll = textarea_.node.scrollHeight;
-    int client = wrap.node.clientHeight;
+    int client = areawrap.node.clientHeight;
 
     if scroll > client {
-      wrap.node.style.height = (scroll + Text.HEIGHT_DELTA) + "px";
+      areawrap.node.style.height = (scroll + Text.HEIGHT_DELTA) + "px";
     }
   }
 
   void shrinkHeight() {
     // try minimal size
-    wrap.node.style.height = "auto";
+    areawrap.node.style.height = "auto";
     tuneHeight();
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 
   bind void onClick(object e) {

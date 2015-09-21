@@ -11,17 +11,227 @@ class Props {
 class Node extends web.View {
   Node parent = null; // parent block node TODO: rename to parentBlock
   Editor editor = null;
-  string id = container.Hasher.generate();
   int code = journal.NodeType.NONE;
   auto props = new Props();
   bool isChanged = false;
 
+  int cachedWidth_ = 0; // init in onDragenter
+  int cachedHeight_ = 0;
+
   string serialize() {
-    browser.log("Node serialize not implemented");
+    browser.log("Node.serialize not implemented");
   }
 
   void unserialize(object fields) {
-    browser.log("Node unserialize not implemented");
+    browser.log("Node.unserialize not implemented");
+  }
+
+  void setPlaceholdersVisible(object e) {
+    browser.log("Node.setPlaceholdersVisible not implemented");
+  }
+
+  void hidePlaceholders() {
+    browser.log("Node.hidePlaceholders not implemented");
+  }
+
+  tag getBeforeDrop() {
+    browser.log("Node.getBeforeDrop not implemented");
+  }
+
+  void dropNode(object e) {
+    browser.log("Node.dropNode not implemented");
+  }
+
+  bind void onDragstart(object e) {
+    e.dataTransfer.setData("text/plain", "move:" + getId());
+  }
+
+  bind void onDragover(object e) {
+    e.preventDefault();
+    setPlaceholdersVisible(e);
+  }
+
+  bind void onDragenter(object e) {
+    e.preventDefault();
+
+    cachedWidth_ = browser.getWidth(element.node);
+    cachedHeight_ = browser.getHeight(element.node);
+
+    setPlaceholdersVisible(e);
+  }
+
+  bind void onDragleave(object e) {
+    hidePlaceholders();
+  }
+
+  bind void onDrop(object e) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    dropNode(e);
+    hidePlaceholders();
+  }
+}
+
+
+class VerticalNode extends Node {
+  tag topPlaceholder_ = null;
+  bool isShowTopPlaceholder_ = false;
+  tag bottomPlaceholder_ = null;
+  bool isShowBottomPlaceholder_ = false;
+
+  tag createPlaceholders() {
+    topPlaceholder_ = <div style=style.topPlaceholder></div>;
+
+    bottomPlaceholder_ = <div style=style.bottomPlaceholder></div>;
+  }
+
+  void setTopPlaceholderVisible_(bool flag) {
+    if flag is isShowTopPlaceholder_ { return; }
+    isShowTopPlaceholder_ = flag;
+
+    if flag {
+      browser.show(topPlaceholder_.node);
+    } else {
+      browser.hide(topPlaceholder_.node);
+    }
+  }
+
+  void setBottomPlaceholderVisible_(bool flag) {
+    if flag is isShowBottomPlaceholder_ { return; }
+    isShowBottomPlaceholder_ = flag;
+
+    if flag {
+      browser.show(bottomPlaceholder_.node);
+    } else {
+      browser.hide(bottomPlaceholder_.node);
+    }
+  }
+
+  override void setPlaceholdersVisible(object e) {
+    int my = browser.mouseNodeY(element.node, e);
+    int half = cachedHeight_ / 2;
+
+    if my < half {
+      setTopPlaceholderVisible_(true);
+      setBottomPlaceholderVisible_(false);
+    } else {
+      setTopPlaceholderVisible_(false);
+      setBottomPlaceholderVisible_(true);
+    }
+  }
+
+  override void hidePlaceholders() {
+    setTopPlaceholderVisible_(false);
+    setBottomPlaceholderVisible_(false);
+  }
+
+  tag getBeforeDrop() {
+    if isShowTopPlaceholder_ {
+      return this;
+    }
+
+    // debug
+    browser.log("Node.getBeforeDrop:");
+    browser.log("isShowBottomPlaceholder_: " + isShowBottomPlaceholder_);
+    browser.log(getNext());
+
+    if isShowBottomPlaceholder_ {
+      return getNext();
+    }
+
+    return null;
+  }
+
+  override void dropNode(object e) {
+    string data = e.dataTransfer.getData("text/plain");
+    object fields = data.split(":");
+    if fields.length < 2 or editor is null { return; }
+
+    int nodeType = window.parseInt(fields[1]);
+    auto before = getBeforeDrop();
+
+    switch fields[0] { // operation type
+      case "add":
+        editor.addNode(nodeType, before);
+        break;
+      case "move":
+        editor.moveNode(this, before);
+        break;
+      default:
+        browser.log("VerticalNode.dropNode unknown operation type: " + fields[0]);
+        break;
+    }
+  }
+}
+
+
+class HorizontalNode extends Node {
+  tag leftPlaceholder_ = null;
+  bool isShowLeftPlaceholder_ = false;
+  tag rightPlaceholder_ = null;
+  bool isShowRightPlaceholder_ = false;
+  
+  tag createPlaceholders() {
+    leftPlaceholder_ = <div style=style.leftPlaceholder></div>;
+
+    rightPlaceholder_ = <div style=style.rightPlaceholder></div>;
+  }
+
+  void setLeftPlaceholderVisible_(bool flag) {
+    if flag is isShowLeftPlaceholder_ { return; }
+    isShowLeftPlaceholder_ = flag;
+
+    if flag {
+      browser.show(leftPlaceholder_.node);
+    } else {
+      browser.hide(leftPlaceholder_.node);
+    }
+  }
+
+  void setRightPlaceholderVisible_(bool flag) {
+    if flag is isShowRightPlaceholder_ { return; }
+    isShowRightPlaceholder_ = flag;
+
+    if flag {
+      browser.show(rightPlaceholder_.node);
+    } else {
+      browser.hide(rightPlaceholder_.node);
+    }
+  }
+
+  override void setPlaceholdersVisible(object e) {
+    int mx = browser.mouseNodeX(element.node, e);
+    int half = cachedWidth_ / 2;
+
+    if mx < half {
+      setLeftPlaceholderVisible_(true);
+      setRightPlaceholderVisible_(false);
+    } else {
+      setLeftPlaceholderVisible_(false);
+      setRightPlaceholderVisible_(true);
+    }
+  }
+
+  override void hidePlaceholders() {
+    setLeftPlaceholderVisible_(false);
+    setRightPlaceholderVisible_(false);
+  }
+
+  tag getBeforeDrop() {
+    if isShowLeftPlaceholder_ {
+      return element;
+    }
+
+    if isShowRightPlaceholder_ {
+      return element.next;
+    }
+
+    return null;
+  }
+
+  override void dropNode(object e) {
+    browser.log("HorizontalNode.dropNode not implemented");
   }
 
 }

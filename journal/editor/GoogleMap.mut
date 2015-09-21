@@ -1,5 +1,5 @@
 
-class GoogleMap extends Node {
+class GoogleMap extends VerticalNode {
   tag latInput = null;
   tag latNode = null;
   tag lngInput = null;
@@ -17,9 +17,11 @@ class GoogleMap extends Node {
   }
 
   override void create() {
+    createPlaceholders();
+
     latInput = <input style=style_.input onfocus=onLatFocus onblur=onLatBlur/>;
     latNode = <div style=style_.latNode active=style_.node_active onclick=onLatClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "широта:" </div>
         {latInput}
       </div>
@@ -27,7 +29,7 @@ class GoogleMap extends Node {
 
     lngInput = <input style=style_.input onfocus=onLngFocus onblur=onLngBlur/>;
     lngNode = <div style=style_.lngNode active=style_.node_active onclick=onLngClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "долгота:" </div>
         {lngInput}
       </div>
@@ -35,7 +37,7 @@ class GoogleMap extends Node {
 
     zoomInput = <input style=style_.input onfocus=onZoomFocus onblur=onZoomBlur/>;
     zoomNode = <div style=style_.zoomNode active=style_.node_active onclick=onZoomClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "масштаб:" </div>
         {zoomInput}
       </div>
@@ -43,7 +45,7 @@ class GoogleMap extends Node {
 
     widthInput = <input style=style_.input onfocus=onWidthFocus onblur=onWidthBlur/>;
     widthNode = <div style=style_.widthNode active=style_.node_active onclick=onWidthClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "ширина:" </div>
         {widthInput}
       </div>
@@ -51,7 +53,7 @@ class GoogleMap extends Node {
 
     heightInput = <input style=style_.input onfocus=onHeightFocus onblur=onHeightBlur/>;
     heightNode = <div style=style_.heightNode active=style_.node_active onclick=onHeightClick>
-      <div style=style_.wrap>
+      <div style=style_.editwrap>
         <div style=style_.label> "высота:" </div>
         {heightInput}
       </div>
@@ -60,17 +62,21 @@ class GoogleMap extends Node {
     iconNode = <div style=style_.iconNode>
     </div>;
 
-    element = <div style=style_.node>
+    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+      {topPlaceholder_}
+      {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
-      <div style=style_.row>
-        {latNode}
-        {lngNode}
-        {zoomNode}
-        {widthNode}
-        {heightNode}
+      <div style=style_.wrap>
+        <div style=style_.row>
+          {latNode}
+          {lngNode}
+          {zoomNode}
+          {widthNode}
+          {heightNode}
+        </div>
+        <a style=style_.a href="http://maps.google.com" target="_blank"> "maps.google.com" </a>
+        {iconNode}
       </div>
-      <a style=style_.a href="http://maps.google.com" target="_blank"> "maps.google.com" </a>
-      {iconNode}
     </div>;
 
     // set default values
@@ -142,10 +148,6 @@ class GoogleMap extends Node {
 
   void blurHeight() {
     heightNode.setState(web.STATE_NORMAL);
-  }
-
-  bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + id);
   }
 
   bind void onLatFocus(object e) {

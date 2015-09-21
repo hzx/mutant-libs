@@ -3,17 +3,4 @@ class Code extends Text {
   Code() {
     code = journal.NodeType.CODE;
   }
-
-  /* override void create() { */
-  /*   element = <div style=style_.node> */
-  /*     <div style=style_.wrap> */
-  /*       <div style=style_.move draggable=true ondragstart=onDragstart></div> */
-  /*       <textarea style=style_.area/> */
-  /*     </div> */
-  /*   </div>; */
-  /* } */
-
-  /* bind void onDragstart(object e) { */
-  /*   e.dataTransfer.setData("text/plain", "move:" + id); */
-  /* } */
 }
