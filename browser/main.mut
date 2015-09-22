@@ -21,3 +21,7 @@ void log(string msg) {
     console.log(msg);
   }
 }
+
+void setTitle(string title) {
+  document.title = title;
+}
