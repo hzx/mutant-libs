@@ -1,12 +1,24 @@
 
-class Model {
-  // implement it
-  // int parseField(int code, string value);
-  void save(object buf) {
+
+class Model implements Collectable {
+  auto id = new String();
+
+  string getId() {
+    return id.value;
   }
 
-  int init(string raw) {
-
-    return 0;
-  }
+  string serialize();
+  void unserialize(object pices);
 }
+
+/* class Model { */
+/*   // implement it */
+/*   // int parseField(int code, string value); */
+/*   void save(object buf) { */
+/*   } */
+
+/*   int init(string raw) { */
+
+/*     return 0; */
+/*   } */
+/* } */
