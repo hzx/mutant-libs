@@ -5,7 +5,7 @@ class Text extends VerticalNode {
   tag areawrap = null;
 
   Text() {
-    code = journal.NodeType.TEXT;
+    code = journal_model.NodeType.TEXT;
   }
 
   override string serialize() {

@@ -1,5 +1,6 @@
 
 class ItemCollection {
+  static int NONE = 0;
   static int BLOCK = 1;
   static int CODE = 2;
   static int FILE = 3;
@@ -39,12 +40,12 @@ class ItemCollection {
   }
 
   void init(object rows, int left, int right) {
-    for int i = left; i < right ++i {
+    for int i = left; i < right; ++i {
       object fields = rows[i].split(container.DELIM_FIELD);
       if fields.length < 2 { continue; };
 
       /* auto group = new WareGroup(); */
-      for int j = 0; j < fields.length; j++ {
+      for int j = 0; j < fields.length; ++j {
         int name = parseInt(fields[j]);
         string value = fields[j + 1];
         object item = null;

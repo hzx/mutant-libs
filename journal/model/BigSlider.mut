@@ -1,0 +1,19 @@
+
+class BigSlider {
+  static int IMAGES = 2;
+
+  auto id = new container.String();
+  auto image = new container.String();
+
+  string getId() {
+    return id.value;
+  }
+
+  void setField(int code, string value) {
+    switch code {
+      case 1:
+        id.init(value);
+        break;
+    }
+  }
+}

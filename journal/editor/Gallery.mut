@@ -4,7 +4,7 @@ class Gallery extends VerticalNode {
   tag userImages = null;
 
   Gallery() {
-    code = journal.NodeType.GALLERY;
+    code = journal_model.NodeType.GALLERY;
   }
 
   override void create() {

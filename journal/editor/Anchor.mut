@@ -4,7 +4,7 @@ class Anchor extends VerticalNode {
   tag nameNode = null;
 
   Anchor() {
-    code = journal.NodeType.ANCHOR;
+    code = journal_model.NodeType.ANCHOR;
   }
 
   override void create() {

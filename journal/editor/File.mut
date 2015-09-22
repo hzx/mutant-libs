@@ -11,7 +11,7 @@ class File extends VerticalNode {
   object file = null;
 
   File() {
-    code = journal.NodeType.FILE;
+    code = journal_model.NodeType.FILE;
   }
 
   override void create() {

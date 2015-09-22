@@ -9,7 +9,7 @@ class Image extends VerticalNode {
   object file = null;
 
   Image() {
-    code = journal.NodeType.IMAGE;
+    code = journal_model.NodeType.IMAGE;
   }
 
   override void create() {

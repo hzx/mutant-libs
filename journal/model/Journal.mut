@@ -24,4 +24,11 @@ class Journal {
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object fields) {
+  }
 }

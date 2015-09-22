@@ -1,6 +1,6 @@
 
 class Code extends Text {
   Code() {
-    code = journal.NodeType.CODE;
+    code = journal_model.NodeType.CODE;
   }
 }

@@ -1,6 +1,6 @@
 
 class Video extends Code {
   Video() {
-    code = journal.NodeType.VIDEO;
+    code = journal_model.NodeType.VIDEO;
   }
 }

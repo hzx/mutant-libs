@@ -4,7 +4,7 @@ class Block extends Node {
   Editor editor = null;
   
   Block() {
-    code = journal.NodeType.BLOCK;
+    code = journal_model.NodeType.BLOCK;
   }
 
   override void create() {
@@ -48,32 +48,32 @@ class Block extends Node {
 
   Node createNodeByCode(int code) {
     switch code {
-      case journal.NodeType.BLOCK:
+      case journal_model.NodeType.BLOCK:
         // not implemented yet
         break;
-      case journal.NodeType.H1:
+      case journal_model.NodeType.H1:
         return new Header1();
-      case journal.NodeType.H2:
+      case journal_model.NodeType.H2:
         return new Header2();
-      case journal.NodeType.TEXT:
+      case journal_model.NodeType.TEXT:
         return new Text();
-      case journal.NodeType.CODE:
+      case journal_model.NodeType.CODE:
         return new Code();
-      case journal.NodeType.LINK:
+      case journal_model.NodeType.LINK:
         return new Link();
-      case journal.NodeType.VIDEO:
+      case journal_model.NodeType.VIDEO:
         return new Video();
-      case journal.NodeType.GOOGLE_MAP:
+      case journal_model.NodeType.GOOGLE_MAP:
         return new GoogleMap();
-      case journal.NodeType.FILE:
+      case journal_model.NodeType.FILE:
         return new File();
-      case journal.NodeType.IMAGE:
+      case journal_model.NodeType.IMAGE:
         return new Image();
-      case journal.NodeType.GALLERY:
+      case journal_model.NodeType.GALLERY:
         return new Gallery();
-      case journal.NodeType.BIG_SLIDER:
+      case journal_model.NodeType.BIG_SLIDER:
         return new BigSlider();
-      case journal.NodeType.MINI_SLIDER:
+      case journal_model.NodeType.MINI_SLIDER:
         return new MiniSlider();
     }
 

@@ -3,7 +3,7 @@ class BigSlider extends VerticalNode {
   tag fileDialog = null;
 
   BigSlider() {
-    code = journal.NodeType.BIG_SLIDER;
+    code = journal_model.NodeType.BIG_SLIDER;
   }
 
   override void create() {

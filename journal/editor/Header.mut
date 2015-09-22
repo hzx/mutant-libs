@@ -4,7 +4,7 @@ class Header1 extends VerticalNode {
   tag dropPlaceholder = null;
 
   Header1() {
-    code = journal.NodeType.H1;
+    code = journal_model.NodeType.H1;
   }
 
   override void create() {
@@ -61,7 +61,7 @@ class Header1 extends VerticalNode {
 
 class Header2 extends Header1 {
   Header2() {
-    code = journal.NodeType.H2;
+    code = journal_model.NodeType.H2;
   }
 
   override void create() {

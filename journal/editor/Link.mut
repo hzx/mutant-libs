@@ -8,7 +8,7 @@ class Link extends VerticalNode {
   tag altNode = null;
 
   Link() {
-    code = journal.NodeType.LINK;
+    code = journal_model.NodeType.LINK;
   }
 
   override void create() {

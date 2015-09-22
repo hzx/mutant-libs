@@ -1,0 +1,22 @@
+
+class Anchor {
+  static int NAME = 2;
+
+  auto id = new container.String();
+  auto name = new container.String();
+
+  string getId() {
+    return id.value;
+  }
+
+  void setField(int code, string value) {
+    switch code {
+      case 1:
+        id.init(value);
+        break;
+      case Anchor.NAME:
+        name.init(value);
+        break;
+    }
+  }
+}

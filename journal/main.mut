@@ -1,38 +1,3 @@
 import browser;
 import web;
 import journal.style;
-
-
-enum NodeType {
-  NONE = 0,
-  BLOCK,
-  H1,
-  H2,
-  TEXT,
-  CODE,
-  LINK,
-  VIDEO,
-  GOOGLE_MAP,
-  FILE,
-  IMAGE,
-  GALLERY,
-  BIG_SLIDER,
-  MINI_SLIDER,
-  ANCHOR,
-  BREAK,
-}
-
-/* enum ItemType { */
-/*   ROOT = 1, */
-/*   BLOCK, */
-/*   CODE, */
-/*   FILE, */
-/*   GALLERY, */
-/*   GOOGLE_MAP, */
-/*   HEADER, */
-/*   IMAGE, */
-/*   LINK, */
-/*   TEXT, */
-/*   VIDEO, */
-/*   GAP, */
-/* } */
