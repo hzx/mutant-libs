@@ -1,13 +1,6 @@
 
-class MiniSlider {
-  static int IMAGES = 2;
-
-  auto id = new container.String();
+class MiniSlider extends container.Model {
   auto images = new container.String();
-
-  string getId() {
-    return id.value;
-  }
 
   void setField(int code, string value) {
     switch code {
@@ -16,4 +9,16 @@ class MiniSlider {
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
+  }
+}
+
+
+enum MiniSliderField {
+  IMAGES = 2,
 }

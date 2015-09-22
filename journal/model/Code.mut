@@ -1,22 +1,26 @@
 
-class Code {
-  static int TEXT = 2;
-
-  auto id = new container.String();
+class Code extends container.Model {
   auto text = new container.String();
 
-  string getId() {
-    return id.value;
-  }
-
-  void setField(int name, string value) {
-    switch name {
+  void setField(int field, string value) {
+    switch field {
       case 1:
         id.init(value);
         break;
-      case Code.TEXT:
+      case CodeField.TEXT:
         text.init(value);
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
+  }
+}
+
+enum CodeField {
+  TEXT = 2,
 }

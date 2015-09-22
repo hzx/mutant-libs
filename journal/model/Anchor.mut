@@ -1,22 +1,27 @@
 
-class Anchor {
-  static int NAME = 2;
-
-  auto id = new container.String();
+class Anchor extends container.Model {
   auto name = new container.String();
 
-  string getId() {
-    return id.value;
-  }
-
-  void setField(int code, string value) {
-    switch code {
+  void setField(int field, string value) {
+    switch field {
       case 1:
         id.init(value);
         break;
-      case Anchor.NAME:
+      case AnchorField.NAME:
         name.init(value);
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
+  }
+}
+
+
+enum AnchorField {
+  NAME = 2,
 }

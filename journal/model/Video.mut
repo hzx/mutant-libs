@@ -1,22 +1,21 @@
 
-class Video {
-  static int CODE = 2;
-
-  auto id = new container.String();
+class Video extends container.Model {
   auto code = new container.String();
 
-  string getId() {
-    return id.value;
-  }
-
-  void setField(int name, string value) {
-    switch name {
+  void setField(int field, string value) {
+    switch field {
       case 1:
         id.init(value);
         break;
-      case Video.CODE:
+      case VideoField.CODE:
         code.init(value);
         break;
     }
   }
 }
+
+
+enum VideoField {
+  CODE = 2,
+}
+

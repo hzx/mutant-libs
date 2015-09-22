@@ -1,22 +1,27 @@
 
-class Image {
-  static int FILENAME = 2;
-
-  auto id = new container.String();
+class Image extends container.Model {
   auto filename = new container.String();
-
-  string getId() {
-    return id.value;
-  }
 
   void setField(int name, string value) {
     switch name {
       case 1:
         id.init(value);
         break;
-      case Image.FILENAME:
+      case ImageField.FILENAME:
         filename.init(value);
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
+  }
+}
+
+
+enum ImageField {
+  FILENAME = 2,
 }

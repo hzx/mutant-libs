@@ -1,27 +1,32 @@
 
-class Link {
-  static int SRC = 2;
-  static int ALT = 3;
-
-  auto id = new container.String();
+class Link extends container.Model {
   auto src = new container.String();
   auto alt = new container.String();
 
-  string getId() {
-    return id.value;
-  }
-
-  void setField(int name, string value) {
-    switch name {
+  void setField(int field, string value) {
+    switch field {
       case 1:
         id.init(value);
         break;
-      case Link.SRC:
+      case LinkField.SRC:
         src.init(value);
         break;
-      case Link.ALT:
+      case LinkField.ALT:
         alt.init(value);
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
+  }
+}
+
+
+enum LinkField {
+  SRC = 2,
+  ALT,
 }

@@ -1,20 +1,13 @@
 
-class Header {
-  static int TEXT = 2;
-
-  auto id = new container.String();
+class Header extends container.Model {
   auto text = new container.String();
 
-  string getId() {
-    return id.value;
-  }
-
-  void setField(int name, string value) {
-    switch name {
+  void setField(int field, string value) {
+    switch field {
       case 1:
         id.init(value);
         break;
-      case Header.TEXT:
+      case HeaderField.TEXT:
         text.init(value);
         break;
     }
@@ -24,6 +17,11 @@ class Header {
     return "";
   }
 
-  void unserialize(object fields) {
+  void unserialize(object pices) {
   }
+}
+
+
+enum HeaderField {
+  TEXT = 2,
 }

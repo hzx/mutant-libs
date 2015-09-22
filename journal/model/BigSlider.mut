@@ -1,13 +1,6 @@
 
-class BigSlider {
-  static int IMAGES = 2;
-
-  auto id = new container.String();
+class BigSlider extends container.Model {
   auto image = new container.String();
-
-  string getId() {
-    return id.value;
-  }
 
   void setField(int code, string value) {
     switch code {
@@ -16,4 +9,16 @@ class BigSlider {
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
+  }
+}
+
+
+enum BigSliderField {
+  IMAGES = 2,
 }

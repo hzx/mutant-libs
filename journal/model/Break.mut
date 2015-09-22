@@ -1,16 +1,17 @@
 
-class Break {
-  auto id = new container.String();
-
-  string getId() {
-    return id.value;
-  }
-
+class Break extends container.Model {
   void setField(int code, string value) {
     switch code {
       case 1:
         id.init(value);
         break;
     }
+  }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
   }
 }

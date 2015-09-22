@@ -1,25 +1,17 @@
 
-class Journal {
-  static int NAME = 2;
-  static int ITEMS = 3;
-
-  auto id = new container.String();
+class Journal extends container.Model {
   auto name = new container.String();
   object items = [];
-
-  string getId() {
-    return id.value;
-  }
 
   void setField(int name, string value) {
     switch name {
       case 1:
         id.init(value);
         break;
-      case Journal.NAME:
+      case JournalField.NAME:
         name.init(value);
         break;
-      case Journal.ITEMS:
+      case JournalField.ITEMS:
         items = value.split(":");
         break;
     }
@@ -29,6 +21,13 @@ class Journal {
     return "";
   }
 
-  void unserialize(object fields) {
+  void unserialize(object pices) {
   }
+}
+
+
+enum JournalField {
+  NAME = 2,
+  SLUG,
+  ITEMS,
 }

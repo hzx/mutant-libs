@@ -1,32 +1,37 @@
 
-class GoogleMap {
-  static int ZOOM = 2;
-  static int LAT = 3;
-  static int LNG = 4;
-
-  auto id = new container.String();
+class GoogleMap extends container.Model {
   auto zoom = new container.Int();
   auto lat = new container.Float();
   auto lng = new container.Float();
 
-  string getId() {
-    return id.value;
-  }
-
-  void setField(int name, string value) {
-    switch name {
+  void setField(int field, string value) {
+    switch field {
       case 1:
         id.init(value);
         break;
-      case GoogleMap.ZOOM:
+      case GoogleMapField.ZOOM:
         zoom.init(parseInt(value));
         break;
-      case GoogleMap.LAT:
+      case GoogleMapField.LAT:
         lat.init(parseFloat(value));
         break;
-      case GoogleMap.LNG:
+      case GoogleMapField.LNG:
         lng.init(parseFloat(value));
         break;
     }
   }
+
+  string serialize() {
+    return "";
+  }
+
+  void unserialize(object pices) {
+  }
+}
+
+
+enum GoogleMapField {
+  ZOOM = 2,
+  LAT,
+  LNG,
 }
