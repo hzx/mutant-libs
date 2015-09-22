@@ -1,5 +1,8 @@
 
 class Anchor extends VerticalNode {
+  tag nameInput = null;
+  tag nameNode = null;
+
   Anchor() {
     code = journal.NodeType.ANCHOR;
   }
@@ -7,11 +10,21 @@ class Anchor extends VerticalNode {
   override void create() {
     createPlaceholders();
 
+    nameInput = <input style=ui_style.nestedInput onfocus=onNameFocus onblur=onNameBlur/>;
+
+    nameNode = <div style=style_.nameNode active=style_.node_active onclick=onNameClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "название:" </div>
+        {nameInput}
+      </div>
+    </div>;
+
     element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
+        {nameNode}
       </div>
     </div>;
   }
@@ -25,9 +38,24 @@ class Anchor extends VerticalNode {
   override void unserialize(object fields) {
   }
 
-  void focus() {
+  void focusName() {
+    nameNode.setState(web.STATE_ACTIVE);
+    nameInput.node.focus();
   }
 
-  void blur() {
+  void blurName() {
+    nameNode.setState(web.STATE_NORMAL);
+  }
+
+  bind void onNameClick(object e) {
+    focusName();
+  }
+
+  bind void onNameFocus(object e) {
+    focusName();
+  }
+
+  bind void onNameBlur(object e) {
+    blurName();
   }
 }
