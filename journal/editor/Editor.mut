@@ -200,63 +200,63 @@ class Editor extends web.View {
   }
 
   bind void onBlockDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.BLOCK);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.BLOCK);
   }
 
   bind void onH1Dragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.H1);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.H1);
   }
 
   bind void onH2Dragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.H2);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.H2);
   }
 
   bind void onTextDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.TEXT);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.TEXT);
   }
 
   bind void onCodeDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.CODE);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.CODE);
   }
 
   bind void onLinkDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.LINK);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.LINK);
   }
 
   bind void onVideoDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.VIDEO);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.VIDEO);
   }
 
   bind void onGoogleMapDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.GOOGLE_MAP);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.GOOGLE_MAP);
   }
 
   bind void onFileDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.FILE);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.FILE);
   }
 
   bind void onImageDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.IMAGE);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.IMAGE);
   }
 
   bind void onGalleryDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.GALLERY);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.GALLERY);
   }
 
   bind void onBigSliderDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.BIG_SLIDER);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.BIG_SLIDER);
   }
 
   bind void onMiniSliderDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.MINI_SLIDER);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.MINI_SLIDER);
   }
 
   bind void onAnchorDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.ANCHOR);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.ANCHOR);
   }
 
   bind void onBreakDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal.NodeType.BREAK);
+    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.BREAK);
   }
 
   bind void onSaveClick(object e) {
