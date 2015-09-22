@@ -1,0 +1,19 @@
+
+enum NodeType {
+  NONE = 0,
+  BLOCK,
+  H1,
+  H2,
+  TEXT,
+  CODE,
+  LINK,
+  VIDEO,
+  GOOGLE_MAP,
+  FILE,
+  IMAGE,
+  GALLERY,
+  BIG_SLIDER,
+  MINI_SLIDER,
+  ANCHOR,
+  BREAK,
+}
