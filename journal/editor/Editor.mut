@@ -3,7 +3,6 @@ class Editor extends web.View {
   object journal_ = null;
   object journalItems_ = null;
 
-  tag scrollarea = null;
   int toolbarTop = 0;
 
   auto toolbar = createToolbar();
