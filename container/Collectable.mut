@@ -1,0 +1,4 @@
+
+interface Collectable {
+  string getId();
+}
