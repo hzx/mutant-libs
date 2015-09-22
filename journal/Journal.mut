@@ -1,7 +1,7 @@
 
 class Journal extends web.View {
-  object journal_ = []; // journal nodes
-  object items_ = []; // all nodes
+  object journal_ = null;
+  object journalItems_ = null;
 
   override void create() {
     element = <div style=style.journal>

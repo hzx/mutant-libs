@@ -45,22 +45,24 @@ class File extends VerticalNode {
       {topPlaceholder_}
       {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
-      <div style=style_.editwrap>
-        <div style=style_.buttons>
-          <div style=style_.uploadBtn onclick=onUploadBtnClick>
-            {fileDialog}
-            <span> "выбрать" </span>
+      <div style=style_.wrap>
+        <div style=style_.editwrap>
+          <div style=style_.buttons>
+            <div style=style_.uploadBtn onclick=onUploadBtnClick>
+              {fileDialog}
+              <span> "выбрать" </span>
+            </div>
           </div>
-        </div>
-        <div style=style_.filenameNode>
-          <div style=style_.label> "новый файл:" </div>
-          {filename}
-        </div>
-        {textNode}
-        {altNode}
-        <div style=style_.aNode>
-          <div style=style_.label> "ссылка:" </div>
-          {a}
+          <div style=style_.filenameNode>
+            <div style=style_.label> "новый файл:" </div>
+            {filename}
+          </div>
+          {textNode}
+          {altNode}
+          <div style=style_.aNode>
+            <div style=style_.label> "ссылка:" </div>
+            {a}
+          </div>
         </div>
       </div>
     </div>;

@@ -1,0 +1,35 @@
+
+object createItem(int type) {
+  switch type {
+    case NodeType.BLOCK:
+      return new Block();
+    case NodeType.HEADER:
+      return new Header();
+    case NodeType.TEXT:
+      return new Text();
+    case NodeType.CODE:
+      return new Code();
+    case NodeType.LINK:
+      return new Link();
+    case NodeType.VIDEO:
+      return new Video();
+    case NodeType.GOOGLE_MAP:
+      return new GoogleMap();
+    case NodeType.FILE:
+      return new File();
+    case NodeType.IMAGE:
+      return new Image();
+    case NodeType.GALLERY:
+      return new Gallery();
+    case NodeType.BIG_SLIDER:
+      return new BigSlider();
+    case NodeType.MINI_SLIDER:
+      return new MiniSlider();
+    case NodeType.ANCHOR:
+      return new Anchor();
+    case NodeType.BREAK:
+      return new Break();
+  }
+  
+  return null;
+}

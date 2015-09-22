@@ -1,5 +1,8 @@
 
 class Editor extends web.View {
+  object journal_ = null;
+  object journalItems_ = null;
+
   tag scrollarea = null;
   int toolbarTop = 0;
 
@@ -191,7 +194,7 @@ class Editor extends web.View {
   // end interface for Node
 
   bind void onScroll(object e) {
-    int scroll = scrollarea.scrollTop;
+    int scroll = browser.scrollNode.scrollTop;
     if scroll > toolbarTop {
       toolbar.node.style.top = scroll + "px";
     } else {
