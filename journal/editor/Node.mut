@@ -3,7 +3,7 @@
 class Node extends web.View {
   Node parent = null; // parent block node TODO: rename to parentBlock
   Editor editor = null;
-  int code = journal.NodeType.NONE;
+  int code = journal_model.NodeType.NONE;
   string styleClass = "";
   string padding = "";
   string margin = "";
