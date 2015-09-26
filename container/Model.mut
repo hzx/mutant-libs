@@ -11,6 +11,11 @@ class Model implements Collectable {
   void unserialize(object pices);
 }
 
+
+enum ModelField {
+  ID = 1,
+}
+
 /* class Model { */
 /*   // implement it */
 /*   // int parseField(int code, string value); */
