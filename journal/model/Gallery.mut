@@ -5,9 +5,10 @@ class Gallery extends container.Model {
 
   auto images = new container.String();
 
-  void setField(int name, string value) {
-    switch name {
-      case 1:
+  void setField(string key, string value) {
+    int field = window.parseInt(key);
+    switch field {
+      case container.ModelField.ID:
         id.init(value);
         break;
       case GalleryField.IMAGES:
@@ -17,14 +18,21 @@ class Gallery extends container.Model {
   }
 
   string serialize() {
-    return "";
+    auto buf = [
+      container.ModelField.ID, id.value,
+      GalleryField.IMAGES, images.value,
+    ];
+    return buf.join(container.DELIM_FIELD);
   }
 
   void unserialize(object pices) {
+    for int i = 0; i < pices.length; i=i+2 {
+      setField(pices[i], pices[i+1]);
+    }
   }
 }
 
 
 enum GalleryField {
-  IMAGES = 2,
+  IMAGES = container.ModelField.ID + 1,
 }

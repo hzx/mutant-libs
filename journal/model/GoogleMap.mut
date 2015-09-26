@@ -4,9 +4,10 @@ class GoogleMap extends container.Model {
   auto lat = new container.Float();
   auto lng = new container.Float();
 
-  void setField(int field, string value) {
+  void setField(string key, string value) {
+    int field = window.parseInt(key);
     switch field {
-      case 1:
+      case container.ModelField.ID:
         id.init(value);
         break;
       case GoogleMapField.ZOOM:
@@ -22,10 +23,19 @@ class GoogleMap extends container.Model {
   }
 
   string serialize() {
-    return "";
+    auto buf = [
+      container.ModelField.ID, id.value,
+      GoogleMapField.ZOOM, zoom.value,
+      GoogleMapField.LAT, lat.value,
+      GoogleMapField.LNG, lng.value,
+    ];
+    return buf.join(container.DELIM_FIELD);
   }
 
   void unserialize(object pices) {
+    for int i = 0; i < pices.length; i=i+2 {
+      setField(pices[i], pices[i+1]);
+    }
   }
 }
 
