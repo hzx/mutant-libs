@@ -41,7 +41,7 @@ class GoogleMap extends container.Model {
 
 
 enum GoogleMapField {
-  ZOOM = 2,
+  ZOOM = 2, // container.ModelField + 1,
   LAT,
   LNG,
 }

@@ -31,5 +31,5 @@ class Text extends container.Model {
 
 
 enum TextField {
-  TEXT = container.ModelField.ID + 1,
+  TEXT = 2, // container.ModelField.ID + 1,
 }

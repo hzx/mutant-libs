@@ -30,5 +30,5 @@ class Code extends container.Model {
 }
 
 enum CodeField {
-  TEXT = container.ModelField.ID + 1,
+  TEXT = 2, // container.ModelField.ID + 1,
 }

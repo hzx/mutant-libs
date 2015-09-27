@@ -31,5 +31,5 @@ class Video extends container.Model {
 
 
 enum VideoField {
-  CODE = container.ModelField + 1,
+  CODE = 2, // container.ModelField + 1,
 }

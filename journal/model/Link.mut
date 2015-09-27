@@ -36,6 +36,6 @@ class Link extends container.Model {
 
 
 enum LinkField {
-  SRC = container.ModelField.ID + 1,
+  SRC = 2, // container.ModelField.ID + 1,
   ALT,
 }

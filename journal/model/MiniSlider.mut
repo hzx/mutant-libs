@@ -31,5 +31,5 @@ class MiniSlider extends container.Model {
 
 
 enum MiniSliderField {
-  IMAGES = container.ModelField.ID + 1,
+  IMAGES = 2, // container.ModelField.ID + 1,
 }

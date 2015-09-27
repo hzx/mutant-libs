@@ -39,7 +39,7 @@ class Journal extends container.Model {
 
 
 enum JournalField {
-  NAME = container.ModelField.ID + 1,
+  NAME = 2, // container.ModelField.ID + 1,
   SLUG,
   ITEMS,
 }

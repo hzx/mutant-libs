@@ -34,5 +34,5 @@ class Gallery extends container.Model {
 
 
 enum GalleryField {
-  IMAGES = container.ModelField.ID + 1,
+  IMAGES = 2, // container.ModelField.ID + 1,
 }

@@ -31,5 +31,5 @@ class Header extends container.Model {
 
 
 enum HeaderField {
-  TEXT = container.ModelField.ID + 1,
+  TEXT = 2, // container.ModelField.ID + 1,
 }
