@@ -6,6 +6,8 @@ class Journal extends container.Model {
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
+
+    switch field {
       case container.ModelField.ID:
         id.init(value);
         break;
