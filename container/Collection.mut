@@ -71,6 +71,10 @@ class Collection {
     if id in idToNodes_ { removeNode_(idToNodes_[id]); }
   }
 
+  void clear() {
+    idToNodes_ = {};
+  }
+
   object get(string id) {
     auto node = getNode_(id);
     if node isnot null { return node.obj; }
@@ -79,7 +83,7 @@ class Collection {
 
   void insertNode_(object node) {
     if node.obj.getId() in idToNodes_ {
-      log("node with the same id exists");
+      /* browser.log("node with the same id exists"); */
       return ;
     }
     node.prev = null;
@@ -92,7 +96,7 @@ class Collection {
 
   void insertBeforeNode_(object node, object before) {
     if node.obj.getId() in idToNodes_ {
-      log("node with the same id exists");
+      /* log("node with the same id exists"); */
       return ;
     }
     if before is null { return insertNode_(node); }
@@ -106,7 +110,7 @@ class Collection {
 
   void appendNode_(object node) {
     if node.obj.getId() in idToNodes_ {
-      log("node with the same id exists");
+      /* log("node with the same id exists"); */
       return;
     }
     node.prev = last;

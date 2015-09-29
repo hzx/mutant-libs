@@ -44,4 +44,9 @@ class ObservableCollection extends Collection {
     base.remove(id);
     eventRemove.notify(id);
   }
+
+  override void clear() {
+    base.clear();
+    eventReset.notify();
+  }
 }

@@ -16,6 +16,25 @@ enum ModelField {
   ID = 1,
 }
 
+
+enum SyncName {
+  OP = 1,
+  NAME,
+  PARAMS,
+  BEFOREID,
+  OBJ,
+  ID,
+}
+
+enum SyncOp {
+  NONE = 0,
+  UPDATE,
+  INSERT,
+  APPEND,
+  REMOVE,
+  MOVE,
+}
+
 /* class Model { */
 /*   // implement it */
 /*   // int parseField(int code, string value); */
