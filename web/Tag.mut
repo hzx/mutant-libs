@@ -271,6 +271,9 @@ class Tag implements Tagable {
   // TODO: think about refactoring this
   void setProperty(string name, object value) {
     switch name {
+      case "id":
+        id = value;
+        break;
       case "style":
         style = value;
         setStyle(value);
