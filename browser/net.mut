@@ -125,7 +125,8 @@ void get(string url, object success, object fail, object progress) {
 }
 
 
-void post(string url, object data, string xsrf, object success, object fail, object progress) {
+void post(string url, object data, string xsrf,
+    object success, object fail, object progress) {
   object headers = {
     "Content-Type": "application/x-www-form-urlencoded",
     "X-Xsrftoken": xsrf
@@ -151,7 +152,8 @@ void post(string url, object data, string xsrf, object success, object fail, obj
 }
 
 
-void postFiles(string url, object files, string hash, object success, object fail, object progress) {
+void postFiles(string url, object files, string hash,
+    object success, object fail, object progress) {
   object data = new FormData();
   for object file: files {
     data.append(file.name, file);
