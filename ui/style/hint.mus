@@ -1,0 +1,10 @@
+
+namespace hint {
+
+
+element {
+  position: absolute;
+}
+
+
+} // end namespace hint

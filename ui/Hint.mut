@@ -1,0 +1,7 @@
+
+class Hint extends web.View {
+  override void create() {
+    element = <div style=style_.element>
+    </div>;
+  }
+}
