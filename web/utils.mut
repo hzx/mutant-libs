@@ -27,6 +27,10 @@ Tag tag(string name, object props, object events, object value, object childs) {
     tg.setValue(value);
   }
 
+  if tg.observableValue_ isnot null {
+    tg.onObservableValueUpdate(null, null);
+  }
+
   return tg;
 }
 

@@ -26,6 +26,9 @@ class Tag implements Tagable {
   object styleActive = null;
   object styleDisable = null;
 
+  Observable observableValue_ = null;
+  string observableRender_ = null;
+
   object styleStates__ = {}; // n
 
   /* object dragStart = dragStart_; */
@@ -58,6 +61,14 @@ class Tag implements Tagable {
       cursor.enter();
       cursor = cursor.getNext();
     }
+
+    if observableValue_ isnot null {
+      if observableRender_ is null {
+        browser.log("render function for observable not set");
+      } else {
+        observableValue_.listen(onObservableValueUpdate);
+      }
+    }
   }
 
   void exit() {
@@ -73,6 +84,10 @@ class Tag implements Tagable {
     while cursor isnot null {
       cursor.exit();
       cursor = cursor.getNext();
+    }
+
+    if observableValue_ isnot null {
+      observableValue_.unlisten(onObservableValueUpdate);
     }
   }
 
@@ -323,6 +338,12 @@ class Tag implements Tagable {
       case "draggable":
         node.draggable = value;
         break;
+      case "bind":
+        observableValue_ = value;
+        break;
+      case "render":
+        observableRender_ = value;
+        break;
       default:
         browser.log("unknown property name: " + name);
         break;
@@ -353,5 +374,9 @@ class Tag implements Tagable {
         break;
     }
     state = statee;
+  }
+
+  bind void onObservableValueUpdate(object value, object old) {
+    observableRender_(this, observableValue_);
   }
 }
