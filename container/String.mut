@@ -23,4 +23,11 @@ class String extends Event { // TODO: make own typed instead Event
     auto date = new Date();
     updateTime = date.getTime();
   }
+
+  void reset() {
+    value = "";
+    updateTime = 0;
+    has = false;
+    notify(value, value);
+  }
 }

@@ -19,6 +19,15 @@ class Value extends Event {
   void set_(object value_) {
     value = value_;
     has = true;
-    updateTime = 
+
+    auto date = new Date();
+    updateTime = date.getTime();
+  }
+
+  void reset() {
+    value = null;
+    updateTime = 0;
+    has = false;
+    notify2(value, value);
   }
 }

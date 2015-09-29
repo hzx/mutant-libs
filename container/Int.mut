@@ -23,4 +23,11 @@ class Int extends Event { // TODO: make own typed instead Event
     auto date = new Date();
     updateTime = date.getTime();
   }
+
+  void reset() {
+    value = 0;
+    updateTime = 0;
+    has = false;
+    notify2(value, value);
+  }
 }
