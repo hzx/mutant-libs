@@ -1,5 +1,6 @@
 
 /* like Collection, but CollectionNode integrated */
+// TODO: refactor - use container.Collection for childs
 
 class Tag implements Tagable {
   string id = container.Hasher.generate();
