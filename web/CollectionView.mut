@@ -1,6 +1,12 @@
 
 class CollectionView extends View {
+  string name = "div";
   container.ObservableCollection collection = null; 
+  object render = null;
+
+  override void create() {
+    element = tag(name, ["style", style_], null, null, null);
+  }
 
   override void enter() {
     if isEnter { return; }
@@ -32,24 +38,38 @@ class CollectionView extends View {
     }
   }
 
-  bind void onUpdateId() {
+  bind void onUpdateId(string id, string old) {
+    updateChildId(id, old);
   }
 
-  bind void onUpdate() {
+  bind void onUpdate(string id, object updates) {
+    // TODO: implement
   }
 
   bind void onReset() {
+    clear();
   }
 
-  bind void onInsert() {
+  bind void onInsert(object obj) {
+    insert(render(obj));
   }
 
-  bind void onAppend() {
+  bind void onInsertBefore(object obj, string beforeId) {
+    insertBefore(render(obj), beforeId);
   }
 
-  bind void onMove() {
+  bind void onAppend(object obj) {
+    append(render(obj));
   }
 
-  bind void onRemove() {
+  bind void onMove(string id, string beforeId) {
+    auto child = getChild(id);
+    if child is null { return; }
+
+    moveChild(child, beforeId);
+  }
+
+  bind void onRemove(string id) {
+    removeChild(id);
   }
 }

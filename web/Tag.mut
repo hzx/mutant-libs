@@ -211,6 +211,16 @@ class Tag implements Tagable {
     }
   }
 
+  void updateChildId(string id, string old) {
+    auto child = getChild(old);
+    if child is null { return; }
+
+    delete idToChilds_[old];
+    idToChilds_[id] = child;
+
+    child.setId(id);
+  }
+
   void clear() { // remove all childs
     Tagable child = first;
     Tagable nxt;
@@ -223,6 +233,10 @@ class Tag implements Tagable {
     first = null;
     last = null;
     idToChilds_ = {};
+  }
+
+  void setId(string id_) {
+    id = id_;
   }
 
   void setValue(string text) {

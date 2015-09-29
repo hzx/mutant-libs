@@ -18,6 +18,9 @@ interface Tagable {
   void remove();
   void removeChild(string hash);
   void moveChild(Tagable node, string beforeId);
+  void updateChildId(string id, string old);
+  void clear();
+  void setId(string id);
   void setValue(text);
   void setNext(Tagable node);
   void setPrev(Tagable node);
