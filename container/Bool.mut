@@ -1,0 +1,41 @@
+
+class Bool extends Event {
+  bool value = false;
+  bool has = false;
+  int updateTime = 0;
+
+  void init(bool value_) {
+    set_(value_);
+  }
+
+  void set(bool value_) {
+    if value isnot value_ {
+      bool old = value;
+      set(value_);
+      notify2(value, old);
+    }
+  }
+
+  void set_(bool value_) {
+    value = value_;
+    has = true;
+
+    auto date = new Date();
+    updateTime = date.getTime();
+  }
+
+  void reset() {
+    value = false;
+    updateTime = 0;
+    has = false;
+    notify2(value, value);
+  }
+
+  void on() {
+    set(true);
+  }
+
+  void off() {
+    set(false);
+  }
+}
