@@ -39,6 +39,7 @@ class Tag implements Tagable {
 
   /* int code = 0; // for use data */
   /* object data = null; */
+  string dataId = null;
 
   void create() {
     node = document.createElement(name);
@@ -299,8 +300,8 @@ class Tag implements Tagable {
       case "code":
         code = value;
         break;
-      case "data":
-        data = value;
+      case "dataId":
+        dataId = value;
         break;
       case "type":
         node.type = value;
