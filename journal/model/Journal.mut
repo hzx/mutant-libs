@@ -3,6 +3,7 @@ class Journal extends container.Model {
   auto name = new container.String();
   auto slug = new container.String();
   object items = []; // TODO: think about organization
+  /* auto items = new container.Collection(); */
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -24,9 +25,13 @@ class Journal extends container.Model {
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-    ];
+    auto buf = [];
+
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if name.has { buf.push(JournalField.NAME, name.value); }
+    if slug.has { buf.push(JournalField.SLUG, slug.value); }
+    if items.length > 0 { buf.push(JournalField.ITEMS, items.join(":"); }
+
     return buf.join(container.DELIM_FIELD);
   }
 
