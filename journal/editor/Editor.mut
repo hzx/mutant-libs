@@ -235,15 +235,8 @@ class Editor extends web.View {
     journalItems_.insertBefore(obj, beforeId);
   }
 
-  void moveNode(string nodeId, Node before) {
-    auto node = root.getChild(nodeId);
-
-    if before isnot null {
-      root.moveChild(node, before.getId());
-    } else {
-      root.moveChild(node, null);
-    }
-    // move in collection
+  void moveNode(string id, string beforeId) {
+    journalItems_.move(id, beforeId);
   }
 
   void removeNode(string id) {

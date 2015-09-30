@@ -146,16 +146,12 @@ class VerticalNode extends Node {
     switch fields[0] { // operation type
       case "add":
         int nodeType = window.parseInt(fields[1]);
-        /* string beforeId = null; */
-        /* editor.addNode(nodeType, before); */
         editor.addNode(nodeType, beforeId);
-        /* editor.journalItems_.insertBefore( */
-        /*     editor.createNodeModel(nodeType), beforeId); */
         break;
       case "move":
         string id = fields[1];
         if id is getId() { return; } // dont allow drop on yourself
-        editor.moveNode(id, before);
+        editor.moveNode(id, beforeId);
         break;
       default:
         browser.log("VerticalNode.dropNode unknown operation type: " + fields[0]);
