@@ -301,7 +301,7 @@ class Tag implements Tagable {
         code = value;
         break;
       case "dataId":
-        dataId = value;
+        node.dataId = value;
         break;
       case "type":
         node.type = value;
