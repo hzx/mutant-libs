@@ -1,5 +1,6 @@
 
 class Code extends container.Model {
+  auto nodeType = NodeType.CODE;
   auto text = new container.String();
 
   void setField(string key, string value) {

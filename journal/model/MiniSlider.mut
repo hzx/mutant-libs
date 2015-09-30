@@ -1,5 +1,6 @@
 
 class MiniSlider extends container.Model {
+  auto nodeType = NodeType.MINI_SLIDER;
   auto images = new container.String();
 
   void setField(string key, string value) {

@@ -6,7 +6,8 @@ class Editor extends web.View {
   int toolbarTop = 0;
 
   auto toolbar = createToolbar();
-  auto root = new Block();
+  /* auto root = new Block(); */
+  auto root = null;
 
   // data
   string journalId = null;
@@ -14,15 +15,32 @@ class Editor extends web.View {
   auto eventSave = new container.Event();
 
   Editor() {
-    root.create();
-    root.editor = this;
+    /* root.create(); */
+    /* root.editor = this; */
   }
 
   override void create() {
+    root = <web.CollectionView name="div" collection=journalItems_
+        render=renderItem style_=style.rootNode/>;
+
     element = <div style=style.editor>
       {toolbar}
-      {root}
+      <div style=style.block ondragenter=onBlockDragenter
+          ondragleave=onBlockDragleave ondragover=onBlockDragover
+          ondrop=onBlockDrop>
+        {root}
+      </div>
     </div>;
+  }
+
+  bind tag renderItem(container.Model item) {
+    auto node = createNode(item.nodeType);
+    if node is null { return null; }
+    node.editor = this;
+    node.item = item;
+    node.create();
+
+    return node;
   }
 
   override void enter() {
@@ -71,21 +89,63 @@ class Editor extends web.View {
     </div>;
   }
 
-  // interface methods for Node
+  container.Model createNodeModel(int nodeType) {
+    container.Model node = null;
 
-  bool isH1Exists() {
-    Node node;
-    for int i = 0; i < root.nodes.length; ++i {
-      node = root.nodes[i];
-      if node.code is journal.NodeType.H1 {
-        return true;
-      }
+    switch nodeType {
+      case journal_model.NodeType.BLOCK:
+        break;
+      case journal_model.NodeType.H1:
+        // check h1 already added, add only once
+        if !isH1Exists() {
+          node = new journal_model.Header();
+        }
+        break;
+      case journal_model.NodeType.H2:
+        node = new journal_model.Header2();
+        break;
+      case journal_model.NodeType.TEXT:
+        node = new journal_model.Text();
+        break;
+      case journal_model.NodeType.CODE:
+        node = new journal_model.Code();
+        break;
+      case journal_model.NodeType.LINK:
+        node = new journal_model.Link();
+        break;
+      case journal_model.NodeType.VIDEO:
+        node = new journal_model.Video();
+        break;
+      case journal_model.NodeType.GOOGLE_MAP:
+        node = new journal_model.GoogleMap();
+        break;
+      case journal_model.NodeType.FILE:
+        node = new journal_model.File();
+        break;
+      case journal_model.NodeType.IMAGE:
+        node = new journal_model.Image();
+        break;
+      case journal_model.NodeType.GALLERY:
+        node = new journal_model.Gallery();
+        break;
+      case journal_model.NodeType.BIG_SLIDER:
+        node = new journal_model.BigSlider();
+        break;
+      case journal_model.NodeType.MINI_SLIDER:
+        node = new journal_model.MiniSlider();
+        break;
+      case journal_model.NodeType.ANCHOR:
+        node = new journal_model.Anchor();
+        break;
+      case journal_model.NodeType.BREAK:
+        node = new journal_model.Break();
+        break;
     }
 
-    return false;
+    return node;
   }
 
-  void addNode(int nodeType, Node before) {
+  tag createNode(int nodeType) {
     Node node = null;
 
     switch nodeType {
@@ -94,8 +154,6 @@ class Editor extends web.View {
         node.style_ = style.block;
         break;
       case journal_model.NodeType.H1:
-        // check h1 already added, add only once
-        if isH1Exists() { return; }
         node = new Header1();
         node.style_ = style.header;
         break;
@@ -151,26 +209,30 @@ class Editor extends web.View {
         node = new Break();
         node.style_ = style.break_;
         break;
-      default: // unknown nodeType, do nothing
-        return;
     }
 
-    node.parent = root;
-    node.editor = this;
-    node.create();
+    return node;
+  }
 
-    // TODO: add node in nodes
-    // set state changed
+  // interface methods for Node
 
-    if before isnot null {
-      /* root.insertNodeBefore(node, before.getId()); */
-      // TODO: use block method
-      root.insertBefore(node, before.getId());
-    } else { // add to the end
-      /* root.appendNode(node); */
-      // TODO: use block method
-      root.append(node);
+  bool isH1Exists() {
+    auto cursor = journalItems_.first;
+    while cursor isnot null {
+      if cursor.obj.nodeType is journal_model.NodeType.H1 {
+        return true;
+      }
+      cursor = cursor.next;
     }
+
+    return false;
+  }
+
+  void addNode(int nodeType, string beforeId) {
+    auto obj = createNodeModel(nodeType);
+    if obj is null { return; } // unknown nodeType
+
+    journalItems_.insertBefore(obj, beforeId);
   }
 
   void moveNode(string nodeId, Node before) {
@@ -185,9 +247,7 @@ class Editor extends web.View {
   }
 
   void removeNode(string id) {
-    // TODO implement
-    // remove from collection
-    root.removeChild(id);
+    journalItems_.remove(id);
   }
 
   // end interface for Node
@@ -291,10 +351,41 @@ class Editor extends web.View {
 
     string id = fields[1];
     
-    root.removeChild(id);
-    // TODO: remove from collection
+    journalItems_.remove(id);
+  }
 
-    // debug
-    browser.log("onTrashDrop, remove item with id: " + id);
+  bind void onBlockDragenter(object e) {
+    e.preventDefault();
+  }
+
+  bind void onBlockDragleave(object e) {
+  }
+
+  bind void onBlockDragover(object e) {
+    e.preventDefault();
+  }
+
+  bind void onBlockDrop(object e) {
+    e.preventDefault();
+    string data = e.dataTransfer.getData("text/plain");
+
+    object fields = data.split(":");
+    if fields.length < 2 { return; }
+
+
+    switch fields[0] { // operation type
+      case "add":
+        // fields[1] contains node type
+        int nodeType = window.parseInt(fields[1]);
+        journalItems_.append(createNodeModel(nodeType));
+        /* addNode(nodeType, null); */
+        break;
+      case "move":
+        // fields[1] contains node id
+        /* Node node = element.getChild(fields[1]); */
+        /* moveNode(node, null); */
+        /* journalItems_.move */
+        break;
+    }
   }
 }

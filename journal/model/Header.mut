@@ -1,5 +1,6 @@
 
 class Header extends container.Model {
+  auto nodeType = NodeType.H1;
   auto text = new container.String();
 
   void setField(string key, string value) {
@@ -26,6 +27,12 @@ class Header extends container.Model {
     for int i = 0; i < pices.length; i=i+2 {
       setField(pices[i], pices[i+1]);
     }
+  }
+}
+
+class Header2 extends Header {
+  Header2() {
+    nodeType = NodeType.H2;
   }
 }
 

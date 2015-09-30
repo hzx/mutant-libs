@@ -1,5 +1,6 @@
 
 class Anchor extends container.Model {
+  auto nodeType = NodeType.ANCHOR;
   auto name = new container.String();
 
   void setField(string key, string value) {

@@ -30,7 +30,7 @@ class Journal extends container.Model {
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if name.has { buf.push(JournalField.NAME, name.value); }
     if slug.has { buf.push(JournalField.SLUG, slug.value); }
-    if items.length > 0 { buf.push(JournalField.ITEMS, items.join(":"); }
+    if items.length > 0 { buf.push(JournalField.ITEMS, items.join(":")); }
 
     return buf.join(container.DELIM_FIELD);
   }

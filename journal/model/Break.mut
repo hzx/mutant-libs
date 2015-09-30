@@ -1,5 +1,6 @@
 
 class Break extends container.Model {
+  auto nodeType = NodeType.BREAK;
 
   void setField(string key, string value) {
     int field = window.parseInt(key);

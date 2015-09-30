@@ -1,5 +1,6 @@
 
 class BigSlider extends container.Model {
+  auto nodeType = NodeType.BIG_SLIDER;
   auto images = new container.String();
 
   void setField(string key, string value) {

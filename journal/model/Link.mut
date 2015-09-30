@@ -1,5 +1,6 @@
 
 class Link extends container.Model {
+  auto nodeType = NodeType.LINK;
   auto src = new container.String();
   auto alt = new container.String();
 

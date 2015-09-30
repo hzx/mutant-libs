@@ -3,6 +3,7 @@ class Gallery extends container.Model {
   static int THUMB_WIDTH = 396;
   static int THUMB_HEIGHT = 224;
 
+  auto nodeType = NodeType.GALLERY;
   auto images = new container.String();
 
   void setField(string key, string value) {

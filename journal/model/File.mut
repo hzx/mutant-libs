@@ -1,5 +1,6 @@
 
 class File extends container.Model {
+  auto nodeType = NodeType.FILE;
   auto filename = new container.String();
 
   void setField(string key, string value) {

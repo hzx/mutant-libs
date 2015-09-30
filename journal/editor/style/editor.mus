@@ -4,3 +4,6 @@ editor {
   padding: 40px 16px 16px 16px;
   backgroundColor: #ffffff;
 }
+
+rootNode {
+}

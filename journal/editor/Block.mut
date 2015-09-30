@@ -8,7 +8,8 @@ class Block extends Node {
   }
 
   override void create() {
-    element = <div style=style.block ondragenter=onDragenter ondragleave=onDragleave ondragover=onDragover ondrop=onDrop>
+    element = <div style=style.block ondragenter=onDragenter
+        ondragleave=onDragleave ondragover=onDragover ondrop=onDrop>
     </div>;
   }
 

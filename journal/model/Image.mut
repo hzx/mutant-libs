@@ -1,5 +1,6 @@
 
 class Image extends container.Model {
+  auto nodeType = NodeType.IMAGE;
   auto filename = new container.String();
 
   void setField(string key, string value) {

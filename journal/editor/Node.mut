@@ -1,6 +1,7 @@
 
 
 class Node extends web.View {
+  container.Model item = null;
   Node parent = null; // parent block node TODO: rename to parentBlock
   Editor editor = null;
   int code = journal_model.NodeType.NONE;
@@ -135,14 +136,21 @@ class VerticalNode extends Node {
   override void dropNode(object e) {
     string data = e.dataTransfer.getData("text/plain");
     object fields = data.split(":");
+
     if fields.length < 2 or editor is null { return; }
 
     auto before = getBeforeDrop();
+    auto beforeId = null;
+    if before isnot null { beforeId = before.getId(); }
 
     switch fields[0] { // operation type
       case "add":
         int nodeType = window.parseInt(fields[1]);
-        editor.addNode(nodeType, before);
+        /* string beforeId = null; */
+        /* editor.addNode(nodeType, before); */
+        editor.addNode(nodeType, beforeId);
+        /* editor.journalItems_.insertBefore( */
+        /*     editor.createNodeModel(nodeType), beforeId); */
         break;
       case "move":
         string id = fields[1];

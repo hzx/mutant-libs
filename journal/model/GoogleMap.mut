@@ -1,5 +1,6 @@
 
 class GoogleMap extends container.Model {
+  auto nodeType = NodeType.GOOGLE_MAP;
   auto zoom = new container.Int();
   auto lat = new container.Float();
   auto lng = new container.Float();

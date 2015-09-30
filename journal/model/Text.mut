@@ -1,5 +1,6 @@
 
 class Text extends container.Model {
+  auot nodeType = NodeType.TEXT;
   auto text = new container.String();
 
   void setField(string key, string value) {
