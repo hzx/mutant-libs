@@ -40,15 +40,17 @@ class Collection {
   }
 
   void insertBefore(object obj, string beforeId) {
+    object before = null;
+
     if beforeId in idToNodes_ {
-      insertBeforeNode_({
-        obj: obj,
-        next: null,
-        prev: null,
-      }, idToNodes_[beforeId]);
-    } else {
-      insert(obj);
+      before = idToNodes_[beforeId];
     }
+
+    insertBeforeNode_({
+      obj: obj,
+      next: null,
+      prev: null,
+    }, before);
   }
 
   void append(object obj) {
