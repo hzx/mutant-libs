@@ -68,8 +68,8 @@ class View implements Tagable {
     element.insert(child);
   }
 
-  void insertBefore(Tagable child, string beforeHash) {
-    element.insertBefore(child, beforeHash);
+  void insertBefore(Tagable child, string beforeId) {
+    element.insertBefore(child, beforeId);
   }
 
   void append(Tagable child) {

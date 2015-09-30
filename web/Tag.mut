@@ -129,13 +129,6 @@ class Tag implements Tagable {
     child.setPrev(null);
     child.setNext(first);
     if first isnot null {
-      // debug
-      browser.log("Tag.insert:");
-      browser.log(child);
-      browser.log(child.getNode());
-      browser.log(first);
-      browser.log(first.getNode());
-
       node.insertBefore(child.getNode(), first.getNode());
       first.prev = child;
     } else {
@@ -148,9 +141,9 @@ class Tag implements Tagable {
     child.setParent(this);
   }
 
-  void insertBefore(Tagable child, string beforeHash) {
-    if beforeHash in idToChilds_ {
-      Tagable before = idToChilds_[beforeHash];
+  void insertBefore(Tagable child, string beforeId) {
+    if beforeId in idToChilds_ {
+      Tagable before = idToChilds_[beforeId];
       child.setPrev(before.getPrev());
       child.setNext(before);
       if before.getPrev() isnot null {

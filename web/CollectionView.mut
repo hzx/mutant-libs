@@ -17,6 +17,7 @@ class CollectionView extends View {
       collection.eventUpdate.listen(onUpdate);
       collection.eventReset.listen(onReset);
       collection.eventInsert.listen(onInsert);
+      collection.eventInsertBefore.listen(onInsertBefore);
       collection.eventAppend.listen(onAppend);
       collection.eventMove.listen(onMove);
       collection.eventRemove.listen(onRemove);
@@ -32,6 +33,7 @@ class CollectionView extends View {
       collection.eventUpdate.unlisten(onUpdate);
       collection.eventReset.unlisten(onReset);
       collection.eventInsert.unlisten(onInsert);
+      collection.eventInsertBefore.unlisten(onInsertBefore);
       collection.eventAppend.unlisten(onAppend);
       collection.eventMove.unlisten(onMove);
       collection.eventRemove.unlisten(onRemove);
@@ -51,15 +53,23 @@ class CollectionView extends View {
   }
 
   bind void onInsert(object obj) {
-    insert(render(obj));
+    auto robj = render(obj);
+    if robj isnot null { insert(robj); }
   }
 
   bind void onInsertBefore(object obj, string beforeId) {
-    insertBefore(render(obj), beforeId);
+    auto robj = render(obj);
+    if robj isnot null { insertBefore(robj, beforeId); }
+  }
+
+  bind void onInsertBefore(object obj, string beforeId) {
+    auto robj = render(obj);
+    if robj isnot null { insertBefore(robj, beforeId); }
   }
 
   bind void onAppend(object obj) {
-    append(render(obj));
+    auto robj = render(obj);
+    if robj isnot null { append(robj); }
   }
 
   bind void onMove(string id, string beforeId) {
