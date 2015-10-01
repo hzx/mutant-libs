@@ -11,6 +11,11 @@ class Model implements Collectable {
     return id.value;
   }
 
+  void setUpdateParent(object onUpdate) {
+    browser.log("Model.setUpdateParent not impelemented");
+    browser.log(this);
+  }
+
   string serialize();
   void unserialize(object pices);
 }
