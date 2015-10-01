@@ -1,8 +1,10 @@
 
 class Float extends Event { // TODO: make own typed instead Event
+  int code = 0;
   float value = 0.0;
   bool has = false;
   int updateTime = 0;
+  object onUpdate = null;
 
   void init(float value_) {
     set_(value_);
@@ -12,6 +14,8 @@ class Float extends Event { // TODO: make own typed instead Event
     if value isnot value_ {
       float old = value;
       set_(value_);
+
+      if onUpdate isnot null { onUpdate(code, value, old); }
       notify2(value, old);
     }
   }
@@ -25,9 +29,24 @@ class Float extends Event { // TODO: make own typed instead Event
   }
 
   void reset() {
+    float old = value;
     value = 0.0;
     updateTime = 0;
     has = false;
-    notify2(value, value);
+
+    if onUpdate isnot null { onUpdate(code, value, old); }
+    notify2(value, old);
+  }
+
+  Float clone() {
+    auto val = new Float();
+
+    val.code = code;
+    val.value = value;
+    val.has = has;
+    val.updateTime = updateTime;
+    val.onUpdate = onUpdate;
+
+    return val;
   }
 }

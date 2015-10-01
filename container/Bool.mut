@@ -1,8 +1,10 @@
 
 class Bool extends Event {
+  int code = 0;
   bool value = false;
   bool has = false;
   int updateTime = 0;
+  object onUpdate = null;
 
   void init(bool value_) {
     set_(value_);
@@ -12,6 +14,8 @@ class Bool extends Event {
     if value isnot value_ {
       bool old = value;
       set(value_);
+
+      if onUpdate isnot null { onUpdate(code, value_, old); }
       notify2(value, old);
     }
   }
@@ -25,10 +29,25 @@ class Bool extends Event {
   }
 
   void reset() {
+    bool old = value;
     value = false;
     updateTime = 0;
     has = false;
-    notify2(value, value);
+
+    if onUpdate isnot null { onUpdate(code, value, old); }
+    notify2(value, old);
+  }
+
+  Bool clone() {
+    auto val = new Bool();
+
+    val.code = code;
+    val.value = value;
+    val.has = has;
+    val.updateTime = updateTime;
+    val.onUpdate = onUpdate;
+
+    return val;
   }
 
   void on() {
