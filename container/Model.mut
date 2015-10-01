@@ -3,6 +3,10 @@
 class Model implements Collectable {
   auto id = new String();
 
+  Model() {
+    id.code = ModelField.ID;
+  }
+
   string getId() {
     return id.value;
   }
