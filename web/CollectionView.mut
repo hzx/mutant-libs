@@ -70,11 +70,6 @@ class CollectionView extends View {
     }
   }
 
-  /* bind void onInsertBefore(object obj, string beforeId) { */
-  /*   auto robj = render(obj); */
-  /*   if robj isnot null { insertBefore(robj, beforeId); } */
-  /* } */
-
   bind void onAppend(object obj) {
     auto robj = render(obj);
     if robj isnot null {

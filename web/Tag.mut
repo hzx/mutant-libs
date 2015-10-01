@@ -28,6 +28,7 @@ class Tag implements Tagable {
   object styleDisable = null;
 
   Observable observableValue_ = null;
+  container.ObservableCollection observableCollection_ = null;
   string observableRender_ = null;
 
   object styleStates__ = {}; // n
@@ -335,6 +336,9 @@ class Tag implements Tagable {
         break;
       case "bind":
         observableValue_ = value;
+        break;
+      case "coll":
+        observableCollection_ = value;
         break;
       case "render":
         observableRender_ = value;
