@@ -6,7 +6,7 @@ class View implements Tagable {
   object events = [];
 
   void create() {
-    element = tag("div", null, null, "override View.create", null);
+    element = tag("div", null, null, "override View.create method", null);
   }
 
   void destroy() {

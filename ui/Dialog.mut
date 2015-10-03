@@ -1,0 +1,40 @@
+
+class Dialog extends web.View {
+  tag scrollable_ = null;
+  tag content_ = null;
+
+  override void create() {
+    content_ = createContent();
+
+    scrollable_ = <div style=style_.scrollable>
+      <div style=style_.closeButton onclick=onCloseButtonClick></div>
+      <div style=style_.wrap>
+        {content_}
+      </div>
+    </div>;
+
+    element = <div style=style_.view>
+      {scrollable_}
+    </div>;
+  }
+
+  tag createContent() {
+    return <div> "override Dialog.createContent method" </div>;
+  }
+
+  void show() {
+    browser.pushScrollNode(scrollable_);
+    browser.pushZindex(element.node);
+    browser.show(element.node);
+  }
+
+  void hide() {
+    browser.popScrollNode();
+    browser.popZindex(element.node);
+    browser.hide(element.node);
+  }
+
+  bind void onCloseButtonClick(object e) {
+    hide();
+  }
+}
