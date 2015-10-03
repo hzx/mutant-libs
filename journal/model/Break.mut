@@ -2,11 +2,16 @@
 class Break extends container.Model {
   auto nodeType = NodeType.BREAK;
 
+  auto pageId = new container.String();
+
   void setField(string key, string value) {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
         id.init(value);
+        break;
+      case BreakField.PAGE_ID:
+        pageId.init(value);
         break;
     }
   }
@@ -14,6 +19,7 @@ class Break extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
+      BreakField.PAGE_ID, pageId.value,
     ];
     return buf.join(container.DELIM_FIELD);
   }
@@ -23,4 +29,8 @@ class Break extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+}
+
+enum BreakField {
+  PAGE_ID = 2, // container.ModelField.ID + 1,
 }

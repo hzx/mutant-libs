@@ -1,6 +1,8 @@
 
 class Image extends container.Model {
   auto nodeType = NodeType.IMAGE;
+
+  auto pageId = new container.String();
   auto filename = new container.String();
 
   void setField(string key, string value) {
@@ -8,6 +10,9 @@ class Image extends container.Model {
     switch field {
       case container.ModelField.ID:
         id.init(value);
+        break;
+      case ImageField.PAGE_ID:
+        pageId.init(value);
         break;
       case ImageField.FILENAME:
         filename.init(value);
@@ -18,6 +23,7 @@ class Image extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
+      ImageField.PAGE_ID, pageId.value,
       ImageField.FILENAME, filename.value,
     ];
     return buf.join(container.DELIM_FIELD);
@@ -32,5 +38,6 @@ class Image extends container.Model {
 
 
 enum ImageField {
-  FILENAME = 2, // container.ModelField.ID + 1,
+  PAGE_ID = 2, // container.ModelField.ID + 1,
+  FILENAME,
 }

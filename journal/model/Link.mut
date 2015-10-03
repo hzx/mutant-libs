@@ -1,6 +1,8 @@
 
 class Link extends container.Model {
   auto nodeType = NodeType.LINK;
+
+  auto pageId = new container.String();
   auto src = new container.String();
   auto alt = new container.String();
 
@@ -9,6 +11,9 @@ class Link extends container.Model {
     switch field {
       case container.ModelField.ID:
         id.init(value);
+        break;
+      case container.LinkField.PAGE_ID:
+        pageId.init(value);
         break;
       case LinkField.SRC:
         src.init(value);
@@ -22,6 +27,7 @@ class Link extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
+      LinkField.PAGE_ID, pageId.value,
       LinkField.SRC, src.value,
       LinkField.ALT, alt.value,
     ];
@@ -37,6 +43,7 @@ class Link extends container.Model {
 
 
 enum LinkField {
-  SRC = 2, // container.ModelField.ID + 1,
+  PAGE_ID = 2, // container.ModelField.ID + 1,
+  SRC,
   ALT,
 }

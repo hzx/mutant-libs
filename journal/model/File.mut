@@ -1,6 +1,8 @@
 
 class File extends container.Model {
   auto nodeType = NodeType.FILE;
+
+  auto pageId = new container.String();
   auto filename = new container.String();
 
   void setField(string key, string value) {
@@ -8,6 +10,9 @@ class File extends container.Model {
     switch field {
       case container.ModelField.ID:
         id.init(value);
+        break;
+      case FileField.PAGE_ID:
+        pageId.init(value);
         break;
       case FileField.FILENAME:
         filename.init(value);
@@ -18,6 +23,7 @@ class File extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
+      FileField.PAGE_ID, pageId.value,
       FileField.FILENAME, filename.value,
     ];
     return buf.join(container.DELIM_FIELD);
@@ -32,5 +38,6 @@ class File extends container.Model {
 
 
 enum FileField {
-  FILENAME = 2, // container.ModelField.ID + 1,
+  PAGE_ID = 2, // container.ModelField.ID + 1,
+  FILENAME,
 }

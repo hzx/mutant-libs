@@ -1,6 +1,8 @@
 
 class Text extends container.Model {
   auot nodeType = NodeType.TEXT;
+
+  auto pageId = new container.String();
   auto text = new container.String();
 
   void setField(string key, string value) {
@@ -8,6 +10,9 @@ class Text extends container.Model {
     switch field {
       case container.ModelField.ID:
         id.init(value);
+        break;
+      case TextField.PAGE_ID:
+        pageId.init(value);
         break;
       case TextField.TEXT:
         text.init(value);
@@ -18,6 +23,7 @@ class Text extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
+      TextField.PAGE_ID, pageId.value,
       TextField.TEXT, text.value,
     ];
     return buf.join(container.DELIM_FIELD);
@@ -32,5 +38,6 @@ class Text extends container.Model {
 
 
 enum TextField {
-  TEXT = 2, // container.ModelField.ID + 1,
+  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TEXT,
 }

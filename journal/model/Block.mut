@@ -1,6 +1,7 @@
 
 class Block {
   auto id = new container.String();
+  auto pageId = new container.String();
 
   string getId() {
     return id.value;

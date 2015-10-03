@@ -1,6 +1,8 @@
 
 class GoogleMap extends container.Model {
   auto nodeType = NodeType.GOOGLE_MAP;
+
+  auto pageId = new container.String();
   auto zoom = new container.Int();
   auto lat = new container.Float();
   auto lng = new container.Float();
@@ -10,6 +12,9 @@ class GoogleMap extends container.Model {
     switch field {
       case container.ModelField.ID:
         id.init(value);
+        break;
+      case GoogleMapField.PAGE_ID:
+        pageId.init(value);
         break;
       case GoogleMapField.ZOOM:
         zoom.init(parseInt(value));
@@ -26,6 +31,7 @@ class GoogleMap extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
+      GoogleMapField.PAGE_ID, pageId.value,
       GoogleMapField.ZOOM, zoom.value,
       GoogleMapField.LAT, lat.value,
       GoogleMapField.LNG, lng.value,
@@ -42,7 +48,8 @@ class GoogleMap extends container.Model {
 
 
 enum GoogleMapField {
-  ZOOM = 2, // container.ModelField + 1,
+  PAGE_ID = 2, // container.ModelField.ID + 1,
+  ZOOM,
   LAT,
   LNG,
 }

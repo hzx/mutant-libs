@@ -2,8 +2,19 @@
 class Journal extends container.Model {
   auto name = new container.String();
   auto slug = new container.String();
+  auto keywords = new container.String();
+  auto description = new container.String();
+  auto show = new container.Bool();
   object items = []; // TODO: think about organization
   /* auto items = new container.Collection(); */
+
+  Journal() {
+    name.code = JournalField.NAME;
+    slug.code = JournalField.SLUG;
+    keywords.code = JournalField.KEYWORDS;
+    description.code = JournalField.DESCRIPTION;
+    show.code = JournalField.SHOW;
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -18,6 +29,16 @@ class Journal extends container.Model {
       case JournalField.SLUG:
         slug.init(value);
         break;
+      case JournalField.KEYWORDS:
+        keywords.init(value);
+        break;
+      case JournalField.DESCRIPTION:
+        description.init(value);
+        break;
+      case JournalField.SHOW:
+        int val = window.parseInt(value, 10);
+        show.init(val is 1);
+        break;
       case JournalField.ITEMS:
         items = value.split(":");
         break;
@@ -30,6 +51,16 @@ class Journal extends container.Model {
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if name.has { buf.push(JournalField.NAME, name.value); }
     if slug.has { buf.push(JournalField.SLUG, slug.value); }
+    if keywords.has { buf.push(JournalField.KEYWORDS, keywords.value); }
+    if description.has { buf.push(JournalField.DESCRIPTION, description.value); }
+    if show.has {
+      buf.push(JournalField.SHOW);
+      if show.value {
+        buf.push("1");
+      } else {
+        buf.push("0");
+      }
+    }
     if items.length > 0 { buf.push(JournalField.ITEMS, items.join(":")); }
 
     return buf.join(container.DELIM_FIELD);
@@ -46,5 +77,8 @@ class Journal extends container.Model {
 enum JournalField {
   NAME = 2, // container.ModelField.ID + 1,
   SLUG,
+  KEYWORDS,
+  DESCRIPTION,
+  SHOW,
   ITEMS,
 }

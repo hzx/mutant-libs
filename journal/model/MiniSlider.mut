@@ -1,6 +1,8 @@
 
 class MiniSlider extends container.Model {
   auto nodeType = NodeType.MINI_SLIDER;
+
+  auto pageId = new container.String();
   auto images = new container.String();
 
   void setField(string key, string value) {
@@ -8,6 +10,9 @@ class MiniSlider extends container.Model {
     switch field {
       case container.ModelField.ID:
         id.init(value);
+        break;
+      case MiniSliderField.PAGE_ID:
+        pageId.init(value);
         break;
       case MiniSliderField.IMAGES:
         images.init(value);
@@ -18,6 +23,7 @@ class MiniSlider extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
+      MiniSliderField.PAGE_ID, paegId.value,
       MiniSliderField.IMAGES, images.value,
     ];
     return buf.join(container.DELIM_FIELD);
@@ -32,5 +38,6 @@ class MiniSlider extends container.Model {
 
 
 enum MiniSliderField {
-  IMAGES = 2, // container.ModelField.ID + 1,
+  PAGE_ID = 2, // container.ModelField.ID + 1,
+  IMAGES,
 }
