@@ -1,3 +1,4 @@
 import browser;
 import web;
+import journal.model as journal_model;
 import journal.style;

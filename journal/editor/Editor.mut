@@ -6,18 +6,9 @@ class Editor extends web.View {
   int toolbarTop = 0;
 
   auto toolbar = createToolbar();
-  /* auto root = new Block(); */
   auto root = null;
 
-  // data
-  string journalId = null;
-
   auto eventSave = new container.Event();
-
-  Editor() {
-    /* root.create(); */
-    /* root.editor = this; */
-  }
 
   override void create() {
     root = <web.CollectionView name="div" collection=journalItems_
@@ -36,6 +27,7 @@ class Editor extends web.View {
   bind tag renderItem(container.Model item) {
     auto node = createNode(item.nodeType);
     if node is null { return null; }
+
     node.editor = this;
     node.item = item;
     node.create();
@@ -84,7 +76,7 @@ class Editor extends web.View {
       <div style=style.miniSliderBtn draggable=true ondragstart=onMiniSliderDragstart></div>
       <div style=style.anchorBtn draggable=true ondragstart=onAnchorDragstart></div>
       <div style=style.breakBtn draggable=true ondragstart=onBreakDragstart></div>
-      <div style=style.saveBtn onclick=onSaveClick></div>
+      /* <div style=style.saveBtn onclick=onSaveClick></div> */
       <div style=style.trashBtn ondragenter=onTrashDragenter ondragleave=onTrashDragleave ondragover=onTrashDragover ondrop=onTrashDrop></div>
     </div>;
   }
@@ -314,10 +306,10 @@ class Editor extends web.View {
     e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.BREAK);
   }
 
-  bind void onSaveClick(object e) {
-    string data = root.serialize();
-    eventSave.notify2(journalId, data);
-  }
+  /* bind void onSaveClick(object e) { */
+  /*   string data = root.serialize(); */
+  /*   eventSave.notify2(journalId, data); */
+  /* } */
 
   bind void onTrashDragenter(object e) {
     e.preventDefault();
