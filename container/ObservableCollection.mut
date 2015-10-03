@@ -10,6 +10,9 @@ class ObservableCollection extends Collection {
   auto eventMove = new Event();
   auto eventRemove = new Event();
 
+  int updateTimerId = 0;
+  object updates_ = [];
+
   override void updateId(string id, string old) {
     base.updateId(id, old);
     eventUpdateId.notify2(id, old);
@@ -17,21 +20,24 @@ class ObservableCollection extends Collection {
 
   override void update(string id, object updates) {
     base.update(id, updates);
-    eventUpdate.notify(id, updates);
+    eventUpdate.notify2(id, updates);
   }
 
   override void insert(object obj) {
     base.insert(obj);
+    obj.setUpdateParent(onObjectUpdate);
     eventInsert.notify(obj);
   }
 
   override void insertBefore(object obj, string beforeId) {
     base.insertBefore(obj, beforeId);
+    obj.setUpdateParent(onObjectUpdate);
     eventInsertBefore.notify2(obj, beforeId);
   }
 
   override void append(object obj) {
     base.append(obj);
+    obj.setUpdateParent(onObjectUpdate);
     eventAppend.notify(obj);
   }
 
@@ -41,6 +47,9 @@ class ObservableCollection extends Collection {
   }
 
   override void remove(string id) {
+    auto obj = get(id);
+    obj.setUpdateParent(null);
+
     base.remove(id);
     eventRemove.notify(id);
   }
@@ -48,5 +57,9 @@ class ObservableCollection extends Collection {
   override void clear() {
     base.clear();
     eventReset.notify();
+  }
+
+  bind void onObjectUpdate(string id, object updates) {
+    eventUpdate.notify2(id, updates);
   }
 }

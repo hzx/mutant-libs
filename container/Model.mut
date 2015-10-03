@@ -2,6 +2,11 @@
 
 class Model implements Collectable {
   auto id = new String();
+  auto parent_ = null;
+
+  object onUpdateParent_ = null;
+  int updateTimerId_ = 0;
+  object updates_ = {};
 
   Model() {
     id.code = ModelField.ID;
@@ -11,13 +16,40 @@ class Model implements Collectable {
     return id.value;
   }
 
-  void setUpdateParent(object onUpdate) {
-    browser.log("Model.setUpdateParent not impelemented");
-    browser.log(this);
-  }
-
   string serialize();
   void unserialize(object pices);
+
+  void setUpdateParent(object onUpdate) {
+    onUpdateParent_ = onUpdate;
+  }
+
+  void notifyUpdate() {
+    auto buf = [];
+    for auto name in updates_ {
+      buf.push(name, updates_[name]);
+    }
+    if buf.length is 0 { return; }
+
+    onUpdateParent_(id.value, buf.join(DELIM_FIELD));
+  }
+
+  bind void onFieldUpdate(int code, object newval, object oldval) {
+    if onUpdateParent_ is null { return; }
+
+    var me = this;
+
+    updates_[code] = newval;
+
+    // cancel already queued update
+    if updateTimerId_ isnot 0 {
+      window.clearTimeout(updateTimerId_);
+      updateTimerId_ = 0;
+    }
+
+    window.setTimeout(void () {
+      me.notifyUpdate();
+    }, 0);
+  }
 }
 
 
