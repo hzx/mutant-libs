@@ -6,6 +6,9 @@ string GetStyle(object node, string name);
 auto scrollNodes_ = [];
 object scrollNode = null;
 
+int DEFAULT_Z_INDEX = 100;
+int zIndex = DEFAULT_Z_INDEX;
+
 void pushScrollNode(object node) {
   scrollNodes_.push(node);
   scrollNode = node;
@@ -20,6 +23,14 @@ void popScrollNode() {
   } else {
     scrollNode = scrollNodes_[scrollNodes_.length - 1];
   }
+}
+
+int enterZindex() {
+  return zIndex = zIndex + 1;
+}
+
+void exitZindex() {
+  zIndex = zIndex - 1;
 }
 
 SetText setTextInit_() {
