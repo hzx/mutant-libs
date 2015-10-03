@@ -26,11 +26,19 @@ void popScrollNode() {
 }
 
 int enterZindex() {
-  return zIndex = zIndex + 1;
+  return ++zIndex;
 }
 
-void exitZindex() {
-  zIndex = zIndex - 1;
+int exitZindex() {
+  return --zIndex;
+}
+
+void pushZindex(object node) {
+  node.style["zIndex"] = enterZindex();
+}
+
+void popZindex(object node) {
+  node.style["zIndex"] = exitZindex();
 }
 
 SetText setTextInit_() {
