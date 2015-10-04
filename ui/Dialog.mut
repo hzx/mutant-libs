@@ -3,6 +3,10 @@ class Dialog extends web.View {
   tag scrollable_ = null;
   tag content_ = null;
 
+  Dialog() {
+    style_ = style.dialog;
+  }
+
   override void create() {
     content_ = createContent();
 

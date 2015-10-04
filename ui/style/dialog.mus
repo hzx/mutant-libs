@@ -9,12 +9,20 @@ view {
   right: 0;
   bottom: 0;
   overflowY: scroll;
+  backgroundColor: #ffffff;
 }
 
 scrollable {
+  margin: 0 24px 0 0;
 }
 
-closeButton {
+closeButton: button {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  backgroundColor: #ff8888;
+  top: 0px;
+  right: 0px;
 }
 
 wrap {
