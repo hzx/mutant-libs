@@ -1,0 +1,17 @@
+
+class EditorDialog extends ui.Dialog {
+  object journal_ = null;
+  auto journalItems_ = new container.ObservableCollection();
+
+  override tag createContent() {
+    return <div></div>;
+  }
+
+  void setJournal(journal_model.Journal doc) {
+    journal_ = doc;
+    auto editor = <Editor journal_=journal_ journalItems_=journalItems_/>;
+
+    content_.clear();
+    content_.append(editor);
+  }
+}

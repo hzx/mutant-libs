@@ -1,7 +1,6 @@
 import browser;
 import web;
 import container;
-/* import journal; */
 import journal.model as journal_model;
 import journal.editor.style;
 import ui;
