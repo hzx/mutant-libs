@@ -1,8 +1,8 @@
 
 class MiniSlider extends container.Model {
   auto nodeType = NodeType.MINI_SLIDER;
-
   auto pageId = new container.String();
+  auto style = new container.String();
   auto images = new container.String();
 
   void setField(string key, string value) {
@@ -14,6 +14,9 @@ class MiniSlider extends container.Model {
       case MiniSliderField.PAGE_ID:
         pageId.init(value);
         break;
+      case MiniSliderField.STYLE:
+        style.init(value);
+        break;
       case MiniSliderField.IMAGES:
         images.init(value);
         break;
@@ -21,11 +24,14 @@ class MiniSlider extends container.Model {
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-      MiniSliderField.PAGE_ID, pageId.value,
-      MiniSliderField.IMAGES, images.value,
-    ];
+    auto buf = [];
+
+    buf.push(MiniSliderField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(MiniSliderField.PAGE_ID, pageId.value); }
+    if style.has { buf.push(MiniSliderField.STYLE, style.value); }
+    if images.has { buf.push(MiniSliderField.IMAGES, images.value); }
+
     return buf.join(container.DELIM_FIELD);
   }
 
@@ -38,6 +44,8 @@ class MiniSlider extends container.Model {
 
 
 enum MiniSliderField {
-  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TYPE = 2, // container.ModelField.ID + 1,
+  PAGE_ID,
+  STYLE,
   IMAGES,
 }

@@ -1,9 +1,8 @@
 
 class Header extends container.Model {
   auto nodeType = NodeType.H1;
-
   auto pageId = new container.String();
-  auto text = new container.String();
+  auto style = new container.String();
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -14,18 +13,20 @@ class Header extends container.Model {
       case HeaderField.PAGE_ID:
         pageId.init(value);
         break;
-      case HeaderField.TEXT:
-        text.init(value);
+      case HeaderField.STYLE:
+        style.init(value);
         break;
     }
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-      HeaderField.PAGE_ID, pageId.value,
-      HeaderField.TEXT, text.value,
-    ];
+    auto buf = [];
+
+    buf.push(HeaderField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(HeaderField.PAGE_ID, pageId.value); }
+    if style.has { buf.push(HeaderField.STYLE, style.value); }
+
     return buf.join(container.DELIM_FIELD);
   }
 
@@ -37,13 +38,47 @@ class Header extends container.Model {
 }
 
 class Header2 extends Header {
+  auto text = new container.String();
+
   Header2() {
     nodeType = NodeType.H2;
+  }
+
+  void setField(string key, string value) {
+    int field = window.parseInt(key);
+    switch field {
+      case container.ModelField.ID:
+        id.init(value);
+        break;
+      case HeaderField.PAGE_ID:
+        pageId.init(value);
+        break;
+      case HeaderField.STYLE:
+        style.init(value);
+        break;
+      case HeaderField.TEXT:
+        text.init(value);
+        break;
+    }
+  }
+
+  string serialize() {
+    auto buf = [];
+
+    buf.push(HeaderField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(HeaderField.PAGE_ID, pageId.value); }
+    if style.has { buf.push(HeaderField.STYLE, style.value); }
+    if text.has { buf.push(HeaderField.TEXT, text.value); }
+
+    return buf.join(container.DELIM_FIELD);
   }
 }
 
 
 enum HeaderField {
-  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TYPE = 2, // container.ModelField.ID + 1,
+  PAGE_ID,
+  STYLE,
   TEXT,
 }

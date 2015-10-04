@@ -1,8 +1,8 @@
 
 class Break extends container.Model {
   auto nodeType = NodeType.BREAK;
-
   auto pageId = new container.String();
+  auto style = new container.String();
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -13,14 +13,20 @@ class Break extends container.Model {
       case BreakField.PAGE_ID:
         pageId.init(value);
         break;
+      case BreakField.STYLE:
+        style.init(value);
+        break;
     }
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-      BreakField.PAGE_ID, pageId.value,
-    ];
+    auto buf = [];
+
+    buf.push(BreakField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(BreakField.PAGE_ID, pageId.value); }
+    if style.has { buf.push(BreakField.STYLE, style.value); }
+
     return buf.join(container.DELIM_FIELD);
   }
 
@@ -32,5 +38,7 @@ class Break extends container.Model {
 }
 
 enum BreakField {
-  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TYPE = 2, // container.ModelField.ID + 1,
+  PAGE_ID,
+  STYLE,
 }

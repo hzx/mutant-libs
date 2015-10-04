@@ -1,8 +1,8 @@
 
 class Link extends container.Model {
   auto nodeType = NodeType.LINK;
-
   auto pageId = new container.String();
+  auto style = new container.String();
   auto src = new container.String();
   auto alt = new container.String();
 
@@ -15,6 +15,9 @@ class Link extends container.Model {
       case LinkField.PAGE_ID:
         pageId.init(value);
         break;
+      case LinkField.STYLE:
+        style.init(value);
+        break;
       case LinkField.SRC:
         src.init(value);
         break;
@@ -25,12 +28,15 @@ class Link extends container.Model {
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-      LinkField.PAGE_ID, pageId.value,
-      LinkField.SRC, src.value,
-      LinkField.ALT, alt.value,
-    ];
+    auto buf = [];
+
+    buf.push(LinkField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(LinkField.PAGE_ID, pageId.value); }
+    if style.has { buf.push(LinkField.STYLE, style.value); }
+    if src.has { buf.push(LinkField.SRC, src.value); }
+    if alt.has { buf.push(LinkField.ALT, alt.value); }
+      
     return buf.join(container.DELIM_FIELD);
   }
 
@@ -43,7 +49,9 @@ class Link extends container.Model {
 
 
 enum LinkField {
-  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TYPE = 2, // container.ModelField.ID + 1,
+  PAGE_ID,
+  STYLE,
   SRC,
   ALT,
 }

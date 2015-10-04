@@ -1,8 +1,8 @@
 
 class Code extends container.Model {
   auto nodeType = NodeType.CODE;
-
   auto pageId = new container.String();
+  auto style = new container.String();
   auto text = new container.String();
 
   void setField(string key, string value) {
@@ -14,6 +14,9 @@ class Code extends container.Model {
       case CodeField.PAGE_ID:
         pageId.init(value);
         break;
+      case CodeField.STYLE:
+        style.init(value);
+        break;
       case CodeField.TEXT:
         text.init(value);
         break;
@@ -21,11 +24,14 @@ class Code extends container.Model {
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-      TextField.PAGE_ID, pageId.value,
-      TextField.TEXT, text.value,
-    ];
+    auto buf = [];
+
+    buf.push(TextField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(CodeField.PAGE_ID, pageId.value); }
+    if style.has { buf.push(CodeField.STYLE, style.value); }
+    if text.has { buf.push(CodeField.TEXT, text.value); }
+
     return buf.join(container.DELIM_FIELD);
   }
 
@@ -37,6 +43,8 @@ class Code extends container.Model {
 }
 
 enum CodeField {
-  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TYPE = 2, // container.ModelField.ID + 1,
+  PAGE_ID,
+  STYLE,
   TEXT,
 }

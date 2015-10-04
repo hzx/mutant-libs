@@ -4,8 +4,8 @@ class Gallery extends container.Model {
   static int THUMB_HEIGHT = 224;
 
   auto nodeType = NodeType.GALLERY;
-
   auto pageId = new container.String();
+  auto style = new container.String();
   auto images = new container.String();
 
   void setField(string key, string value) {
@@ -17,6 +17,9 @@ class Gallery extends container.Model {
       case GalleryField.PAGE_ID:
         pageId.init(value);
         break;
+      case GalleryField.STYLE:
+        style.init(value);
+        break;
       case GalleryField.IMAGES:
         images.init(value);
         break;
@@ -24,11 +27,14 @@ class Gallery extends container.Model {
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-      GalleryField.PAGE_ID, pageId.value,
-      GalleryField.IMAGES, images.value,
-    ];
+    auto buf = [];
+
+    buf.push(GalleryField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(GalleryField.PAGE_ID, pageId.value); }
+    if style.has { buf.push(GalleryField.STYLE, style.value); }
+    if images.has { buf.push(GalleryField.IMAGES, images.value); }
+
     return buf.join(container.DELIM_FIELD);
   }
 
@@ -41,6 +47,8 @@ class Gallery extends container.Model {
 
 
 enum GalleryField {
-  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TYPE = 2, // container.ModelField.ID + 1,
+  PAGE_ID,
+  STYLE,
   IMAGES,
 }

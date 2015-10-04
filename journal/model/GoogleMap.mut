@@ -1,8 +1,8 @@
 
 class GoogleMap extends container.Model {
   auto nodeType = NodeType.GOOGLE_MAP;
-
   auto pageId = new container.String();
+  auto style = new container.String();
   auto zoom = new container.Int();
   auto lat = new container.Float();
   auto lng = new container.Float();
@@ -15,6 +15,9 @@ class GoogleMap extends container.Model {
         break;
       case GoogleMapField.PAGE_ID:
         pageId.init(value);
+        break;
+      case GoogleMapField.STYLE:
+        style.init(value);
         break;
       case GoogleMapField.ZOOM:
         zoom.init(parseInt(value));
@@ -29,13 +32,15 @@ class GoogleMap extends container.Model {
   }
 
   string serialize() {
-    auto buf = [
-      container.ModelField.ID, id.value,
-      GoogleMapField.PAGE_ID, pageId.value,
-      GoogleMapField.ZOOM, zoom.value,
-      GoogleMapField.LAT, lat.value,
-      GoogleMapField.LNG, lng.value,
-    ];
+    auto buf = [];
+
+    buf.push(GoogleMapField.TYPE, nodeType);
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(GoogleMapField.PAGE_ID, pageId.value); }
+    if zoom.has { buf.push(GoogleMapField.ZOOM, zoom.value); }
+    if lat.has { buf.push(GoogleMapField.LAT, lat.value); }
+    if lng.has { buf.push(GoogleMapField.LNG, lng.value); }
+
     return buf.join(container.DELIM_FIELD);
   }
 
@@ -48,7 +53,9 @@ class GoogleMap extends container.Model {
 
 
 enum GoogleMapField {
-  PAGE_ID = 2, // container.ModelField.ID + 1,
+  TYPE = 2, // container.ModelField.ID + 1,
+  PAGE_ID,
+  STYLE,
   ZOOM,
   LAT,
   LNG,
