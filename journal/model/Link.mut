@@ -12,7 +12,7 @@ class Link extends container.Model {
       case container.ModelField.ID:
         id.init(value);
         break;
-      case container.LinkField.PAGE_ID:
+      case LinkField.PAGE_ID:
         pageId.init(value);
         break;
       case LinkField.SRC:

@@ -23,7 +23,7 @@ class MiniSlider extends container.Model {
   string serialize() {
     auto buf = [
       container.ModelField.ID, id.value,
-      MiniSliderField.PAGE_ID, paegId.value,
+      MiniSliderField.PAGE_ID, pageId.value,
       MiniSliderField.IMAGES, images.value,
     ];
     return buf.join(container.DELIM_FIELD);
