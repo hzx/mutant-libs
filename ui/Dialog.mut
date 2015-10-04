@@ -27,15 +27,23 @@ class Dialog extends web.View {
   }
 
   void show() {
-    browser.pushScrollNode(scrollable_);
+    exit(); // unsubscribe from old scrollNode
+
+    browser.pushScrollNode(element.node);
     browser.pushZindex(element.node);
     browser.show(element.node);
+
+    enter(); // subscribe to current scrollNode onscroll
   }
 
   void hide() {
+    exit(); // unsubscribe from current scrollNode
+
     browser.popScrollNode();
     browser.popZindex(element.node);
     browser.hide(element.node);
+
+    enter();
   }
 
   bind void onCloseButtonClick(object e) {
