@@ -59,4 +59,5 @@ enum GoogleMapField {
   ZOOM,
   LAT,
   LNG,
+  // TODO: add icon field
 }

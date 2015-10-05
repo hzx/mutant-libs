@@ -3,7 +3,7 @@ class Video extends container.Model {
   auto nodeType = NodeType.VIDEO;
   auto pageId = new container.String();
   auto style = new container.String();
-  auto code = new container.String();
+  auto text = new container.String();
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -17,8 +17,8 @@ class Video extends container.Model {
       case VideoField.STYLE:
         style.init(value);
         break;
-      case VideoField.CODE:
-        code.init(value);
+      case VideoField.TEXT:
+        text.init(value);
         break;
     }
   }
@@ -30,7 +30,7 @@ class Video extends container.Model {
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(VideoField.PAGE_ID, pageId.value); }
     if style.has { buf.push(VideoField.STYLE, style.value); }
-    if code.has { buf.push(VideoField.CODE, code.value); }
+    if text.has { buf.push(VideoField.TEXT, text.value); }
 
     return buf.join(container.DELIM_FIELD);
   }
@@ -47,5 +47,5 @@ enum VideoField {
   TYPE = 2, // container.ModelField.ID + 1,
   PAGE_ID,
   STYLE,
-  CODE,
+  TEXT,
 }

@@ -4,6 +4,7 @@ class File extends container.Model {
   auto pageId = new container.String();
   auto style = new container.String();
   auto filename = new container.String();
+  auto text = new container.String();
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -16,9 +17,11 @@ class File extends container.Model {
       case FileField.STYLE:
         style.init(value);
         break;
-        break;
       case FileField.FILENAME:
         filename.init(value);
+        break;
+      case FileField.TEXT:
+        text.init(value);
         break;
     }
   }
@@ -31,6 +34,7 @@ class File extends container.Model {
     if pageId.has { buf.push(FileField.PAGE_ID, pageId.value); }
     if style.has { buf.push(FileField.STYLE, style.value); }
     if filename.has { buf.push(FileField.FILENAME, filename.value); }
+    if text.has { buf.push(FileField.TEXT, text.value); }
 
     return buf.join(container.DELIM_FIELD);
   }
@@ -48,4 +52,5 @@ enum FileField {
   PAGE_ID,
   STYLE,
   FILENAME,
+  TEXT,
 }
