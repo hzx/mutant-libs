@@ -39,8 +39,10 @@ class Dialog extends web.View {
   void hide() {
     exit(); // unsubscribe from current scrollNode
 
-    browser.popScrollNode();
-    browser.popZindex(element.node);
+    if browser.scrollNode is element.node {
+      browser.popScrollNode();
+      browser.popZindex(element.node);
+    }
     browser.hide(element.node);
 
     enter();
