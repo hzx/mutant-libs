@@ -147,6 +147,7 @@ class Editor extends web.View {
         break;
       case journal_model.NodeType.H1:
         node = new Header1();
+        node.journal_ = journal_;
         node.style_ = style.header;
         break;
       case journal_model.NodeType.H2:

@@ -1,37 +1,44 @@
 
 class Text extends VerticalNode {
   static int HEIGHT_DELTA = 24;
+
   tag textarea_ = null;
   tag areawrap = null;
+  tag customStyleInput = null;
+  tag customStyleNode = null;
 
   Text() {
     code = journal_model.NodeType.TEXT;
   }
 
-  override string serialize() {
-    object buf = [];
-    buf.push(code);
-    buf.push(textarea_.node.value);
-
-    return buf.join(container.DELIM_FIELD);
-  }
-
-  override void unserialize(object fields) {
-    textarea_.node.value = fields[1];
-  }
-
   override void create() {
     createPlaceholders();
 
-    textarea_ = <textarea style=style_.area active=style_.area_active onkeydown=onKeydown onkeyup=onKeyup onchange=onChange onfocus=onFocus onblur=onBlur/>;
+    textarea_ = <textarea style=style_.area active=style_.area_active
+        onkeydown=onKeydown onkeyup=onKeyup onchange=onChange onfocus=onFocus
+        onblur=onBlur/>;
     areawrap = <div style=style_.areawrap> {textarea_} </div>;
 
-    element = <div style=style_.node active=style_.node_active onclick=onClick ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+    customStyleInput = <input style=ui_style.nestedInput
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+
+    customStyleNode = <div style=style_.customStyleNode
+        active=style_.customStyleNode_active onclick=onCustomStyleClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "Стиль" </div>
+        {customStyleInput}
+      </div>
+    </div>;
+
+    element = <div style=style_.node active=style_.node_active
+        ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave
+        ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
         {areawrap}
+        {customStyleNode}
       </div>
     </div>;
   }
@@ -47,6 +54,15 @@ class Text extends VerticalNode {
     textarea_.setState(web.STATE_NORMAL);
   }
 
+  void focusCustomStyle() {
+    customStyleNode.setState(web.STATE_ACTIVE);
+    customStyleInput.node.focus();
+  }
+
+  void blurCustomStyle() {
+    customStyleNode.setState(web.STATE_NORMAL);
+  }
+
   void tuneHeight() {
     int scroll = textarea_.node.scrollHeight;
     int client = areawrap.node.clientHeight;
@@ -60,10 +76,6 @@ class Text extends VerticalNode {
     // try minimal size
     areawrap.node.style.height = "auto";
     tuneHeight();
-  }
-
-  bind void onClick(object e) {
-    focus();
   }
 
   bind void onKeydown(object e) {
@@ -107,5 +119,17 @@ class Text extends VerticalNode {
 
   bind void onBlur(object e) {
     blur();
+  }
+
+  bind void onCustomStyleFocus(object e) {
+    focusCustomStyle();
+  }
+
+  bind void onCustomStyleBlur(object e) {
+    blurCustomStyle();
+  }
+
+  bind void onCustomStyleClick(object e) {
+    focusCustomStyle();
   }
 }

@@ -7,6 +7,8 @@ class File extends VerticalNode {
   tag textNode = null;
   tag altInput = null;
   tag altNode = null;
+  tag customStyleInput = null;
+  tag customStyleNode = null;
 
   object file = null;
 
@@ -41,6 +43,17 @@ class File extends VerticalNode {
       </div>
     </div>;
 
+    customStyleInput = <input style=ui_style.nestedInput
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+
+    customStyleNode = <div style=style_.customStyleNode
+        active=style_.customStyleNode_active onclick=onCustomStyleClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "Стиль" </div>
+        {customStyleInput}
+      </div>
+    </div>;
+
     element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
@@ -64,6 +77,7 @@ class File extends VerticalNode {
             {a}
           </div>
         </div>
+        {customStyleNode}
       </div>
     </div>;
   }
@@ -112,6 +126,15 @@ class File extends VerticalNode {
     altNode.setState(web.STATE_NORMAL);
   }
 
+  void focusCustomStyle() {
+    customStyleNode.setState(web.STATE_ACTIVE);
+    customStyleInput.node.focus();
+  }
+
+  void blurCustomStyle() {
+    customStyleNode.setState(web.STATE_NORMAL);
+  }
+
   bind void onUploadBtnClick(object e) {
     fileDialog.click();
   }
@@ -146,5 +169,17 @@ class File extends VerticalNode {
 
   bind void onAltBlur(object e) {
     blurAlt();
+  }
+
+  bind void onCustomStyleFocus(object e) {
+    focusCustomStyle();
+  }
+
+  bind void onCustomStyleBlur(object e) {
+    blurCustomStyle();
+  }
+
+  bind void onCustomStyleClick(object e) {
+    focusCustomStyle();
   }
 }

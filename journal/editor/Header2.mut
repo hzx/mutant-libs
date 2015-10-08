@@ -1,19 +1,27 @@
 
-class Gallery extends VerticalNode {
-  tag fileDialog = null;
-  tag userImages = null;
+class Header2 extends VerticalNode {
+  tag nameNode_ = null;
+  tag nameInput_ = null;
   tag customStyleInput = null;
   tag customStyleNode = null;
 
-  Gallery() {
-    code = journal_model.NodeType.GALLERY;
+  Header2() {
+    code = journal_model.NodeType.H2;
   }
 
   override void create() {
     createPlaceholders();
 
-    fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
-    userImages = <div></div>;
+    nameInput_ = <input style=ui_style.nestedInput
+      onfocus=onNameFocus onblur=onNameBlur/>;
+
+    nameNode_ = <div style=style_.nameNode active=style_.nameNode_active
+        onclick=onNameClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "Название" </div>
+        {nameInput_}
+      </div>
+    </div>;
 
     customStyleInput = <input style=ui_style.nestedInput
         onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
@@ -26,23 +34,26 @@ class Gallery extends VerticalNode {
       </div>
     </div>;
 
-    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+    element = <div style=style_.h2 active=style_.header_active
+        ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave
+        ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
-      <div style=style_.move draggable=true ondragstart=onDragstart></div>
-      {fileDialog}
+      <div style=style_.h2Move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
-        <div style=style_.images>
-          {userImages}
-          <div style=style_.add onclick=onAddClick></div>
-        </div>
+        {nameNode_}
         {customStyleNode}
       </div>
     </div>;
   }
 
-  tag createImage(string id, string url, string alt) {
-    return <img id=id src=url alt=alt style=style_.image draggable=true ondragstart=onImageDragstart/>;
+  void focusName() {
+    nameNode_.setState(web.STATE_ACTIVE);
+    nameInput_.node.focus();
+  }
+
+  void blurName() {
+    nameNode_.setState(web.STATE_NORMAL);
   }
 
   void focusCustomStyle() {
@@ -53,22 +64,17 @@ class Gallery extends VerticalNode {
   void blurCustomStyle() {
     customStyleNode.setState(web.STATE_NORMAL);
   }
-
-  bind void onUploadBtnClick(object e) {
-    fileDialog.click();
+  
+  bind void onNameFocus(object e) {
+    focusName();
   }
 
-  bind void onFileChange(object files) {
-    if files.length < 1 { return; }
-    /* file = files[0]; */
-
-    /* browser.setText(filename.node, file.name); */
+  bind void onNameBlur(object e) {
+    blurName();
   }
 
-  bind void onImageDragstart(object e) {
-  }
-
-  bind void onAddClick(object e) {
+  bind void onNameClick(object e) {
+    focusName();
   }
 
   bind void onCustomStyleFocus(object e) {

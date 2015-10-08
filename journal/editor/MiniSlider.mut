@@ -1,6 +1,8 @@
 
 class MiniSlider extends VerticalNode {
   tag fileDialog = null;
+  tag customStyleInput = null;
+  tag customStyleNode = null;
 
   MiniSlider() {
     code = journal_model.NodeType.MINI_SLIDER;
@@ -11,23 +13,35 @@ class MiniSlider extends VerticalNode {
 
     fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
 
+    customStyleInput = <input style=ui_style.nestedInput
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+
+    customStyleNode = <div style=style_.customStyleNode
+        active=style_.customStyleNode_active onclick=onCustomStyleClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "Стиль" </div>
+        {customStyleInput}
+      </div>
+    </div>;
+
     element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
       {fileDialog}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
+        {customStyleNode}
       </div>
     </div>;
   }
 
-  override string serialize() {
-    browser.log("serialize not implemented");
-    return "";
+  void focusCustomStyle() {
+    customStyleNode.setState(web.STATE_ACTIVE);
+    customStyleInput.node.focus();
   }
 
-  override void unserialize(object fields) {
-    browser.log("unserialize not implemented");
+  void blurCustomStyle() {
+    customStyleNode.setState(web.STATE_NORMAL);
   }
 
   bind void onUploadBtnClick(object e) {
@@ -39,5 +53,17 @@ class MiniSlider extends VerticalNode {
     /* file = files[0]; */
 
     /* browser.setText(filename.node, file.name); */
+  }
+
+  bind void onCustomStyleFocus(object e) {
+    focusCustomStyle();
+  }
+
+  bind void onCustomStyleBlur(object e) {
+    blurCustomStyle();
+  }
+
+  bind void onCustomStyleClick(object e) {
+    focusCustomStyle();
   }
 }

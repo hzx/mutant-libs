@@ -26,11 +26,22 @@ move {
 
 row {
   overflow: hidden;
-  /* marginBottom: 8px; */
+  marginBottom: 4px;
+}
+
+edit {
+  fontFamily: Ubuntu, sans-serif;
+  backgroundColor: #f5f5f5;
+  color: #1b5413;
+  marginBottom: 4px;
+}
+
+edit_active {
+  backgroundColor: #f0f0f0;
 }
 
 wrap {
-  padding: 28px 8px 8px 8px;
+  padding: 28px 0px 8px 0px;
 }
 
 editwrap {
@@ -87,6 +98,12 @@ heightNode {
 }
 
 iconNode {
+}
+
+customStyleNode: edit {
+}
+
+customStyleNode_active: edit_active {
 }
 
 a {

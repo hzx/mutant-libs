@@ -80,13 +80,15 @@ breakBtn: toolbarBtn {
   background: url(img/break.png) center center no-repeat transparent;
 }
 
-trashBtn {
+trashBg {
+  background: url(img/trash.png) center center no-repeat #fcf3c3;
+}
+
+trashBtn: trashBg {
   float: right;
   cssFloat: right;
   width: 660px; // 14 buttons + trash
   height: 32px;
-  /* backgroundColor: #f7f7f7; */
-  background: url(img/trash.png) center center no-repeat #fcf3c3;
 }
 
 saveBtn {

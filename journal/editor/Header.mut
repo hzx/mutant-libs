@@ -1,7 +1,17 @@
 
 class Header1 extends VerticalNode {
-  tag input_ = null;
-  tag dropPlaceholder = null;
+  // set this after creation
+  Journal journal_ = null;
+
+  tag nameInput = null;
+  tag nameNode = null;
+  tag slugNode = null;
+  tag keywordsNode = null;
+  tag descriptionInput = null;
+  tag descriptionWrap = null;
+  tag descriptionNode = null;
+  tag customStyleInput = null;
+  tag customStyleNode = null;
 
   Header1() {
     code = journal_model.NodeType.H1;
@@ -10,72 +20,180 @@ class Header1 extends VerticalNode {
   override void create() {
     createPlaceholders();
 
-    input_ = <input style=style_.headerInput active=style_.headerInput_active onfocus=onFocus onblur=onBlur/>;
+    nameInput = <input style=ui_style.nestedInput onfocus=onNameFocus
+        onblur=onNameBlur/>;
 
-    element = <div style=style_.h1 active=style_.header_active onclick=onClick ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+    nameNode = <div style=style_.nameNode active=style_.nameNode_active
+        onclick=onNameClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "Название" </div>
+        {nameInput}
+      </div>
+    </div>;
+
+    slugNode = <div style=style_.slugNode bind=journal_.slug
+        render=renderValue></div>;
+    
+    keywordsNode = <div style=style_.keywordsNode bind=journal_.keywords
+        render=renderValue></div>;
+
+    descriptionInput = <textarea style=style_.descriptionArea
+        onkeydown=onDescriptionKeydown onkeyup=onDescriptionKeyup
+        onchange=onDescriptionChange
+        onfocus=onDescriptionFocus onblur=onDescriptionBlur/>;
+
+    descriptionWrap = <div> {descriptionInput} </div>;
+
+    descriptionNode = <div style=style_.descriptionNode
+        active=style_.descriptionNode_active onclick=onDescriptionClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "Описание" </div>
+        {descriptionWrap}
+      </div>
+    </div>;
+
+    customStyleInput = <input style=ui_style.nestedInput
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+
+    customStyleNode = <div style=style_.customStyleNode
+        active=style_.customStyleNode_active onclick=onCustomStyleClick>
+      <div style=style_.editwrap>
+        <div style=style_.label> "Стиль" </div>
+        {customStyleInput}
+      </div>
+    </div>;
+
+    element = <div style=style_.h1 active=style_.header_active
+        ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave
+        ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
+      <div style=style_.h1Move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
-        <div style=style_.h1Move draggable=true ondragstart=onDragstart></div>
-        {input_}
+        {nameNode}
+        {slugNode}
+        {keywordsNode}
+        {descriptionNode}
+        {customStyleNode}
       </div>
     </div>;
   }
 
-  override string serialize() {
-    object buf = [];
-    buf.push(code);
-    buf.push(input_.node.value);
-
-    return buf.join(container.DELIM_FIELD);
+  void renderValue(tag elem, object ovalue) {
+    elem.setValue(ovalue.value);
   }
 
-  override void unserialize(object fields) {
-    input_.node.value = fields[1];
+  void focusName() {
+    nameNode.setState(web.STATE_ACTIVE);
+    nameInput.node.focus();
   }
 
-  void focus() {
-    element.setState(web.STATE_ACTIVE);
-    input_.setState(web.STATE_ACTIVE);
-    input_.node.focus();
+  void blurName() {
+    nameNode.setState(web.STATE_NORMAL);
   }
 
-  void blur() {
-    element.setState(web.STATE_NORMAL);
-    input_.setState(web.STATE_NORMAL);
+  void descriptionTuneHeight() {
+    int scroll = descriptionInput.node.scrollHeight;
+    int client = descriptionWrap.node.clientHeight;
+
+    if scroll > client {
+      descriptionWrap.node.style.height = (scroll + Text.HEIGHT_DELTA) + "px";
+    }
   }
 
-  bind void onClick(object e) {
-    focus();
+  void descriptionShrinkHeight() {
+    // try minimal size
+    descriptionWrap.node.style.height = "auto";
+    descriptionTuneHeight();
   }
 
-  bind void onFocus(object e) {
-    focus();
+  void focusDescription() {
+    descriptionNode.setState(web.STATE_ACTIVE);
+    descriptionInput.node.focus();
   }
 
-  bind void onBlur(object e) {
-    blur();
+  void blurDescription() {
+    descriptionNode.setState(web.STATE_NORMAL);
+  }
+
+  void focusCustomStyle() {
+    customStyleNode.setState(web.STATE_ACTIVE);
+    customStyleInput.node.focus();
+  }
+
+  void blurCustomStyle() {
+    customStyleNode.setState(web.STATE_NORMAL);
+  }
+
+  bind void onNameFocus(object e) {
+    focusName();
+  }
+
+  bind void onNameBlur(object e) {
+    blurName();
+  }
+
+  bind void onNameClick(object e) {
+    focusName();
+  }
+
+  bind void onDescriptionFocus(object e) {
+    focusDescription();
+  }
+
+  bind void onDescriptionBlur(object e) {
+    blurDescription();
+  }
+
+  bind void onDescriptionClick(object e) {
+    focusDescription();
+  }
+
+  bind void onDescriptionKeydown(object e) {
+    switch e.keyCode {
+      case 9: // tab
+        e.preventDefault();
+        break;
+    }
+  }
+
+  bind void onDescriptionKeyup(object e) {
+    switch e.keyCode {
+      case 27: // escape
+        clear();
+        break;
+      case 9: // tab
+        e.preventDefault();
+        int selstart = descriptionInput.node.selectionStart;
+        string value = descriptionInput.node.value;
+        descriptionInput.node.value = value.substring(0, selstart) + "\t"
+          + value.substring(descriptionInput.node.selectionEnd);
+        descriptionInput.node.selectionEnd = selstart + 1;
+        return;
+      case 8: // backspace
+      case 46: // delete
+        descriptionShrinkHeight();
+        break;
+      default:
+        descriptionTuneHeight();
+        break;
+    }
+  }
+
+  bind void onDescriptionChange(object e) {
+  }
+
+  bind void onCustomStyleFocus(object e) {
+    focusCustomStyle();
+  }
+
+  bind void onCustomStyleBlur(object e) {
+    blurCustomStyle();
+  }
+
+  bind void onCustomStyleClick(object e) {
+    focusCustomStyle();
   }
 }
 
 
-class Header2 extends Header1 {
-  Header2() {
-    code = journal_model.NodeType.H2;
-  }
-
-  override void create() {
-    createPlaceholders();
-
-    input_ = <input style=style_.headerInput active=style_.headerInput_active onfocus=onFocus onblur=onBlur/>;
-
-    element = <div style=style_.h2 active=style_.header_active onclick=onClick ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
-      {topPlaceholder_}
-      {bottomPlaceholder_}
-      <div style=style_.h2Move draggable=true ondragstart=onDragstart></div>
-      <div style=style_.wrap>
-        {input_}
-      </div>
-    </div>;
-  }
-}

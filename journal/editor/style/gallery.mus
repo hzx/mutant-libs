@@ -2,6 +2,12 @@
 namespace gallery {
 
 
+label {
+  fontSize: 10px;
+  fontFamily: Ubuntu, sans-serif;
+  color: #2c597a;
+}
+
 node {
   position: relative;
   /* margin: 16px; */
@@ -20,8 +26,22 @@ move {
   cursor: pointer;
 }
 
+edit {
+  fontFamily: Ubuntu, sans-serif;
+  backgroundColor: #f5f5f5;
+  color: #1b5413;
+  marginBottom: 4px;
+}
+
+edit_active {
+  backgroundColor: #f0f0f0;
+}
+
+editwrap {
+}
+
 wrap {
-  padding: 28px 8px 8px 8px;
+  padding: 28px 0px 8px 0px;
 }
 
 images {
@@ -31,6 +51,12 @@ add {
 }
 
 image {
+}
+
+customStyleNode: edit {
+}
+
+customStyleNode_active: edit_active {
 }
 
 

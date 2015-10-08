@@ -3,7 +3,7 @@ namespace header {
 
 
 header: verticalNode {
-  fontWeight: bold;
+  /* fontWeight: bold; */
   /* margin: 16px; */
   /* borderBottomStyle: none; */
   /* backgroundColor: #f7f7f7; */
@@ -16,11 +16,11 @@ header_active {
 }
 
 wrap {
-  padding: 28px 8px 8px 8px;
+  padding: 28px 0px 8px 0px;
 }
 
 h1: header {
-  fontSize: 32px;
+  fontSize: 16px;
 }
 
 h1Move {
@@ -35,7 +35,7 @@ h1Move {
 }
 
 h2: header {
-  fontSize: 24px;
+  fontSize: 16px;
 }
 
 h2Move {
@@ -60,5 +60,51 @@ headerInput_active {
 headerMoveIcon {
 }
 
+editwrap {
+}
+
+label {
+  fontSize: 10px;
+  fontFamily: Ubuntu, sans-serif;
+  color: #2c597a;
+}
+
+node {
+  fontFamily: Ubuntu, sans-serif;
+  backgroundColor: #f5f5f5;
+  color: #1b5413;
+  marginBottom: 4px;
+}
+
+node_active {
+  backgroundColor: #f0f0f0;
+}
+
+nameNode: node {
+}
+
+nameNode_active: node_active {
+}
+
+slugNode: node {
+}
+
+keywordsNode: node {
+}
+
+descriptionArea: ui_style.nestedTextarea {
+}
+
+descriptionNode: node {
+}
+
+descriptionNode_active: node_active {
+}
+
+customStyleNode: node {
+}
+
+customStyleNode_active: node_active {
+}
 
 } // end namespace header
