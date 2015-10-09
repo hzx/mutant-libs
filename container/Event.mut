@@ -31,4 +31,12 @@ class Event implements Observable {
       handler(e1, e2);
     }
   }
+
+  void isAbandoned() {
+    for auto item: handlers {
+      return false;
+    }
+
+    return true;
+  }
 }
