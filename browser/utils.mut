@@ -1,0 +1,8 @@
+
+bool isObjEmpty(object obj) {
+  for auto name: obj {
+    return true;
+  }
+
+  return false;
+}
