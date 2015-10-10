@@ -6,17 +6,17 @@ class DocSync {
   string xsrf = "";
 
   void enter() {
-    obj.setUpdateParent(onUpdate);
+    obj.eventUpdate.listen(onObjectUpdate);
   }
 
   void exit() {
-    obj.setUpdateParent(null);
+    obj.eventUpdate.unlisten(onObjectUpdate);
   }
 
   void update(string updates) {
   }
 
-  bind void onUpdate(string id, string updates) {
+  bind void onObjectUpdate(string id, string updates) {
     auto data = {};
 
     data[container.SyncName.OP] = container.SyncOp.UPDATE;

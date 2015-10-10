@@ -6,8 +6,6 @@ CollSync collSync(int table, container.Collection collection, string url, string
   sync.collection = collection;
   sync.syncUrl = url;
   sync.xsrf = xsrf;
-
-  sync.enter();
 }
 
 
@@ -18,6 +16,4 @@ DocSync docSync(int table, container.Model obj, string url, string xsrf) {
   sync.obj = obj;
   sync.syncUrl = url;
   sync.xsrf = xsrf;
-
-  sync.enter();
 }
