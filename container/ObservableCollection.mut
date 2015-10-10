@@ -9,6 +9,9 @@ class ObservableCollection extends Collection {
   auto eventMove = new Event();
   auto eventRemove = new Event();
 
+  string parentId = "";
+  int parentField = 0;
+
   int updateTimerId = 0;
   object updates_ = [];
 

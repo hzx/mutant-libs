@@ -32,8 +32,8 @@ enum SyncName {
   BEFOREID,
   OBJ,
   ID,
-  CHILD_ID, // for subcollection
-  FIELD, // for subcollection
+  PARENT_ID, // for subcollection
+  PARENT_FIELD, // for subcollection
 }
 
 enum SyncOp {
