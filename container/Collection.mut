@@ -3,8 +3,6 @@ class Collection {
   object idToNodes_ = {};
   object first = null;
   object last = null;
-  object next = null;
-  object prev = null;
 
   void updateId(string id, string old) {
     if old in idToNodes_ {
@@ -75,6 +73,8 @@ class Collection {
 
   void clear() {
     idToNodes_ = {};
+    first = null;
+    last = null;
   }
 
   object get(string id) {
