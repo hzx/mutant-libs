@@ -33,6 +33,11 @@ class CollSync {
     data[container.SyncName.ID] = id;
     data[container.SyncName.PARAMS] = updates;
 
+    if collection.parentId.length > 0 {
+      data[container.SyncName.PARENT_ID] = collection.parentId;
+      data[container.SyncName.PARENT_FIELD] = collection.parentField;
+    }
+
     auto me = this;
 
     browser.post(syncUrl, data, xsrf, void (string response) { // success
@@ -62,6 +67,11 @@ class CollSync {
     data[container.SyncName.BEFOREID] = "";
     data[container.SyncName.OBJ] = obj.serialize();
 
+    if collection.parentId.length > 0 {
+      data[container.SyncName.PARENT_ID] = collection.parentId;
+      data[container.SyncName.PARENT_FIELD] = collection.parentField;
+    }
+
     auto me = this;
 
     browser.post(syncUrl, data, xsrf, void (string response) { // success
@@ -81,6 +91,11 @@ class CollSync {
     data[container.SyncName.BEFOREID] = beforeId;
     data[container.SyncName.OBJ] = obj.serialize();
 
+    if collection.parentId.length > 0 {
+      data[container.SyncName.PARENT_ID] = collection.parentId;
+      data[container.SyncName.PARENT_FIELD] = collection.parentField;
+    }
+
     auto me = this;
 
     browser.post(syncUrl, data, xsrf, void (string response) { // success
@@ -98,6 +113,11 @@ class CollSync {
     data[container.SyncName.OP] = container.SyncOp.APPEND;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.OBJ] = obj.serialize();
+
+    if collection.parentId.length > 0 {
+      data[container.SyncName.PARENT_ID] = collection.parentId;
+      data[container.SyncName.PARENT_FIELD] = collection.parentField;
+    }
 
     auto me = this;
 
@@ -118,6 +138,11 @@ class CollSync {
     data[container.SyncName.ID] = id;
     data[container.SyncName.BEFOREID] = beforeId;
 
+    if collection.parentId.length > 0 {
+      data[container.SyncName.PARENT_ID] = collection.parentId;
+      data[container.SyncName.PARENT_FIELD] = collection.parentField;
+    }
+
     auto me = this;
 
     browser.post(syncUrl, data, xsrf, void (string response) { // success
@@ -133,6 +158,11 @@ class CollSync {
     data[container.SyncName.OP] = container.SyncOp.REMOVE;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.ID] = id;
+
+    if collection.parentId.length > 0 {
+      data[container.SyncName.PARENT_ID] = collection.parentId;
+      data[container.SyncName.PARENT_FIELD] = collection.parentField;
+    }
 
     auto me = this;
 
