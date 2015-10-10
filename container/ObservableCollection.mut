@@ -9,6 +9,8 @@ class ObservableCollection extends Collection {
   auto eventMove = new Event();
   auto eventRemove = new Event();
 
+  EventCollection linkCollection = null;
+
   string parentId = "";
   int parentField = 0;
 
@@ -21,40 +23,142 @@ class ObservableCollection extends Collection {
   }
 
   override void update(string id, object updates) {
+    updateLocal(id, updates);
+    updateLink(id, updates);
+  }
+
+  void updateLocal(string id, object updates) {
     base.update(id, updates);
+    notifyUpdateLocal(id, updates);
+  }
+
+  void notifyUpdateLocal(string id, object updates) {
     eventUpdate.notify2(id, updates);
   }
 
+  void updateLink(string id, object updates) {
+    if linkCollection is null { return; }
+
+    linkCollection.eventUpdate.notify({
+      parentId: parentId,
+      parentField: parentField,
+      id: id,
+      updates: updates,
+    });
+  }
+
   override void insert(object obj) {
+    insertLocal(obj);
+    insertLink(obj);
+  }
+
+  void insertLocal(object obj) {
     base.insert(obj);
     obj.eventUpdate.listen(onObjectUpdate);
     eventInsert.notify(obj);
   }
 
+  void insertLink(object obj) {
+    if linkCollection is null { return; }
+
+    linkCollection.eventInsert.notify({
+      parentId: parentId,
+      parentField: parentField,
+      obj: obj,
+    });
+  }
+
   override void insertBefore(object obj, string beforeId) {
+    insertBeforeLocal(obj, beforeId);
+    insertBeforeLink(obj, beforeId);
+  }
+
+  void insertBeforeLocal(object obj, string beforeId) {
     base.insertBefore(obj, beforeId);
     obj.eventUpdate.listen(onObjectUpdate);
+
     eventInsertBefore.notify2(obj, beforeId);
   }
 
+  void insertBeforeLink(object obj, string beforeId) {
+    if linkCollection is null { return; }
+
+    linkCollection.eventInsertBefore.notify({
+      parentId: parentId,
+      parentField: parentField,
+      beforeId: beforeId,
+      obj: obj,
+    });
+  }
+
   override void append(object obj) {
+    appendLocal(obj);
+    appendLink(obj);
+  }
+
+  void appendLocal(object obj) {
     base.append(obj);
     obj.eventUpdate.listen(onObjectUpdate);
     eventAppend.notify(obj);
   }
 
+  void appendLink(object obj) {
+    if linkCollection is null { return; }
+
+    linkCollection.eventAppend.notify({
+      parentId: parentId,
+      parentField: parentField,
+      obj: obj,
+    });
+  }
+
   override void move(string id, string beforeId) {
+    moveLocal(id, beforeId);
+    moveLink(id, beforeId);
+  }
+
+  void moveLocal(string id, string beforeId) {
     base.move(id, beforeId);
-    eventMove.notify2(id, beforeId);
+    eventMove.notify(id, beforeId);
+  }
+
+  void moveLink(string id, string beforeId) {
+    if linkCollection is null { return; }
+
+    linkCollection.eventMove.notify({
+      parentId: parentId,
+      parentField: parentField,
+      id: id,
+      beforeId: beforeId,
+    });
   }
 
   override void remove(string id) {
-    auto obj = get(id);
-    if obj is null { return; }
-    obj.eventUpdate.unlisten(onObjectUpdate);
+    if removeLocal(id) {
+      removeLink(id);
+    }
+  }
 
+  bool removeLocal(string id) {
+    auto obj = get(id);
+    if obj is null { return false; }
+
+    obj.eventUpdate.unlisten(onObjectUpdate);
     base.remove(id);
+
     eventRemove.notify(id);
+
+    return true;
+  }
+
+  void removeLink(string id) {
+    if linkCollection is null { return; }
+
+    linkCollection.eventRemove.notify({
+      parentId: parentId,
+      parentField: parentField,
+      id: id,
+    });
   }
 
   override void clear() {
@@ -67,9 +171,14 @@ class ObservableCollection extends Collection {
 
     base.clear();
     eventReset.notify();
+
+    // dont do it now
+    /* if linkCollection isnot null { */
+    /* } */
   }
 
   bind void onObjectUpdate(string id, object updates) {
-    eventUpdate.notify2(id, updates);
+    notifyUpdateLocal(id, updates);
+    updateLink(id, updates);
   }
 }
