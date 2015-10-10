@@ -30,7 +30,7 @@ h1Move {
   width: 24px;
   height: 24px;
   background: url(img/h1_small.png) center center no-repeat transparent;
-  cursor: pointer;
+  cursor: move;
   zIndex: 1;
 }
 
@@ -45,16 +45,18 @@ h2Move {
   width: 24px;
   height: 24px;
   background: url(img/h2_small.png) center center no-repeat transparent;
-  cursor: pointer;
+  cursor: move;
   zIndex: 1;
 }
 
 headerInput: ui_style.nestedInput {
-  backgroundColor: #f5f5f5;
+  /* backgroundColor: #f5f5f5; */
+  /* backgroundColor: #f0f0f0; */
 }
 
 headerInput_active {
-  backgroundColor: #f0f0f0;
+  /* backgroundColor: #f0f0f0; */
+  /* backgroundColor: #e0e0e0; */
 }
 
 headerMoveIcon {
@@ -71,13 +73,13 @@ label {
 
 node {
   fontFamily: Ubuntu, sans-serif;
-  backgroundColor: #f5f5f5;
+  backgroundColor: #f0f0f0;
   color: #1b5413;
   marginBottom: 4px;
 }
 
 node_active {
-  backgroundColor: #f0f0f0;
+  backgroundColor: #e0e0e0;
 }
 
 nameNode: node {

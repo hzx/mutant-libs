@@ -11,7 +11,7 @@ node {
 }
 
 node_active {
-  backgroundColor: #f0f0f0;
+  backgroundColor: #e0e0e0;
 }
 
 move {
@@ -21,7 +21,7 @@ move {
   width: 24px;
   height: 24px;
   background: url(img/google_map_small.png) center center no-repeat transparent;
-  cursor: pointer;
+  cursor: move;
 }
 
 row {
@@ -31,13 +31,13 @@ row {
 
 edit {
   fontFamily: Ubuntu, sans-serif;
-  backgroundColor: #f5f5f5;
+  backgroundColor: #f0f0f0;
   color: #1b5413;
   marginBottom: 4px;
 }
 
 edit_active {
-  backgroundColor: #f0f0f0;
+  backgroundColor: #e0e0e0;
 }
 
 wrap {
@@ -62,7 +62,7 @@ latNode {
   cssFloat: left;
   width: 200px;
   marginRight: 4px;
-  backgroundColor: #f5f5f5;
+  backgroundColor: #f0f0f0;
 }
 
 lngNode {
@@ -70,7 +70,7 @@ lngNode {
   cssFloat: left;
   width: 200px;
   marginRight: 4px;
-  backgroundColor: #f5f5f5;
+  backgroundColor: #f0f0f0;
 }
 
 zoomNode {
@@ -78,7 +78,7 @@ zoomNode {
   cssFloat: left;
   width: 200px;
   marginRight: 4px;
-  backgroundColor: #f5f5f5;
+  backgroundColor: #f0f0f0;
 }
 
 widthNode {
@@ -86,7 +86,7 @@ widthNode {
   cssFloat: left;
   width: 200px;
   marginRight: 4px;
-  backgroundColor: #f5f5f5;
+  backgroundColor: #f0f0f0;
 }
 
 heightNode {
@@ -94,7 +94,7 @@ heightNode {
   cssFloat: left;
   width: 200px;
   marginRight: 4px;
-  backgroundColor: #f5f5f5;
+  backgroundColor: #f0f0f0;
 }
 
 iconNode {

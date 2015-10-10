@@ -16,7 +16,7 @@ toolbarBtn {
   height: 32px;
   backgroundColor: #8fb9e5;
   marginRight: 4px;
-  cursor: pointer;
+  cursor: move;
 }
 
 blockBtn: toolbarBtn {
