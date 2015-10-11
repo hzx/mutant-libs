@@ -30,7 +30,6 @@ class Collection {
 
     data[container.SyncName.OP] = container.SyncOp.INSERT;
     data[container.SyncName.NAME] = table;
-    /* data[container.SyncName.BEFOREID] = ""; */
     data[container.SyncName.OBJ] = params.obj.serialize();
 
     if params.parentId isnot null {
@@ -52,8 +51,11 @@ class Collection {
 
     data[container.SyncName.OP] = container.SyncOp.INSERT;
     data[container.SyncName.NAME] = table;
-    data[container.SyncName.BEFOREID] = params.beforeId;
     data[container.SyncName.OBJ] = params.obj.serialize();
+
+    if params.beforeId isnot null {
+      data[container.SyncName.BEFOREID] = params.beforeId;
+    }
 
     if params.parentId isnot null {
       data[container.SyncName.PARENT_ID] = params.parentId.value;
@@ -96,7 +98,10 @@ class Collection {
     data[container.SyncName.OP] = container.SyncOp.MOVE;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.ID] = params.id;
-    data[container.SyncName.BEFOREID] = params.beforeId;
+
+    if params.beforeId isnot null {
+      data[container.SyncName.BEFOREID] = params.beforeId;
+    }
 
     if params.parentId isnot null {
       data[container.SyncName.PARENT_ID] = params.parentId.value;
