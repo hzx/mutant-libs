@@ -180,31 +180,32 @@ class Tag implements Tagable {
   }
 
   void removeChild(string hash) {
-    if hash in idToChilds_ {
-      Tagable child = idToChilds_[hash];
-      if isEnter { child.exit(); }
-      node.removeChild(child.getNode());
+    if hash in idToChilds_ is false { return; }
 
-      delete idToChilds_[hash];
+    Tagable child = idToChilds_[hash];
 
-      if first is child {
-        first = child.getNext();
-      }
-      if last is child {
-        last = child.getPrev();
-      }
+    if isEnter { child.exit(); }
 
-      if child.getNext() isnot null {
-        child.getNext().setPrev(child.getPrev());
-      }
-      if child.getPrev() isnot null {
-        child.getPrev().setNext(child.getNext());
-      }
+    node.removeChild(child.getNode());
+    delete idToChilds_[hash];
 
-      child.setParent(null);
-      child.setNext(null);
-      child.setPrev(null);
+    if first is child {
+      first = child.getNext();
     }
+    if last is child {
+      last = child.getPrev();
+    }
+
+    if child.getNext() isnot null {
+      child.getNext().setPrev(child.getPrev());
+    }
+    if child.getPrev() isnot null {
+      child.getPrev().setNext(child.getNext());
+    }
+
+    child.setParent(null);
+    child.setNext(null);
+    child.setPrev(null);
   }
 
   void moveChild(Tagable node, string beforeId) {

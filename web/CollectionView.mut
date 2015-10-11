@@ -45,7 +45,7 @@ class CollectionView extends View {
   }
 
   bind void onUpdate(string id, object updates) {
-    // TODO: implement
+    // TODO: implement after framework stabilization
   }
 
   bind void onReset() {
