@@ -1,0 +1,32 @@
+
+class Document extends Collection {
+  /* int table = 0; */
+  /* string url = ""; */
+  /* string xsrf = ""; */
+  string obj = null;
+
+  void update(object params) {
+    auto data = {};
+
+    data[container.SyncName.OP] = container.SyncOp.UPDATE;
+    data[container.SyncName.NAME] = table;
+    data[container.SyncName.ID] = params.id;
+
+    if params.parentId isnot null {
+      data[container.SyncName.PARENT_ID] = params.parentId.value;
+      data[container.SyncName.PARENT_FIELD] = params.parentField;
+    }
+
+    auto me = this;
+
+    browser.post(url, data, xsrf, void (string response) { // success
+      if params.parentId isnot null { // update link collection object
+        params.obj.unserialize(response.split(container.DELIM_FIELD));
+      } else { // update document object
+        obj.unserialize(response.split(container.DELIM_FIELD));
+      }
+    }, void (int status, string response) { // fail
+      // TODO: set error to browser net errors
+    }, void () {}); // progress
+  }
+}

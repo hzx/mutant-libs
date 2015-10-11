@@ -1,0 +1,135 @@
+
+class Collection {
+  int table = 0;
+  string url = "";
+  string xsrf = "";
+
+  void update(object params) {
+    auto data = {};
+
+    data[container.SyncName.OP] = container.SyncOp.UPDATE;
+    data[container.SyncName.NAME] = table;
+    data[container.SyncName.ID] = params.id;
+
+    if params.parentId isnot null {
+      data[container.SyncName.PARENT_ID] = params.parentId.value;
+      data[container.SyncName.PARENT_FIELD] = params.parentField;
+    }
+
+    auto me = this;
+
+    browser.post(url, data, xsrf, void (string response) { // success
+      params.obj.unserialize(response.split(container.DELIM_FIELD));
+    }, void (int status, string response) { // fail
+      // TODO: set error to browser net errors
+    }, void () {}); // progress
+  }
+
+  void insert(object params) {
+    auto data = {};
+
+    data[container.SyncName.OP] = container.SyncOp.INSERT;
+    data[container.SyncName.NAME] = table;
+    /* data[container.SyncName.BEFOREID] = ""; */
+    data[container.SyncName.OBJ] = params.obj.serialize();
+
+    if params.parentId isnot null {
+      data[container.SyncName.PARENT_ID] = params.parentId.value;
+      data[container.SyncName.PARENT_FIELD] = params.parentField;
+    }
+
+    auto me = this;
+
+    browser.post(url, data, xsrf, void (string response) { // success
+      params.obj.unserialize(response.split(container.DELIM_FIELD));
+    }, void (int status, string response) { // fail
+      // TODO: set error to browser net errors
+    }, void () {}); // progress
+  }
+
+  void insertBefore(object params) {
+    auto data = {};
+
+    data[container.SyncName.OP] = container.SyncOp.INSERT;
+    data[container.SyncName.NAME] = table;
+    data[container.SyncName.BEFOREID] = params.beforeId;
+    data[container.SyncName.OBJ] = params.obj.serialize();
+
+    if params.parentId isnot null {
+      data[container.SyncName.PARENT_ID] = params.parentId.value;
+      data[container.SyncName.PARENT_FIELD] = params.parentField;
+    }
+
+    auto me = this;
+
+    browser.post(url, data, xsrf, void (string response) { // success
+      params.obj.unserialize(response.split(container.DELIM_FIELD));
+    }, void (int status, string response) { // fail
+      // TODO: set error to browser net errors
+    }, void () {}); // progress
+  }
+
+  void append(object params) {
+    auto data = {};
+
+    data[container.SyncName.OP] = container.SyncOp.APPEND;
+    data[container.SyncName.NAME] = table;
+    data[container.SyncName.OBJ] = params.obj.serialize();
+
+    if params.parentId isnot null {
+      data[container.SyncName.PARENT_ID] = params.parentId.value;
+      data[container.SyncName.PARENT_FIELD] = params.parentField;
+    }
+
+    auto me = this;
+
+    browser.post(url, data, xsrf, void (string response) { // success
+      params.obj.unserialize(response.split(container.DELIM_FIELD));
+    }, void (int status, string response) { // fail
+      // TODO: set error to browser net errors
+    }, void () {}); // progress
+  }
+
+  void move(object params) {
+    auto data = {};
+
+    data[container.SyncName.OP] = container.SyncOp.MOVE;
+    data[container.SyncName.NAME] = table;
+    data[container.SyncName.ID] = params.id;
+    data[container.SyncName.BEFOREID] = params.beforeId;
+
+    if params.parentId isnot null {
+      data[container.SyncName.PARENT_ID] = params.parentId.value;
+      data[container.SyncName.PARENT_FIELD] = params.parentField;
+    }
+
+    auto me = this;
+
+    browser.post(url, data, xsrf, void (string response) { // success
+      // do nothing
+    }, void (int status, string response) { // fail
+      // TODO: set error to browser net errors
+    }, void () {}); // progress
+  }
+
+  void remove(object params) {
+    auto data = {};
+
+    data[container.SyncName.OP] = container.SyncOp.REMOVE;
+    data[container.SyncName.NAME] = table;
+    data[container.SyncName.ID] = params.id;
+
+    if params.parentId isnot null {
+      data[container.SyncName.PARENT_ID] = params.parentId.value;
+      data[container.SyncName.PARENT_FIELD] = params.parentField;
+    }
+
+    auto me = this;
+
+    browser.post(url, data, xsrf, void (string response) { // success
+      // do nothing
+    }, void (int status, string response) { // fail
+      // TODO: set error to browser net errors
+    }, void () {}); // progress
+  }
+}

@@ -1,23 +1,21 @@
 
-CollSync collSync(int table, container.Collection collection, string url, string xsrf) {
-  auto sync = new CollSync();
-  
-  sync.table = table;
-  sync.collection = collection;
-  sync.syncUrl = url;
-  sync.xsrf = xsrf;
+Collection collection(int table, string url, string xsrf) {
+  auto coll = new Collection();
 
-  return sync;
+  coll.table = table;
+  coll.url = url;
+  coll.xsrf = xsrf;
+
+  return coll;
 }
 
+Document document(int table, string url, string xsrf, container.Model obj) {
+  auto doc = new Document();
 
-DocSync docSync(int table, container.Model obj, string url, string xsrf) {
-  auto sync = new DocSync();
+  doc.table = table;
+  doc.url = url;
+  doc.xsrf = xsrf;
+  doc.obj = obj;
 
-  sync.table = table;
-  sync.obj = obj;
-  sync.syncUrl = url;
-  sync.xsrf = xsrf;
-
-  return sync;
+  return doc;
 }
