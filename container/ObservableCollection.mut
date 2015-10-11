@@ -9,9 +9,10 @@ class ObservableCollection extends Collection {
   auto eventMove = new Event();
   auto eventRemove = new Event();
 
-  EventCollection linkCollection = null;
+  // link collection
+  object link = null;
 
-  string parentId = "";
+  string parentId = null;
   int parentField = 0;
 
   int updateTimerId = 0;
@@ -37,13 +38,17 @@ class ObservableCollection extends Collection {
   }
 
   void updateLink(string id, object updates) {
-    if linkCollection is null { return; }
+    if link is null { return; }
 
-    linkCollection.eventUpdate.notify({
+    auto obj = get(id);
+    if obj is null { return; }
+
+    link.update({
       parentId: parentId,
       parentField: parentField,
       id: id,
       updates: updates,
+      obj: obj,
     });
   }
 
@@ -59,9 +64,9 @@ class ObservableCollection extends Collection {
   }
 
   void insertLink(object obj) {
-    if linkCollection is null { return; }
+    if link is null { return; }
 
-    linkCollection.eventInsert.notify({
+    link.insert({
       parentId: parentId,
       parentField: parentField,
       obj: obj,
@@ -81,9 +86,9 @@ class ObservableCollection extends Collection {
   }
 
   void insertBeforeLink(object obj, string beforeId) {
-    if linkCollection is null { return; }
+    if link is null { return; }
 
-    linkCollection.eventInsertBefore.notify({
+    link.insertBefore({
       parentId: parentId,
       parentField: parentField,
       beforeId: beforeId,
@@ -103,9 +108,9 @@ class ObservableCollection extends Collection {
   }
 
   void appendLink(object obj) {
-    if linkCollection is null { return; }
+    if link is null { return; }
 
-    linkCollection.eventAppend.notify({
+    link.append({
       parentId: parentId,
       parentField: parentField,
       obj: obj,
@@ -123,9 +128,9 @@ class ObservableCollection extends Collection {
   }
 
   void moveLink(string id, string beforeId) {
-    if linkCollection is null { return; }
+    if link is null { return; }
 
-    linkCollection.eventMove.notify({
+    link.move({
       parentId: parentId,
       parentField: parentField,
       id: id,
@@ -152,9 +157,9 @@ class ObservableCollection extends Collection {
   }
 
   void removeLink(string id) {
-    if linkCollection is null { return; }
+    if link is null { return; }
 
-    linkCollection.eventRemove.notify({
+    link.remove({
       parentId: parentId,
       parentField: parentField,
       id: id,
@@ -173,7 +178,7 @@ class ObservableCollection extends Collection {
     eventReset.notify();
 
     // dont do it now
-    /* if linkCollection isnot null { */
+    /* if link isnot null { */
     /* } */
   }
 

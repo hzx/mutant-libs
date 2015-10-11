@@ -17,27 +17,42 @@ class EventCollection {
   }
 
   override void update(string id, object updates) {
-    eventUpdate.notify2(id, updates);
+    eventUpdate.notify({
+      id: id,
+      updates: updates,
+    });
   }
 
   override void insert(object obj) {
-    eventInsert.notify(obj);
+    eventInsert.notify({
+      obj: obj,
+    });
   }
 
   override void insertBefore(object obj, string beforeId) {
-    eventInsertBefore.notify2(obj, beforeId);
+    eventInsertBefore.notify({
+      obj: obj,
+      beforeId: beforeId,
+    });
   }
 
   override void append(object obj) {
-    eventAppend.notify(obj);
+    eventAppend.notify({
+      obj: obj,
+    });
   }
 
   override void move(string id, string beforeId) {
-    eventMove.notify2(id, beforeId);
+    eventMove.notify({
+      id: id,
+      beforeId: beforeId,
+    });
   }
 
   override void remove(string id) {
-    eventRemove.notify(id);
+    eventRemove.notify({
+      id: id,
+    });
   }
 
   override void clear() {
