@@ -1,0 +1,21 @@
+
+class ArticleSearch {
+  auto query = new container.String();
+
+  ArticleSearch() {
+    query.code = ArticleSearchField.QUERY;
+  }
+
+  string serialize() {
+    auto buf = [];
+
+    buf.push(query.code, query.value);
+
+    return buf.join(container.DELIM_FIELD);
+  }
+}
+
+
+enum ArticleSearchField {
+  QUERY = 2,
+}
