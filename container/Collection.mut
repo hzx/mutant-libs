@@ -3,6 +3,7 @@ class Collection {
   object idToNodes_ = {};
   object first = null;
   object last = null;
+  int count = 0;
 
   void updateId(string id, string old) {
     if old in idToNodes_ {
@@ -60,10 +61,15 @@ class Collection {
   }
 
   void move(string id, string beforeId) {
-    if id in idToNodes_ and beforeId in idToNodes_ {
+    if id in idToNodes_ {
       auto node = idToNodes_[id];
       removeNode(node);
-      insertBeforeNode_(node, idToNodes_[beforeId]);
+
+      if beforeId in idToNodes_ {
+        insertBeforeNode_(node, idToNodes_[beforeId]);
+      } else {
+        appendNode_(node);
+      }
     }
   }
 
@@ -72,6 +78,7 @@ class Collection {
   }
 
   void clear() {
+    count = 0;
     idToNodes_ = {};
     first = null;
     last = null;
@@ -88,6 +95,7 @@ class Collection {
       /* browser.log("node with the same id exists"); */
       return ;
     }
+    count = count + 1;
     node.prev = null;
     node.next = first;
     if first isnot null { first.prev = node; }
@@ -101,9 +109,11 @@ class Collection {
       /* log("node with the same id exists"); */
       return ;
     }
-    if before is null { return insertNode_(node); }
+    if before is null { return appendNode_(node); }
+
 
     if before.prev isnot null { before.prev.next = node; }
+    count = count + 1;
     node.prev = before.prev;
     node.next = before;
     before.prev = node;
@@ -115,6 +125,8 @@ class Collection {
       /* log("node with the same id exists"); */
       return;
     }
+
+    count = count + 1;
     node.prev = last;
     node.next = null;
     if first is null { first = node; }
@@ -129,6 +141,7 @@ class Collection {
   }
 
   void removeNode_(object node) {
+    count = count - 1;
     if first is node { first = null; }
     if last is node { last = null; }
     if node.prev isnot null { node.prev.next = node.next; }
