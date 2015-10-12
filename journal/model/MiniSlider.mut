@@ -1,9 +1,13 @@
 
 class MiniSlider extends container.Model {
-  auto nodeType = NodeType.MINI_SLIDER;
   auto pageId = new container.String();
   auto style = new container.String();
   auto images = new container.String();
+
+  MiniSlider() {
+    polymorph = NodeType.MINI_SLIDER;
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -23,10 +27,19 @@ class MiniSlider extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+    images.listen(onImagesUpdates);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    images.unlisten(onImagesUpdates);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(MiniSliderField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(MiniSliderField.PAGE_ID, pageId.value); }
     if style.has { buf.push(MiniSliderField.STYLE, style.value); }
@@ -40,12 +53,23 @@ class MiniSlider extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      MiniSlider.STYLE, val,
+    ]);
+  }
+
+  bind void onImagesUpdates(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      MiniSlider.IMAGES, val,
+    ]);
+  }
 }
 
 
 enum MiniSliderField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   IMAGES,
 }

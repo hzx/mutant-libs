@@ -1,8 +1,13 @@
 
 class Break extends container.Model {
-  auto nodeType = NodeType.BREAK;
   auto pageId = new container.String();
   auto style = new container.String();
+
+  Break() {
+    polymorph = NodeType.BREAK;
+
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -19,10 +24,17 @@ class Break extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(BreakField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(BreakField.PAGE_ID, pageId.value); }
     if style.has { buf.push(BreakField.STYLE, style.value); }
@@ -35,10 +47,15 @@ class Break extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      BreakField.STYLE, val,
+    ]);
+  }
 }
 
 enum BreakField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
 }

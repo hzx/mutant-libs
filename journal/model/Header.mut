@@ -1,8 +1,13 @@
 
 class Header extends container.Model {
-  auto nodeType = NodeType.H1;
   auto pageId = new container.String();
   auto style = new container.String();
+
+  Header() {
+    polymorph = NodeType.H1;
+
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -19,10 +24,17 @@ class Header extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(HeaderField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(HeaderField.PAGE_ID, pageId.value); }
     if style.has { buf.push(HeaderField.STYLE, style.value); }
@@ -35,13 +47,23 @@ class Header extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      HeaderField.STYLE, val,
+    ]);
+  }
 }
 
-class Header2 extends Header {
+class Header2 extends container.Model {
+  auto pageId = new container.String();
+  auto style = new container.String();
   auto text = new container.String();
 
   Header2() {
-    nodeType = NodeType.H2;
+    polymorph = NodeType.H2;
+
+    enter();
   }
 
   void setField(string key, string value) {
@@ -62,10 +84,19 @@ class Header2 extends Header {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+    text.listen(onTextUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    text.unlisten(onTextUpdate);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(HeaderField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(HeaderField.PAGE_ID, pageId.value); }
     if style.has { buf.push(HeaderField.STYLE, style.value); }
@@ -73,12 +104,29 @@ class Header2 extends Header {
 
     return buf.join(container.DELIM_FIELD);
   }
+
+  void unserialize(object pices) {
+    for int i = 0; i < pices.length; i=i+2 {
+      setField(pices[i], pices[i+1]);
+    }
+  }
+
+  bind void onTextUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      HeaderField.TEXT, val,
+    ]);
+  }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      HeaderField.STYLE, val,
+    ]);
+  }
 }
 
 
 enum HeaderField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   TEXT,
 }

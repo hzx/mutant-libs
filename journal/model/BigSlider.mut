@@ -1,9 +1,13 @@
 
 class BigSlider extends container.Model {
-  auto nodeType = NodeType.BIG_SLIDER;
   auto pageId = new container.String();
   auto style = new container.String();
   auto images = new container.String();
+
+  BigSlider() {
+    polymorph = NodeType.BIG_SLIDER;
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -23,10 +27,19 @@ class BigSlider extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+    images.listen(onImagesUpdates);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    images.unlisten(onImagesUpdates);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(BigSliderField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(BigSliderField.PAGE_ID, pageId.value); }
     if style.has { buf.push(BigSliderField.STYLE, style.value); }
@@ -40,12 +53,23 @@ class BigSlider extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      BigSlider.STYLE, val,
+    ]);
+  }
+
+  bind void onImagesUpdates(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      BigSlider.IMAGES, val,
+    ]);
+  }
 }
 
 
 enum BigSliderField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   IMAGES,
 }

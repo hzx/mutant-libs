@@ -5,8 +5,6 @@ class Journal extends container.Model {
   auto keywords = new container.String();
   auto description = new container.String();
   auto show = new container.Bool();
-  object items = []; // TODO: think about organization
-  /* auto items = new container.Collection(); */
 
   Journal() {
     name.code = JournalField.NAME;
@@ -14,6 +12,8 @@ class Journal extends container.Model {
     keywords.code = JournalField.KEYWORDS;
     description.code = JournalField.DESCRIPTION;
     show.code = JournalField.SHOW;
+
+    enter();
   }
 
   void setField(string key, string value) {
@@ -21,28 +21,37 @@ class Journal extends container.Model {
 
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case JournalField.NAME:
-        name.init(value);
+        name.set(value);
         break;
       case JournalField.SLUG:
-        slug.init(value);
+        slug.set(value);
         break;
       case JournalField.KEYWORDS:
-        keywords.init(value);
+        keywords.set(value);
         break;
       case JournalField.DESCRIPTION:
-        description.init(value);
+        description.set(value);
         break;
       case JournalField.SHOW:
         int val = window.parseInt(value, 10);
-        show.init(val is 1);
-        break;
-      case JournalField.ITEMS:
-        items = value.split(":");
+        show.set(val is 1);
         break;
     }
+  }
+
+  void enter() {
+    name.listen(onNameUpdate);
+    description.listen(onDescriptionUpdate);
+    show.listen(onShowUpdate);
+  }
+
+  void exit() {
+    name.unlisten(onNameUpdate);
+    description.unlisten(onDescriptionUpdate);
+    show.unlisten(onShowUpdate);
   }
 
   string serialize() {
@@ -61,7 +70,6 @@ class Journal extends container.Model {
         buf.push("0");
       }
     }
-    if items.length > 0 { buf.push(JournalField.ITEMS, items.join(":")); }
 
     return buf.join(container.DELIM_FIELD);
   }
@@ -70,6 +78,30 @@ class Journal extends container.Model {
     for int i = 0; i < pices.length; i=i+2 {
       setField(pices[i], pices[i+1]);
     }
+  }
+
+  bind void onNameUpdate(string val, string old) {
+    // debug
+    console.log("Journal.onNameUpdate, name: " + val);
+
+    eventUpdate.notify2(id.value, [
+      JournalField.NAME, name.value,
+    ]);
+  }
+
+  bind void onDescriptionUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      JournalField.DESCRIPTION, description.value,
+    ]);
+  }
+
+  bind void onShowUpdate(bool val, bool old) {
+    bool num = 0;
+    if val { num = 1; }
+
+    eventUpdate.notify2(id.value, [
+      JournalField.SHOW, num,
+    ]);
   }
 }
 

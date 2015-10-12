@@ -1,10 +1,15 @@
 
 class Link extends container.Model {
-  auto nodeType = NodeType.LINK;
   auto pageId = new container.String();
   auto style = new container.String();
   auto src = new container.String();
   auto alt = new container.String();
+
+  Link() {
+    polymorph = NodeType.LINK;
+
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -27,10 +32,21 @@ class Link extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+    src.listen(onSrcUpdate);
+    alt.listen(onAltUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    src.unlisten(onSrcUpdate);
+    alt.unlisten(onAltUpdate);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(LinkField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(LinkField.PAGE_ID, pageId.value); }
     if style.has { buf.push(LinkField.STYLE, style.value); }
@@ -45,12 +61,29 @@ class Link extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      LinkField.STYLE, val,
+    ]);
+  }
+
+  bind void onSrcUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      LinkField.SRC, val,
+    ]);
+  }
+
+  bind void onAltUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      LinkField.ALT, val,
+    ]);
+  }
 }
 
 
 enum LinkField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   SRC,
   ALT,

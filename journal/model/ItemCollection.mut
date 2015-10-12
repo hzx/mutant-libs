@@ -1,42 +1,89 @@
 
-class ItemCollection {
-  void init(object rows, int left, int right) {
-    for int i = left; i < right; ++i {
-      object fields = rows[i].split(container.DELIM_FIELD);
-      if fields.length < 2 { continue; }
+class ItemCollection extends container.Collection {
+  auto eventUpdateId = new container.Event();
+  auto eventUpdate = new container.Event();
+  auto eventReset = new container.Event();
+  auto eventInsert = new container.Event();
+  auto eventInsertBefore = new container.Event();
+  auto eventAppend = new container.Event();
+  auto eventMove = new container.Event();
+  auto eventRemove = new container.Event();
 
-      /* auto group = new WareGroup(); */
-      for int j = 0; j < fields.length; ++j {
-        int name = parseInt(fields[j]);
-        string value = fields[j + 1];
-        object item = null;
-
-        if item isnot null {
-          item.setField(name, value);
-        }
-      }
-      append(group);
-    }
+  void listenItem(object item) {
+    item.eventUpdate.listen(onItemUpdate);
   }
 
-  void updateId(string id, string old) {
+  void unlistenItem(object item) {
+    item.eventUpdate.unlisten(onItemUpdate);
   }
 
-  void update(string id, object updates) {
+  /* void init(object rows, int left, int right) { */
+    /* for int i = left; i < right; ++i { */
+    /*   object fields = rows[i].split(container.DELIM_FIELD); */
+    /*   if fields.length < 2 { continue; } */
+
+    /*   /1* auto group = new WareGroup(); *1/ */
+    /*   for int j = 0; j < fields.length; ++j { */
+    /*     int name = parseInt(fields[j]); */
+    /*     string value = fields[j + 1]; */
+    /*     object item = null; */
+
+    /*     if item isnot null { */
+    /*       item.setField(name, value); */
+    /*     } */
+    /*   } */
+    /*   append(group); */
+    /* } */
+  /* } */
+
+  override void updateId(string id, string old) {
+    base.updateId(id, old);
+    eventUpdateId.notify2(id, old);
   }
 
-  void insert(WareGroup group) {
+  override void update(string id, object updates) {
+    base.update(id, updates);
+    eventUpdate.notify2(id, updates);
   }
 
-  void insertBefore(WareGroup group, string beforeId) {
+  override void insert(object obj) {
+    base.insert(obj);
+    listenItem(obj);
+    eventInsert.notify(obj);
   }
 
-  void append(WareGroup group) {
+  override void insertBefore(object obj, string beforeId) {
+    base.insertBefore(obj, beforeId);
+    listenItem(obj);
+    eventInsertBefore.notify2(id, beforeId);
   }
 
-  void move(string id, string beforeId) {
+  override void append(object obj) {
+    base.append(obj);
+    listenItem(obj);
+    eventAppend.notify(obj);
   }
 
-  void remove(string id) {
+  override void move(string id, string beforeId) {
+    base.move(id, beforeId);
+    eventMove.notify2(id, beforeId);
+  }
+
+  override void remove(string id) {
+    auto obj = get(id);
+    if obj is null { return; }
+    unlistenItem(obj);
+
+    base.remove(id);
+    eventRemove.notify(id);
+  }
+
+  override void clear() {
+    base.clear();
+    eventReset.notify();
+  }
+
+  bind void onUpdate(string id, object updates) {
+    eventUpdate.notify2(id, updates.join(container.DELIM_FIELD));
   }
 }

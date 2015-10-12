@@ -1,10 +1,15 @@
 
 class File extends container.Model {
-  auto nodeType = NodeType.FILE;
   auto pageId = new container.String();
   auto style = new container.String();
   auto filename = new container.String();
   auto text = new container.String();
+
+  File() {
+    polymorph = NodeType.FILE;
+
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -26,10 +31,21 @@ class File extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+    filename.listen(onFilenameUpdate);
+    text.listen(onTextUpdate);
+  }
+  
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    filename.unlisten(onFilenameUpdate);
+    text.unlisten(onTextUpdate);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(FileField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(FileField.PAGE_ID, pageId.value); }
     if style.has { buf.push(FileField.STYLE, style.value); }
@@ -44,12 +60,29 @@ class File extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      FileField.STYLE, val,
+    ]);
+  }
+
+  bind void onFilenameUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      FileField.FILENAME, val,
+    ]);
+  }
+
+  bind void onTextUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      FileField.TEXT, val,
+    ]);
+  }
 }
 
 
 enum FileField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   FILENAME,
   TEXT,

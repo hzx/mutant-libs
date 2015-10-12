@@ -1,9 +1,14 @@
 
 class Image extends container.Model {
-  auto nodeType = NodeType.IMAGE;
   auto pageId = new container.String();
   auto style = new container.String();
   auto filename = new container.String();
+
+  Image() {
+    polymorph = NodeType.IMAGE;
+
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -23,10 +28,19 @@ class Image extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+    filename.listen(onFilenameUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    filename.unlisten(onFilenameUpdate);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(ImageField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(ImageField.PAGE_ID, pageId.value); }
     if style.has { buf.push(ImageField.STYLE, style.value); }
@@ -40,12 +54,23 @@ class Image extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      ImageField.STYLE, val,
+    ]);
+  }
+
+  bind void onFilenameUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      ImageField.FILENAME, val,
+    ]);
+  }
 }
 
 
 enum ImageField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   FILENAME,
 }

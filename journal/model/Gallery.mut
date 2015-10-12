@@ -3,10 +3,15 @@ class Gallery extends container.Model {
   static int THUMB_WIDTH = 396;
   static int THUMB_HEIGHT = 224;
 
-  auto nodeType = NodeType.GALLERY;
   auto pageId = new container.String();
   auto style = new container.String();
   auto images = new container.String();
+
+  Gallery() {
+    polymorph = NodeType.GALLERY;
+
+    enter();
+  }
 
   void setField(string key, string value) {
     int field = window.parseInt(key);
@@ -26,10 +31,19 @@ class Gallery extends container.Model {
     }
   }
 
+  void enter() {
+    style.listen(onStyleUpdate);
+    images.listen(onImagesUpdates);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    images.unlisten(onImagesUpdates);
+  }
+
   string serialize() {
     auto buf = [];
 
-    buf.push(GalleryField.TYPE, nodeType);
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(GalleryField.PAGE_ID, pageId.value); }
     if style.has { buf.push(GalleryField.STYLE, style.value); }
@@ -43,12 +57,23 @@ class Gallery extends container.Model {
       setField(pices[i], pices[i+1]);
     }
   }
+
+  bind void onStyleUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      GalleryField.STYLE, val,
+    ]);
+  }
+
+  bind void onImagesUpdates(string val, string old) {
+    eventUpdate.notify2(id.value, [
+      GalleryField.IMAGES, val,
+    ]);
+  }
 }
 
 
 enum GalleryField {
-  TYPE = 2, // container.ModelField.ID + 1,
-  PAGE_ID,
+  PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   IMAGES,
 }
