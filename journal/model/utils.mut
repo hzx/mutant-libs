@@ -33,3 +33,22 @@ object createItem(int type) {
   
   return null;
 }
+
+void parsePageItems(container.ObservableCollection items, string data) {
+  object rows = data.split(container.DELIM_ROW);
+  int nodeType;
+  object pices;
+
+  if rows.length < 2 { return; }
+
+  for int i = 0; i < rows.length; i = i + 2 {
+    nodeType = window.parseInt(rows[i]);
+    auto item = createItem(nodeType);
+    if item is null { continue; } // unknown nodeType
+
+    pices = rows[i + 1].split(container.DELIM_FIELD);
+    item.unserialize(pices);
+
+    items.appendLocal(item);
+  }
+}
