@@ -3,8 +3,10 @@ object createItem(int type) {
   switch type {
     case NodeType.BLOCK:
       return new Block();
-    case NodeType.HEADER:
+    case NodeType.H1:
       return new Header();
+    case NodeType.H2:
+      return new Header2();
     case NodeType.TEXT:
       return new Text();
     case NodeType.CODE:
@@ -34,7 +36,7 @@ object createItem(int type) {
   return null;
 }
 
-void parsePageItems(container.ObservableCollection items, string data) {
+void parsePageItems(string data, container.ObservableCollection items) {
   object rows = data.split(container.DELIM_ROW);
   int nodeType;
   object pices;
