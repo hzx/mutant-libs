@@ -34,6 +34,7 @@ enum SyncName {
   ID,
   PARENT_ID, // for subcollection
   PARENT_FIELD, // for subcollection
+  POLYMORPH, // for polymorphic collection object
 }
 
 enum SyncOp {
