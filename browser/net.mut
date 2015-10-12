@@ -113,7 +113,7 @@ void get(string url, object success, object fail, object progress) {
     xhr: null,
     method: "GET",
     headers: {},
-    url: saltUrl(url),
+    url: url,
     data: null,
     success: success,
     fail: fail,
@@ -121,33 +121,29 @@ void get(string url, object success, object fail, object progress) {
   };
 
   ajax(params);
+
   return params;
 }
 
 
 void post(string url, object data, string xsrf,
     object success, object fail, object progress) {
-  object headers = {
-    "Content-Type": "application/x-www-form-urlencoded",
-    "X-Xsrftoken": xsrf
-  };
-
   object params = {
     xhr: null,
     method: "POST",
-    /* headers: headers, */
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      "X-Xsrftoken": xsrf
+      "X-Xsrftoken": xsrf,
     },
     url: url,
     data: encodeData(data),
     success: success,
     fail: fail,
-    progress: progress
+    progress: progress,
   };
 
   ajax(params);
+
   return params;
 }
 
@@ -175,6 +171,7 @@ void postFiles(string url, object files, string hash,
   };
 
   ajax(params);
+
   return params;
 }
 
@@ -184,7 +181,7 @@ void getCached(string url, object success, object fail, object progress) {
     xhr: null,
     method: "GET",
     headers: {},
-    url: url,
+    url: saltUrl(url),
     data: null,
     success: success,
     fail: fail,
@@ -192,5 +189,6 @@ void getCached(string url, object success, object fail, object progress) {
   };
 
   ajax(params);
+
   return params;
 }
