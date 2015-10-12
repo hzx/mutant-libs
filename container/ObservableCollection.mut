@@ -38,14 +38,25 @@ class ObservableCollection extends Collection {
   }
 
   void updateLink(string id, object updates) {
+    // debug
+    console.log("ObservableCollection.updateLink:");
+    console.log(link);
+    console.log("id: " + id);
+    console.log(updates);
+
     if link is null { return; }
 
     auto obj = get(id);
+
+    // debug
+    console.log(obj);
+
     if obj is null { return; }
 
     link.update({
       parentId: parentId,
       parentField: parentField,
+      polymorph: obj.polymorph,
       id: id,
       updates: updates,
       obj: obj,
@@ -69,6 +80,7 @@ class ObservableCollection extends Collection {
     link.insert({
       parentId: parentId,
       parentField: parentField,
+      polymorph: obj.polymorph,
       obj: obj,
     });
   }
@@ -86,11 +98,16 @@ class ObservableCollection extends Collection {
   }
 
   void insertBeforeLink(object obj, string beforeId) {
+    // debug
+    console.log("ObservableCollection.insertBeforeLink:");
+    console.log(obj);
+
     if link is null { return; }
 
     link.insertBefore({
       parentId: parentId,
       parentField: parentField,
+      polymorph: obj.polymorph,
       beforeId: beforeId,
       obj: obj,
     });
@@ -113,6 +130,7 @@ class ObservableCollection extends Collection {
     link.append({
       parentId: parentId,
       parentField: parentField,
+      polymorph: obj.polymorph,
       obj: obj,
     });
   }
@@ -139,29 +157,31 @@ class ObservableCollection extends Collection {
   }
 
   override void remove(string id) {
-    if removeLocal(id) {
-      removeLink(id);
+    auto obj = removeLocal(id);
+    if obj isnot null {
+      removeLink(id, obj.polymorph);
     }
   }
 
   bool removeLocal(string id) {
     auto obj = get(id);
-    if obj is null { return false; }
+    if obj is null { return null; }
 
     obj.eventUpdate.unlisten(onObjectUpdate);
     base.remove(id);
 
     eventRemove.notify(id);
 
-    return true;
+    return obj;
   }
 
-  void removeLink(string id) {
+  void removeLink(string id, string polymorph) {
     if link is null { return; }
 
     link.remove({
       parentId: parentId,
       parentField: parentField,
+      polymorph: obj.polymorph,
       id: id,
     });
   }
@@ -176,10 +196,6 @@ class ObservableCollection extends Collection {
 
     base.clear();
     eventReset.notify();
-
-    // dont do it now
-    /* if link isnot null { */
-    /* } */
   }
 
   bind void onObjectUpdate(string id, object updates) {

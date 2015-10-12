@@ -2,6 +2,7 @@
 
 class Model implements Collectable {
   auto id = new String();
+  int polymorph = 0;
 
   auto eventUpdate = new Event();
 
