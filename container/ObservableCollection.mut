@@ -167,7 +167,7 @@ class ObservableCollection extends Collection {
     link.remove({
       parentId: parentId,
       parentField: parentField,
-      polymorph: obj.polymorph,
+      polymorph: polymorph,
       id: id,
     });
   }
