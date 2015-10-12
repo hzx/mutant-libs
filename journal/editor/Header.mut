@@ -21,7 +21,8 @@ class Header1 extends VerticalNode {
     createPlaceholders();
 
     nameInput = <input style=ui_style.nestedInput onfocus=onNameFocus
-        onblur=onNameBlur/>;
+        onblur=onNameBlur onchange=onNameChange
+        bind=journal_.name render=renderInputValue/>;
 
     nameNode = <div style=style_.nameNode active=style_.nameNode_active
         onclick=onNameClick>
@@ -40,7 +41,8 @@ class Header1 extends VerticalNode {
     descriptionInput = <textarea style=style_.descriptionArea
         onkeydown=onDescriptionKeydown onkeyup=onDescriptionKeyup
         onchange=onDescriptionChange
-        onfocus=onDescriptionFocus onblur=onDescriptionBlur/>;
+        onfocus=onDescriptionFocus onblur=onDescriptionBlur
+        bind=journal_.description render=renderInputValue/>;
 
     descriptionWrap = <div> {descriptionInput} </div>;
 
@@ -53,7 +55,8 @@ class Header1 extends VerticalNode {
     </div>;
 
     customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+        bind=item.style render=renderInputValue/>;
 
     customStyleNode = <div style=style_.customStyleNode
         active=style_.customStyleNode_active onclick=onCustomStyleClick>
@@ -83,6 +86,10 @@ class Header1 extends VerticalNode {
     elem.setValue(ovalue.value);
   }
 
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
+  }
+
   void focusName() {
     nameNode.setState(web.STATE_ACTIVE);
     nameInput.node.focus();
@@ -90,6 +97,7 @@ class Header1 extends VerticalNode {
 
   void blurName() {
     nameNode.setState(web.STATE_NORMAL);
+    journal_.name.set(nameInput.node.value);
   }
 
   void descriptionTuneHeight() {
@@ -114,6 +122,7 @@ class Header1 extends VerticalNode {
 
   void blurDescription() {
     descriptionNode.setState(web.STATE_NORMAL);
+    journal_.description.set(descriptionInput.node.value);
   }
 
   void focusCustomStyle() {
@@ -123,6 +132,7 @@ class Header1 extends VerticalNode {
 
   void blurCustomStyle() {
     customStyleNode.setState(web.STATE_NORMAL);
+    item.style.set(customStyleInput.node.value);
   }
 
   bind void onNameFocus(object e) {
@@ -131,6 +141,10 @@ class Header1 extends VerticalNode {
 
   bind void onNameBlur(object e) {
     blurName();
+  }
+
+  bind void onNameChange(object e) {
+    journal_.name.set(nameInput.node.value);
   }
 
   bind void onNameClick(object e) {

@@ -25,12 +25,13 @@ class Editor extends web.View {
   }
 
   bind tag renderItem(container.Model item) {
-    auto node = createNode(item.nodeType);
+    auto node = createNode(item.polymorph);
     if node is null { return null; }
 
     node.editor = this;
     node.item = item;
     node.create();
+    node.setId(item.id.value);
 
     return node;
   }
@@ -61,23 +62,38 @@ class Editor extends web.View {
 
   tag createToolbar() {
     return <div style=style.toolbar>
-      <div style=style.blockBtn draggable=true ondragstart=onBlockDragstart></div>
+      <div style=style.blockBtn draggable=true ondragstart=onBlockDragstart>
+      </div>
       <div style=style.h1Btn draggable=true ondragstart=onH1Dragstart></div>
       <div style=style.h2Btn draggable=true ondragstart=onH2Dragstart></div>
-      <div style=style.textBtn draggable=true ondragstart=onTextDragstart></div>
-      <div style=style.codeBtn draggable=true ondragstart=onCodeDragstart></div>
-      <div style=style.linkBtn draggable=true ondragstart=onLinkDragstart></div>
-      <div style=style.videoBtn draggable=true ondragstart=onVideoDragstart></div>
-      <div style=style.googleMapBtn draggable=true ondragstart=onGoogleMapDragstart></div>
-      <div style=style.fileBtn draggable=true ondragstart=onFileDragstart></div>
-      <div style=style.imageBtn draggable=true ondragstart=onImageDragstart></div>
-      <div style=style.galleryBtn draggable=true ondragstart=onGalleryDragstart></div>
-      <div style=style.bigSliderBtn draggable=true ondragstart=onBigSliderDragstart></div>
-      <div style=style.miniSliderBtn draggable=true ondragstart=onMiniSliderDragstart></div>
-      <div style=style.anchorBtn draggable=true ondragstart=onAnchorDragstart></div>
-      <div style=style.breakBtn draggable=true ondragstart=onBreakDragstart></div>
+      <div style=style.textBtn draggable=true ondragstart=onTextDragstart>
+      </div>
+      <div style=style.codeBtn draggable=true ondragstart=onCodeDragstart>
+      </div>
+      <div style=style.linkBtn draggable=true ondragstart=onLinkDragstart>
+      </div>
+      <div style=style.videoBtn draggable=true ondragstart=onVideoDragstart>
+      </div>
+      <div style=style.googleMapBtn draggable=true
+          ondragstart=onGoogleMapDragstart></div>
+      <div style=style.fileBtn draggable=true ondragstart=onFileDragstart>
+      </div>
+      <div style=style.imageBtn draggable=true ondragstart=onImageDragstart>
+      </div>
+      <div style=style.galleryBtn draggable=true
+          ondragstart=onGalleryDragstart></div>
+      <div style=style.bigSliderBtn draggable=true
+          ondragstart=onBigSliderDragstart></div>
+      <div style=style.miniSliderBtn draggable=true
+          ondragstart=onMiniSliderDragstart></div>
+      <div style=style.anchorBtn draggable=true
+          ondragstart=onAnchorDragstart></div>
+      <div style=style.breakBtn draggable=true
+          ondragstart=onBreakDragstart></div>
       /* <div style=style.saveBtn onclick=onSaveClick></div> */
-      <div style=style.trashBtn ondragenter=onTrashDragenter ondragleave=onTrashDragleave ondragover=onTrashDragover ondrop=onTrashDrop></div>
+      <div style=style.trashBtn ondragenter=onTrashDragenter
+          ondragleave=onTrashDragleave ondragover=onTrashDragover
+          ondrop=onTrashDrop></div>
     </div>;
   }
 
@@ -132,6 +148,11 @@ class Editor extends web.View {
       case journal_model.NodeType.BREAK:
         node = new journal_model.Break();
         break;
+    }
+
+    if node isnot null {
+      node.id.init(container.Hasher.generate());
+      node.pageId.init(journal_.id.value);
     }
 
     return node;
@@ -229,10 +250,19 @@ class Editor extends web.View {
   }
 
   void moveNode(string id, string beforeId) {
+    // debug
+    browser.log("Editor.moveNode:");
+    browser.log("id: " + id);
+    browser.log("beforeId: " + beforeId);
+
     journalItems_.move(id, beforeId);
   }
 
   void removeNode(string id) {
+    // debug
+    browser.log("Editor.removeNode:");
+    browser.log("id: " + id);
+
     journalItems_.remove(id);
   }
 
@@ -276,7 +306,8 @@ class Editor extends web.View {
   }
 
   bind void onGoogleMapDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.GOOGLE_MAP);
+    e.dataTransfer.setData("text/plain", "add:" +
+        journal_model.NodeType.GOOGLE_MAP);
   }
 
   bind void onFileDragstart(object e) {
@@ -288,19 +319,23 @@ class Editor extends web.View {
   }
 
   bind void onGalleryDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.GALLERY);
+    e.dataTransfer.setData("text/plain", "add:" +
+        journal_model.NodeType.GALLERY);
   }
 
   bind void onBigSliderDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.BIG_SLIDER);
+    e.dataTransfer.setData("text/plain", "add:" +
+        journal_model.NodeType.BIG_SLIDER);
   }
 
   bind void onMiniSliderDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.MINI_SLIDER);
+    e.dataTransfer.setData("text/plain", "add:" +
+        journal_model.NodeType.MINI_SLIDER);
   }
 
   bind void onAnchorDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.ANCHOR);
+    e.dataTransfer.setData("text/plain", "add:" +
+        journal_model.NodeType.ANCHOR);
   }
 
   bind void onBreakDragstart(object e) {
@@ -325,17 +360,26 @@ class Editor extends web.View {
 
   bind void onTrashDrop(object e) {
     e.preventDefault();
+
     string data = e.dataTransfer.getData("text/plain");
 
     if data is null or data.length is 0 { return; }
 
-    object fields = data.split(":");
+    auto fields = data.split(":");
     if fields.length < 2 { return; }
 
     string action = fields[0];
     if action isnot "move" { return; }
 
     string id = fields[1];
+
+    // debug
+    auto obj = journalItems_.get(id);
+
+    browser.log("Editor.onTrashDrop:");
+    browser.log("id: " + id);
+    browser.log(obj);
+    browser.log(journalItems_);
     
     journalItems_.remove(id);
   }
@@ -363,8 +407,8 @@ class Editor extends web.View {
       case "add":
         // fields[1] contains node type
         int nodeType = window.parseInt(fields[1]);
-        journalItems_.append(createNodeModel(nodeType));
-        /* addNode(nodeType, null); */
+        /* journalItems_.append(createNodeModel(nodeType)); */
+        addNode(nodeType, null);
         break;
       case "move":
         // fields[1] contains node id
