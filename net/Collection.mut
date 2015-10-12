@@ -5,11 +5,22 @@ class Collection {
   string xsrf = "";
 
   void update(object params) {
+    // debug
+    browser.log("Collection.update");
+    browser.log("params:");
+    browser.log(params);
+
     auto data = {};
 
     data[container.SyncName.OP] = container.SyncOp.UPDATE;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.ID] = params.id;
+    data[container.SyncName.PARAMS] = params.updates.join(
+        container.DELIM_FIELD);
+
+    if params.polymorph isnot 0 {
+      data[container.SyncName.POLYMORPH] = params.polymorph;
+    }
 
     if params.parentId isnot null {
       data[container.SyncName.PARENT_ID] = params.parentId.value;
@@ -32,6 +43,10 @@ class Collection {
     data[container.SyncName.NAME] = table;
     data[container.SyncName.OBJ] = params.obj.serialize();
 
+    if params.polymorph isnot 0 {
+      data[container.SyncName.POLYMORPH] = params.polymorph;
+    }
+
     if params.parentId isnot null {
       data[container.SyncName.PARENT_ID] = params.parentId.value;
       data[container.SyncName.PARENT_FIELD] = params.parentField;
@@ -47,11 +62,19 @@ class Collection {
   }
 
   void insertBefore(object params) {
+    // debug
+    browser.log("Collection.insertBefore:");
+    browser.log(params);
+
     auto data = {};
 
     data[container.SyncName.OP] = container.SyncOp.INSERT;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.OBJ] = params.obj.serialize();
+
+    if params.polymorph isnot 0 {
+      data[container.SyncName.POLYMORPH] = params.polymorph;
+    }
 
     if params.beforeId isnot null {
       data[container.SyncName.BEFOREID] = params.beforeId;
@@ -77,6 +100,10 @@ class Collection {
     data[container.SyncName.OP] = container.SyncOp.APPEND;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.OBJ] = params.obj.serialize();
+
+    if params.polymorph isnot 0 {
+      data[container.SyncName.POLYMORPH] = params.polymorph;
+    }
 
     if params.parentId isnot null {
       data[container.SyncName.PARENT_ID] = params.parentId.value;
@@ -123,6 +150,10 @@ class Collection {
     data[container.SyncName.OP] = container.SyncOp.REMOVE;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.ID] = params.id;
+
+    if params.polymorph isnot 0 {
+      data[container.SyncName.POLYMORPH] = params.polymorph;
+    }
 
     if params.parentId isnot null {
       data[container.SyncName.PARENT_ID] = params.parentId.value;

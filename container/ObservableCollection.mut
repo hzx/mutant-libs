@@ -38,19 +38,9 @@ class ObservableCollection extends Collection {
   }
 
   void updateLink(string id, object updates) {
-    // debug
-    console.log("ObservableCollection.updateLink:");
-    console.log(link);
-    console.log("id: " + id);
-    console.log(updates);
-
     if link is null { return; }
 
     auto obj = get(id);
-
-    // debug
-    console.log(obj);
-
     if obj is null { return; }
 
     link.update({
@@ -98,10 +88,6 @@ class ObservableCollection extends Collection {
   }
 
   void insertBeforeLink(object obj, string beforeId) {
-    // debug
-    console.log("ObservableCollection.insertBeforeLink:");
-    console.log(obj);
-
     if link is null { return; }
 
     link.insertBefore({

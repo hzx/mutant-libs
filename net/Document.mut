@@ -11,6 +11,8 @@ class Document extends Collection {
     data[container.SyncName.OP] = container.SyncOp.UPDATE;
     data[container.SyncName.NAME] = table;
     data[container.SyncName.ID] = params.id;
+    data[container.SyncName.PARAMS] = params.updates.join(
+        container.DELIM_FIELD);
 
     if params.parentId isnot null {
       data[container.SyncName.PARENT_ID] = params.parentId.value;
