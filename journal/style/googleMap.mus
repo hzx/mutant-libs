@@ -1,5 +1,7 @@
 
 googleMap {
   position: relative;
+  overflow: hidden;
+  transform: translateZ(0px);
   backgroundColor: #a0a0a0;
 }
