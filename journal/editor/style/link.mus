@@ -10,6 +10,7 @@ node {
 }
 
 node_active {
+  backgroundColor: #e0e0e0;
 }
 
 edit {

@@ -90,7 +90,6 @@ class Editor extends web.View {
           ondragstart=onAnchorDragstart></div>
       <div style=style.breakBtn draggable=true
           ondragstart=onBreakDragstart></div>
-      /* <div style=style.saveBtn onclick=onSaveClick></div> */
       <div style=style.trashBtn ondragenter=onTrashDragenter
           ondragleave=onTrashDragleave ondragover=onTrashDragover
           ondrop=onTrashDrop></div>
@@ -98,57 +97,9 @@ class Editor extends web.View {
   }
 
   container.Model createNodeModel(int nodeType) {
-    container.Model node = null;
+    if nodeType is journal_model.NodeType.H1 and isH1Exists() { return null; }
 
-    switch nodeType {
-      case journal_model.NodeType.BLOCK:
-        break;
-      case journal_model.NodeType.H1:
-        // check h1 already added, add only once
-        if !isH1Exists() {
-          node = new journal_model.Header();
-        }
-        break;
-      case journal_model.NodeType.H2:
-        node = new journal_model.Header2();
-        break;
-      case journal_model.NodeType.TEXT:
-        node = new journal_model.Text();
-        break;
-      case journal_model.NodeType.CODE:
-        node = new journal_model.Code();
-        break;
-      case journal_model.NodeType.LINK:
-        node = new journal_model.Link();
-        break;
-      case journal_model.NodeType.VIDEO:
-        node = new journal_model.Video();
-        break;
-      case journal_model.NodeType.GOOGLE_MAP:
-        node = new journal_model.GoogleMap();
-        break;
-      case journal_model.NodeType.FILE:
-        node = new journal_model.File();
-        break;
-      case journal_model.NodeType.IMAGE:
-        node = new journal_model.Image();
-        break;
-      case journal_model.NodeType.GALLERY:
-        node = new journal_model.Gallery();
-        break;
-      case journal_model.NodeType.BIG_SLIDER:
-        node = new journal_model.BigSlider();
-        break;
-      case journal_model.NodeType.MINI_SLIDER:
-        node = new journal_model.MiniSlider();
-        break;
-      case journal_model.NodeType.ANCHOR:
-        node = new journal_model.Anchor();
-        break;
-      case journal_model.NodeType.BREAK:
-        node = new journal_model.Break();
-        break;
-    }
+    auto node = journal_model.createItem(nodeType);
 
     if node isnot null {
       node.id.init(container.Hasher.generate());
@@ -342,11 +293,6 @@ class Editor extends web.View {
     e.dataTransfer.setData("text/plain", "add:" + journal_model.NodeType.BREAK);
   }
 
-  /* bind void onSaveClick(object e) { */
-  /*   string data = root.serialize(); */
-  /*   eventSave.notify2(journalId, data); */
-  /* } */
-
   bind void onTrashDragenter(object e) {
     e.preventDefault();
   }
@@ -405,16 +351,10 @@ class Editor extends web.View {
 
     switch fields[0] { // operation type
       case "add":
-        // fields[1] contains node type
         int nodeType = window.parseInt(fields[1]);
-        /* journalItems_.append(createNodeModel(nodeType)); */
         addNode(nodeType, null);
         break;
       case "move":
-        // fields[1] contains node id
-        /* Node node = element.getChild(fields[1]); */
-        /* moveNode(node, null); */
-        /* journalItems_.move */
         break;
     }
   }
