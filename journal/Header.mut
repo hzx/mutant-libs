@@ -1,6 +1,13 @@
 
-class Header extends web.View {
+class Header1 extends web.View {
   override void create() {
-    element = <div> "header" </div>;
+    element = <div> "header1" </div>;
+  }
+}
+
+
+class Header2 extends web.View {
+  override void create() {
+    element = <div> "header2" </div>;
   }
 }

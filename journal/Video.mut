@@ -1,9 +1,9 @@
 
 class Video extends web.View {
-  string code = "";
+  string code = "<iframe width=\"854\" height=\"480\" src=\"https://www.youtube.com/embed/OD5VTEQYHxk\" frameborder=\"0\" allowfullscreen></iframe>";
 
   override void create() {
-    element = <div> "video" </div>;
+    element = <div style=style.video> "video" </div>;
     element.node.innerHTML = code;
   }
 }

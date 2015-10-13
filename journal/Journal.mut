@@ -9,7 +9,7 @@ class Journal extends web.View {
   }
 
   bind tag renderItem(container.Model item) {
-    auto node = createNode(item.nodeType);
+    auto node = createNode(item.polymorph);
     if node is null { return null; }
 
     node.create();
