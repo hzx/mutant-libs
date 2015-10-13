@@ -63,7 +63,7 @@ class Collection {
   void move(string id, string beforeId) {
     if id in idToNodes_ {
       auto node = idToNodes_[id];
-      removeNode(node);
+      removeNode_(node);
 
       if beforeId in idToNodes_ {
         insertBeforeNode_(node, idToNodes_[beforeId]);
