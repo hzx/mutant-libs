@@ -61,13 +61,17 @@ void parsePageItems(string data, container.ObservableCollection items) {
 
   if rows.length < 3 { return; }
 
+  // first row contain order ids
   string s_order = rows[0];
   object order = s_order.split(",");
 
   object buf = [];
 
-  for int i = 1; i < rows.length; i = i + 2 {
-    nodeType = window.parseInt(rows[i]);
+  // object consists:
+  // 1 row nodeType
+  // 1 row fields
+  for int i = 1; i < rows.length; i = i + 2 { // parse items and place to buf
+    nodeType = window.parseInt(rows[i]); 
     auto item = createItem(nodeType);
     if item is null { continue; } // unknown nodeType
 
@@ -77,13 +81,8 @@ void parsePageItems(string data, container.ObservableCollection items) {
     buf.push(item);
   }
 
-  console.log("journal.models.parsePageItems:");
-  console.log(buf);
-
+  // sort items and add to collection
   buf = sortModels(order, buf);
-
-  console.log(buf);
-
   for auto item: buf {
     items.appendLocal(item);
   }

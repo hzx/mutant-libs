@@ -128,7 +128,7 @@ class ObservableCollection extends Collection {
 
   void moveLocal(string id, string beforeId) {
     base.move(id, beforeId);
-    eventMove.notify(id, beforeId);
+    eventMove.notify2(id, beforeId);
   }
 
   void moveLink(string id, string beforeId) {
