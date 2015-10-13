@@ -1,4 +1,22 @@
 
+
+object sortModels(object order, object buf) {
+  object sorted = [];
+  string id;
+
+  for int i = 0; i < order.length; ++i { // walk by ordered ids
+    id = order[i];
+    for object obj: buf { // search obj in buffer and add to sorted
+      if obj.id.value is id {
+        sorted.push(obj);
+        break;
+      }
+    }
+  }
+
+  return sorted;
+}
+
 object createItem(int type) {
   switch type {
     case NodeType.BLOCK:
@@ -41,9 +59,14 @@ void parsePageItems(string data, container.ObservableCollection items) {
   int nodeType;
   object pices;
 
-  if rows.length < 2 { return; }
+  if rows.length < 3 { return; }
 
-  for int i = 0; i < rows.length; i = i + 2 {
+  string s_order = rows[0];
+  object order = s_order.split(",");
+
+  object buf = [];
+
+  for int i = 1; i < rows.length; i = i + 2 {
     nodeType = window.parseInt(rows[i]);
     auto item = createItem(nodeType);
     if item is null { continue; } // unknown nodeType
@@ -51,6 +74,17 @@ void parsePageItems(string data, container.ObservableCollection items) {
     pices = rows[i + 1].split(container.DELIM_FIELD);
     item.unserialize(pices);
 
+    buf.push(item);
+  }
+
+  console.log("journal.models.parsePageItems:");
+  console.log(buf);
+
+  buf = sortModels(order, buf);
+
+  console.log(buf);
+
+  for auto item: buf {
     items.appendLocal(item);
   }
 }
