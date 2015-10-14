@@ -65,18 +65,9 @@ class Collection {
       auto node = idToNodes_[id];
       removeNode_(node);
 
-      // debug
-      console.log("Collection.move:");
-      console.log("beforeId: " + beforeId);
-
       if beforeId in idToNodes_ {
-
-        console.log("insertBeforeNode_");
-
         insertBeforeNode_(node, idToNodes_[beforeId]);
       } else {
-        console.log("appendNode_");
-
         appendNode_(node);
       }
     }

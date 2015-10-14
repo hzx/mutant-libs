@@ -3,8 +3,12 @@
 class Model implements Collectable {
   auto id = new String();
   int polymorph = 0;
+  bool isLocalUpdate = false;
 
   auto eventUpdate = new Event();
+
+  // link document
+  object link = null;
 
   Model() {
     id.code = ModelField.ID;
@@ -14,10 +18,35 @@ class Model implements Collectable {
     return id.value;
   }
 
+  void updateLink(object updates) {
+    if link is null or isLocalUpdate { return; }
+
+    link.update({
+      parentId: null,
+      parentField: 0,
+      polymorph: polymorph,
+      id: id.value,
+      updates: updates,
+      obj: this,
+    });
+  }
+
   void enter();
   void exit();
   string serialize();
-  void unserialize(object pices);
+  void setField(int name, string value);
+
+  void unserialize(object pices) {
+    for int i = 0; i < pices.length; i=i+2 {
+      this.setField(window.parseInt(pices[i]), pices[i+1]);
+    }
+  }
+
+  void unserializeLocal(object pices) {
+    isLocalUpdate = true;
+    unserialize(pices);
+    isLocalUpdate = false;
+  }
 }
 
 
