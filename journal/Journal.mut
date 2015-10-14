@@ -2,22 +2,153 @@
 class Journal extends web.View {
   object journal_ = null;
   object journalItems_ = null;
+  tag lastTextElement = null;
+
 
   override void create() {
+    /* element = <div style=style.journal></div>; */
     element = <web.CollectionView name="div" collection=journalItems_
         render=renderItem style_=style.journal/>;
+
+    /* renderItems(journalItems_); */
   }
 
-  bind tag renderItem(container.Model item) {
-    auto node = createNode(item.polymorph);
-    if node is null { return null; }
+  /* bind tag renderItem(container.Model item) { */
+  /*   auto node = createNode(item.polymorph); */
+  /*   if node is null { return null; } */
 
-    node.item = item;
-    node.create();
+  /*   node.item = item; */
+  /*   node.create(); */
 
-    return node;
+  /*   return node; */
+  /* } */
+
+  bind tag renderItem(container.Model obj) {
+    switch obj.polymorph {
+      case journal_model.NodeType.TEXT:
+        if lastTextElement is null {
+          node = new Text();
+          node.item = obj;
+          node.create();
+
+          lastTextElement = node;
+
+          return node;
+        } else {
+          lastTextElement.joinTextObject(obj);
+        }
+        break;
+      case journal_model.NodeType.LINK:
+        node = new Link();
+        node.item = obj;
+        node.create();
+
+        if lastTextElement isnot null {
+          lastTextElement.joinLink(node);
+        } else {
+          return node;
+        }
+        break;
+      case journal_model.NodeType.FILE:
+        node = new File();
+        node.item = obj;
+        node.create();
+
+        if lastTextElement isnot null {
+          lastTextElement.joinFile(node);
+        } else {
+          return node;
+        }
+        break;
+      default:
+        node = createNode(obj.polymorph);
+
+        if node isnot null {
+          node.item = obj;
+          node.create(); 
+
+          lastTextElement = null;
+
+          return node;
+        }
+
+        break;
+    }
+
+    return null;
   }
 
+
+
+  // if current item is text - add all other link, file, text to this item
+  // if current item isnot text, link, file, reset last text
+  void renderItems(container.ObservableCollection items) {
+    auto cursor = items.first;
+    auto obj = null;
+    auto node = null;
+
+    // debug
+    browser.log("Journal.renderItems:");
+    browser.log(items);
+
+    while cursor isnot null {
+      node = null;
+
+      switch cursor.obj.polymorph {
+        case journal_model.NodeType.TEXT:
+          if lastTextElement is null {
+            node = new Text();
+            node.item = cursor.obj;
+            node.create();
+
+            element.append(node);
+
+            lastTextElement = node;
+          } else {
+            lastTextElement.joinTextObject(cursor.obj);
+          }
+          break;
+        case journal_model.NodeType.LINK:
+          node = new Link();
+          node.item = cursor.obj;
+          node.create();
+
+          if lastTextElement isnot null {
+            lastTextElement.joinLink(node);
+          } else {
+            element.append(node);
+          }
+          break;
+        case journal_model.NodeType.FILE:
+          node = new File();
+          node.item = cursor.obj;
+          node.create();
+
+          if lastTextElement isnot null {
+            lastTextElement.joinFile(node);
+          } else {
+            element.append(node);
+          }
+          break;
+        default:
+          node = createNode(cursor.obj.polymorph);
+
+          if node isnot null {
+            node.item = cursor.obj;
+            node.create(); 
+
+            element.append(node);
+
+            lastTextElement = null;
+          }
+          break;
+      }
+
+      cursor = cursor.next;
+    }
+  }
+
+  // create text element for text node and push another 
   Node createNode(int nodeType) {
     switch nodeType {
       case journal_model.NodeType.BLOCK:

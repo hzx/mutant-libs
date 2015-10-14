@@ -5,23 +5,62 @@ class Text extends web.View {
   }
 
   override void create() {
-    auto texts = splitText(this.item.text.value);
-
-    // debug
-    console.log("Text.create, texts:");
-    console.log(this.item.text.value);
-    console.log(texts);
-
     element = <div style=style_.element></div>;
+
+    auto texts = Text.splitText(this.item.text.value);
 
     tag p;
     for int i = 0; i < texts.length; ++i {
-      p = <div style=style_.paragraph> texts[i] </div>;
+      p = <div style=style_.paragraph>
+        <span> texts[i] </span>
+      </div>;
+
       element.append(p);
     }
   }
 
-  object splitText(string value) {
+  // get or create last paragraph in which we join first text, link, file
+  tag getOrCreateLastParagraph() {
+    tag p = element.last;
+
+    if p is null {
+      p = <div style=style_.paragraph></div>;
+
+      element.append(p);
+    }
+
+    return p;
+  }
+
+  void joinTextObject(journal_model.Text item) {
+    auto texts = Text.splitText(item.text.value);
+    if texts.length is 0 { return; }
+
+    auto p = getOrCreateLastParagraph();
+
+    auto first = <span> texts[0] </span>;
+    p.append(first);
+
+    for int i = 1; i < texts.length; ++i {
+      p = <div style=style_.paragraph>
+        <span> texts[i] </span>
+      </div>;
+
+      element.append(p);
+    }
+  }
+
+  void joinLink(tag link) {
+    auto p = getOrCreateLastParagraph();
+    p.append(link);
+  }
+
+  void joinFile(tag file) {
+    auto p = getOrCreateLastParagraph();
+    p.append(file);
+  }
+
+  static object splitText(string value) {
     auto buf = [];
 
     int left = 0;
@@ -34,8 +73,6 @@ class Text extends web.View {
     for int i = 0; i < value.length; ++i {
       ch = value[i];
       if ch is n13 {
-        console.log("found \\n");
-
         nCount = nCount + 1;
 
         if nCount is 1 {
