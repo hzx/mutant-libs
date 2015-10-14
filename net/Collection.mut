@@ -30,7 +30,7 @@ class Collection {
     auto me = this;
 
     browser.post(url, data, xsrf, void (string response) { // success
-      params.obj.unserialize(response.split(container.DELIM_FIELD));
+      params.obj.unserializeLocal(response.split(container.DELIM_FIELD));
     }, void (int status, string response) { // fail
       // TODO: set error to browser net errors
     }, void () {}); // progress

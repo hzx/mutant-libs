@@ -3,7 +3,15 @@ class Document extends Collection {
   /* int table = 0; */
   /* string url = ""; */
   /* string xsrf = ""; */
-  string obj = null;
+  /* string obj = null; */
+
+  /* void enter() { */
+  /*   obj.eventUpdate.listen(onObjectUpdate); */
+  /* } */
+
+  /* void exit() { */
+  /*   obj.eventUpdate.unlisten(onObjectUpdate); */
+  /* } */
 
   void update(object params) {
     auto data = {};
