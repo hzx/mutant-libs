@@ -1,0 +1,10 @@
+
+namespace breax {
+
+
+element {
+  clear: both;
+}
+
+
+} // end namespace breax

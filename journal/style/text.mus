@@ -1,3 +1,11 @@
 
-text {
+namespace text {
+
+element {
 }
+
+paragraph {
+  margin: 16px;
+}
+
+} // end namespace text

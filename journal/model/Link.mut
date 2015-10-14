@@ -4,6 +4,7 @@ class Link extends container.Model {
   auto style = new container.String();
   auto src = new container.String();
   auto alt = new container.String();
+  auto text = new container.String();
 
   Link() {
     polymorph = NodeType.LINK;
@@ -29,6 +30,9 @@ class Link extends container.Model {
       case LinkField.ALT:
         alt.init(value);
         break;
+      case LinkField.TEXT:
+        text.init(value);
+        break;
     }
   }
 
@@ -36,12 +40,14 @@ class Link extends container.Model {
     style.listen(onStyleUpdate);
     src.listen(onSrcUpdate);
     alt.listen(onAltUpdate);
+    text.listen(onTextUpdate);
   }
 
   void exit() {
     style.unlisten(onStyleUpdate);
     src.unlisten(onSrcUpdate);
     alt.unlisten(onAltUpdate);
+    text.unlisten(onTextUpdate);
   }
 
   string serialize() {
@@ -52,32 +58,25 @@ class Link extends container.Model {
     if style.has { buf.push(LinkField.STYLE, style.value); }
     if src.has { buf.push(LinkField.SRC, src.value); }
     if alt.has { buf.push(LinkField.ALT, alt.value); }
+    if text.has { buf.push(LinkField.TEXT, text.value); }
       
     return buf.join(container.DELIM_FIELD);
   }
 
-  void unserialize(object pices) {
-    for int i = 0; i < pices.length; i=i+2 {
-      setField(pices[i], pices[i+1]);
-    }
-  }
-
   bind void onStyleUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      LinkField.STYLE, val,
-    ]);
+    eventUpdate.notify2(id.value, [LinkField.STYLE, val]);
   }
 
   bind void onSrcUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      LinkField.SRC, val,
-    ]);
+    eventUpdate.notify2(id.value, [LinkField.SRC, val]);
   }
 
   bind void onAltUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      LinkField.ALT, val,
-    ]);
+    eventUpdate.notify2(id.value, [LinkField.ALT, val]);
+  }
+
+  bind void onTextUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [LinkField.TEXT, val]);
   }
 }
 
@@ -87,4 +86,5 @@ enum LinkField {
   STYLE,
   SRC,
   ALT,
+  TEXT,
 }

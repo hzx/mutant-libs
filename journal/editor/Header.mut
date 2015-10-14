@@ -56,6 +56,7 @@ class Header1 extends VerticalNode {
 
     customStyleInput = <input style=ui_style.nestedInput
         onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+        onchange=onStyleChange
         bind=item.style render=renderInputValue/>;
 
     customStyleNode = <div style=style_.customStyleNode
@@ -90,6 +91,18 @@ class Header1 extends VerticalNode {
     input.node.value = ovalue.value;
   }
 
+  void flushName() {
+    journal_.name.set(nameInput.node.value);
+  }
+
+  void flushDescription() {
+    journal_.description.set(descriptionInput.node.value);
+  }
+
+  void flushStyle() {
+    item.style.set(customStyleInput.node.value);
+  }
+
   void focusName() {
     nameNode.setState(web.STATE_ACTIVE);
     nameInput.node.focus();
@@ -97,7 +110,7 @@ class Header1 extends VerticalNode {
 
   void blurName() {
     nameNode.setState(web.STATE_NORMAL);
-    journal_.name.set(nameInput.node.value);
+    flushName();
   }
 
   void descriptionTuneHeight() {
@@ -122,7 +135,7 @@ class Header1 extends VerticalNode {
 
   void blurDescription() {
     descriptionNode.setState(web.STATE_NORMAL);
-    journal_.description.set(descriptionInput.node.value);
+    flushDescription();
   }
 
   void focusCustomStyle() {
@@ -132,7 +145,7 @@ class Header1 extends VerticalNode {
 
   void blurCustomStyle() {
     customStyleNode.setState(web.STATE_NORMAL);
-    item.style.set(customStyleInput.node.value);
+    flushStyle();
   }
 
   bind void onNameFocus(object e) {
@@ -195,6 +208,7 @@ class Header1 extends VerticalNode {
   }
 
   bind void onDescriptionChange(object e) {
+    flushDescription();
   }
 
   bind void onCustomStyleFocus(object e) {
@@ -203,6 +217,10 @@ class Header1 extends VerticalNode {
 
   bind void onCustomStyleBlur(object e) {
     blurCustomStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 
   bind void onCustomStyleClick(object e) {

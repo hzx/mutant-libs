@@ -1,0 +1,13 @@
+
+class BigSlider extends web.View {
+  string text = "";
+
+  BigSlider() {
+    style_ = style.bigSlider;
+  }
+
+  override void create() {
+    element = <div style=style_.element>
+    </div>;
+  }
+}

@@ -1,4 +1,11 @@
 
-video {
+namespace video {
+
+
+element {
   textAlign: center;
+  margin: 16px 0;
 }
+
+
+} // end namespace video

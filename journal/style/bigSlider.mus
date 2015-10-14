@@ -1,0 +1,12 @@
+
+namespace bigSlider {
+
+
+element {
+  marginBottom: 16px;
+  height: 480px;
+  backgroundColor: #e5c8ee;
+}
+
+
+} // end namespace bigSlider

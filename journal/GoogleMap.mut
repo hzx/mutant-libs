@@ -29,14 +29,17 @@ class GoogleMap extends web.View {
   // params here
   string width = "1200px";
   string height = "400px";
-  float lat = 35.6048549;
-  float lng = 138.6402127;
+  float lat = 59.848279;
+  float lng = 30.412244;
   int zoom = 16;
   object map = null;
 
+  GoogleMap() {
+    style_ = style.googleMap;
+  }
+
   override void create() {
-    element = <div style=style.googleMap>
-    </div>;
+    element = <div style=style_.element></div>;
 
     element.setStyleProperty("width", width);
     element.setStyleProperty("height", height);

@@ -21,7 +21,9 @@ class Image extends VerticalNode {
 
     filename = <div style=style_.filename></div>;
     
-    altInput = <input style=ui_style.nestedInput onfocus=onAltFocus onblur=onAltBlur/>;
+    altInput = <input style=ui_style.nestedInput
+        onfocus=onAltFocus onblur=onAltBlur
+        onchange=onAltChange/>;
 
     altNode = <div style=style_.altNode active=style_.node_active onclick=onAltClick>
       <div style=style_.editwrap>
@@ -34,7 +36,9 @@ class Image extends VerticalNode {
     </div>;
 
     customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+        onchange=onStyleChange
+        bind=item.style render=renderInputValue/>;
 
     customStyleNode = <div style=style_.customStyleNode
         active=style_.customStyleNode_active onclick=onCustomStyleClick>
@@ -66,16 +70,18 @@ class Image extends VerticalNode {
     </div>;
   }
 
-  override string serialize() {
-    object buf = [];
-    buf.push(code);
-    buf.push(altInput.node.value);
-    // TODO: push file hash here
-    return buf.join(container.DELIM_FIELD);
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
   }
 
-  override void unserialize(object fields) {
-    altInput.node.value = fields[1];
+  void flushStyle() {
+    item.style.set(customStyleInput.node.value);
+  }
+
+  void flushFilename() {
+  }
+
+  void flushAlt() {
   }
 
   void focusAlt() {
@@ -115,6 +121,10 @@ class Image extends VerticalNode {
     blurAlt();
   }
 
+  bind void onAltChange(object e) {
+    flushAlt();
+  }
+
   bind void onUploadBtnClick(object e) {
     fileDialog.click();
   }
@@ -125,6 +135,10 @@ class Image extends VerticalNode {
 
   bind void onCustomStyleBlur(object e) {
     blurCustomStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 
   bind void onCustomStyleClick(object e) {

@@ -1,3 +1,12 @@
 
-gallery {
+namespace gallery {
+
+
+element {
+  marginBottom: 16px;
+  minHeight: 260px;
+  backgroundColor: #d8eec8;
 }
+
+
+} // end namespace gallery

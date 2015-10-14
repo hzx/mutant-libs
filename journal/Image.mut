@@ -3,8 +3,12 @@ class Image extends web.View {
   string src="";
   string alt="";
 
+  Image() {
+    style_ = style.image;
+  }
+
   override void create() {
-    element = <div>
+    element = <div style=style_.element>
       <img src=src alt=alt/>
     </div>;
   }

@@ -62,7 +62,7 @@ class Anchor extends container.Model {
   }
 
   bind void onNameUpdate(string val, string old) {
-    eventUpdate(id.value, [
+    eventUpdate.notify2(id.value, [
       AnchorField.NAME, val,
     ]);
   }

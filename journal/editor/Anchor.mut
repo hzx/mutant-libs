@@ -10,7 +10,10 @@ class Anchor extends VerticalNode {
   override void create() {
     createPlaceholders();
 
-    nameInput = <input style=ui_style.nestedInput onfocus=onNameFocus onblur=onNameBlur/>;
+    nameInput = <input style=ui_style.nestedInput
+      onfocus=onNameFocus onblur=onNameBlur
+      onchange=onNameChange
+      bind=item.name render=renderInputValue/>;
 
     nameNode = <div style=style_.nameNode active=style_.node_active onclick=onNameClick>
       <div style=style_.editwrap>
@@ -29,13 +32,12 @@ class Anchor extends VerticalNode {
     </div>;
   }
 
-  override string serialize() {
-    object buf = [];
-
-    return buf.join(container.DELIM_FIELD);
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
   }
 
-  override void unserialize(object fields) {
+  void flushName() {
+    item.name.set(nameInput.node.value);
   }
 
   void focusName() {
@@ -57,5 +59,9 @@ class Anchor extends VerticalNode {
 
   bind void onNameBlur(object e) {
     blurName();
+  }
+
+  bind void onNameChange(object e) {
+    flushName();
   }
 }

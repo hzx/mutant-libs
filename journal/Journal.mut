@@ -12,77 +12,48 @@ class Journal extends web.View {
     auto node = createNode(item.polymorph);
     if node is null { return null; }
 
+    node.item = item;
     node.create();
 
     return node;
   }
 
-  void createNode(int nodeType) {
-    Node node = null;
-
+  Node createNode(int nodeType) {
     switch nodeType {
       case journal_model.NodeType.BLOCK:
-        node = new Block();
-        node.style_ = style.block;
-        break;
+        return new Block();
       case journal_model.NodeType.H1:
-        node = new Header1();
-        node.style_ = style.header;
-        break;
+        auto node = new Header1();
+        node.name_ = journal_.name;
+        return node;
       case journal_model.NodeType.H2:
-        node = new Header2();
-        node.style_ = style.header;
-        break;
+        return new Header2();
       case journal_model.NodeType.TEXT:
-        node = new Text();
-        node.style_ = style.text;
-        break;
+        return new Text();
       case journal_model.NodeType.CODE:
-        node = new Code();
-        node.style_ = style.code;
-        break;
+        return new Code();
       case journal_model.NodeType.LINK:
-        node = new Link();
-        node.style_ = style.link;
-        break;
+        return new Link();
       case journal_model.NodeType.VIDEO:
-        node = new Video();
-        node.style_ = style.video;
-        break;
+        return new Video();
       case journal_model.NodeType.GOOGLE_MAP:
-        node = new GoogleMap();
-        node.style_ = style.googleMap;
-        break;
+        return new GoogleMap();
       case journal_model.NodeType.FILE:
-        node = new File();
-        node.style_ = style.file;
-        break;
+        return new File();
       case journal_model.NodeType.IMAGE:
-        node = new Image();
-        node.style_ = style.image;
-        break;
+        return new Image();
       case journal_model.NodeType.GALLERY:
-        node = new Gallery();
-        node.style_ = style.gallery;
-        break;
+        return new Gallery();
       case journal_model.NodeType.BIG_SLIDER:
-        node = new BigSlider();
-        node.style_ = style.bigSlider;
-        break;
+        return new BigSlider();
       case journal_model.NodeType.MINI_SLIDER:
-        node = new MiniSlider();
-        node.style_ = style.miniSlider;
-        break;
+        return new MiniSlider();
       case journal_model.NodeType.ANCHOR:
-        node = new Anchor();
-        node.style_ = style.anchor;
-        break;
+        return new Anchor();
       case journal_model.NodeType.BREAK:
-        node = new Break();
-        node.style_ = style.break_;
-        break;
+        return new Break();
     }
 
-    return node;
+    return null;
   }
 }

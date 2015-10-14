@@ -83,12 +83,19 @@ node_active {
 }
 
 nameNode: node {
+  marginBottom: 0;
+}
+
+name2Node: node {
 }
 
 nameNode_active: node_active {
 }
 
-slugNode: node {
+slugNode: {
+  fontFamily: Ubuntu, sans-serif;
+  marginBottom: 4px;
+  color: #0d5287;
 }
 
 keywordsNode: node {

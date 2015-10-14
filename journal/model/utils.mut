@@ -76,7 +76,7 @@ void parsePageItems(string data, container.ObservableCollection items) {
     if item is null { continue; } // unknown nodeType
 
     pices = rows[i + 1].split(container.DELIM_FIELD);
-    item.unserialize(pices);
+    item.unserializeLocal(pices);
 
     buf.push(item);
   }

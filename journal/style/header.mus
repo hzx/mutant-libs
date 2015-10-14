@@ -1,3 +1,27 @@
 
-header {
+
+
+namespace header1 {
+  
+
+element {
+  fontSize: 36px;
+  fontWeight: bold;
+  margin: 16px;
 }
+
+
+} // end namespace header1
+
+
+namespace header2 {
+
+
+element {
+  fontSize: 24px;
+  fontWeight: bold;
+  margin: 16px;
+}
+
+
+} // end namespace header2

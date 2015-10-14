@@ -1,6 +1,10 @@
 
 class File extends web.View {
+  File() {
+    style_ = style.file;
+  }
+
   override void create() {
-    element = <div> "file" </div>;
+    element = <div style=style_.element> "file" </div>;
   }
 }

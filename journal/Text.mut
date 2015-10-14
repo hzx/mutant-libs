@@ -1,6 +1,65 @@
 
 class Text extends web.View {
+  Text() {
+    style_ = style.text;
+  }
+
   override void create() {
-    element = <div> "text" </div>;
+    auto texts = splitText(this.item.text.value);
+
+    // debug
+    console.log("Text.create, texts:");
+    console.log(this.item.text.value);
+    console.log(texts);
+
+    element = <div style=style_.element></div>;
+
+    tag p;
+    for int i = 0; i < texts.length; ++i {
+      p = <div style=style_.paragraph> texts[i] </div>;
+      element.append(p);
+    }
+  }
+
+  object splitText(string value) {
+    auto buf = [];
+
+    int left = 0;
+    int right = 0;
+    bool isLeftFound = false;
+    int nCount = 0;
+    string n13 = "\n";
+    string ch;
+
+    for int i = 0; i < value.length; ++i {
+      ch = value[i];
+      if ch is n13 {
+        console.log("found \\n");
+
+        nCount = nCount + 1;
+
+        if nCount is 1 {
+          right = i;
+          continue;
+        }
+
+        if nCount is 2 and isLeftFound {
+          isLeftFound = false;
+          buf.push(value.substring(left, right));
+        }
+      } else {
+        nCount = 0;
+        if !isLeftFound {
+          isLeftFound = true;
+          left = i;
+        }
+      }
+    }
+
+    if isLeftFound and value.length - left > 1 {
+      buf.push(value.substring(left, value.length));
+    }
+
+    return buf;
   }
 }

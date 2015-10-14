@@ -1,13 +1,23 @@
 
 class Header1 extends web.View {
+  container.String name_ = null;
+
+  Header1() {
+    style_ = style.header1;
+  }
+
   override void create() {
-    element = <div> "header1" </div>;
+    element = <div style=style_.element> name_.value </div>;
   }
 }
 
 
 class Header2 extends web.View {
+  Header2() {
+    style_ = style.header2;
+  }
+
   override void create() {
-    element = <div> "header2" </div>;
+    element = <div style=style_.element> this.item.text.value </div>;
   }
 }

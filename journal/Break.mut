@@ -1,6 +1,10 @@
 
 class Break extends web.View {
+  Break() {
+    style_ = style.breax;
+  }
+
   override void create() {
-    element = <div> "break" </div>;
+    element = <div style=style_.element></div>;
   }
 }

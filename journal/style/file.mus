@@ -1,3 +1,9 @@
 
-file {
+namespace file {
+
+
+element {
 }
+
+
+} // end namespace file

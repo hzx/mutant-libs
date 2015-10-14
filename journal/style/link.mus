@@ -1,9 +1,15 @@
 
-link {
+namespace link {
+
+
+element {
   padding: 4px 6px;
   backgroundColor: #a2c6fb;
   color: #122849;
-  border: 1px solid #445f87;
+  /* border: 1px solid #c8dcee; //#445f87; */
   display: inline;
   cursor: pointer;
 }
+
+
+} // end namespace link

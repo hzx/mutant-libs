@@ -1,7 +1,7 @@
 
-class Gallery extends web.View {
-  Gallery() {
-    style_ = style.gallery;
+class MiniSlider extends web.View {
+  MiniSlider() {
+    style_ = style.miniSlider;
   }
 
   override void create() {

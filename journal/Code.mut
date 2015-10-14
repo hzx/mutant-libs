@@ -1,8 +1,17 @@
 
 class Code extends web.View {
-  string text = "";
+  Code() {
+    style_ = style.code;
+  }
 
   override void create() {
-    element = <div style=style.code> text </div>;
+    element = <div style=style_.element>
+      <div style=style_.wrap>
+        <div style=style_.nums></div>
+        <div style=style_.source>
+          this.item.text.value
+        </div>
+      </div>
+    </div>;
   }
 }

@@ -16,11 +16,15 @@ class Text extends VerticalNode {
 
     textarea_ = <textarea style=style_.area active=style_.area_active
         onkeydown=onKeydown onkeyup=onKeyup onchange=onChange onfocus=onFocus
-        onblur=onBlur/>;
+        onblur=onBlur
+        bind=item.text render=renderInputValue/>;
+
     areawrap = <div style=style_.areawrap> {textarea_} </div>;
 
     customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+        onchange=onStyleChange
+        bind=item.style render=renderInputValue/>;
 
     customStyleNode = <div style=style_.customStyleNode
         active=style_.customStyleNode_active onclick=onCustomStyleClick>
@@ -43,6 +47,25 @@ class Text extends VerticalNode {
     </div>;
   }
 
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    tuneHeight();
+  }
+
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
+  }
+
+  void flushText() {
+    item.text.set(textarea_.node.value);
+  }
+
+  void flushStyle() {
+    item.style.set(customStyleInput.node.value);
+  }
+
   void focus() {
     element.setState(web.STATE_ACTIVE);
     textarea_.setState(web.STATE_ACTIVE);
@@ -52,6 +75,7 @@ class Text extends VerticalNode {
   void blur() {
     element.setState(web.STATE_NORMAL);
     textarea_.setState(web.STATE_NORMAL);
+    flushText();
   }
 
   void focusCustomStyle() {
@@ -61,6 +85,7 @@ class Text extends VerticalNode {
 
   void blurCustomStyle() {
     customStyleNode.setState(web.STATE_NORMAL);
+    flushStyle();
   }
 
   void tuneHeight() {
@@ -111,6 +136,7 @@ class Text extends VerticalNode {
   }
 
   bind void onChange(object e) {
+    flushText();
   }
 
   bind void onFocus(object e) {
@@ -131,5 +157,9 @@ class Text extends VerticalNode {
 
   bind void onCustomStyleClick(object e) {
     focusCustomStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 }

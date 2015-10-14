@@ -1,20 +1,32 @@
 
 class Link extends web.View {
-  string text = "";
-  string src = "";
+  Link() {
+    style_ = style.link;
+  }
 
   override void create() {
-    element = <div style=style.link onclick=onClick> text </div>;
+    element = <a style=style_.element href=this.item.src.value onclick=onClick>
+      this.item.text.value
+    </a>;
+
+    if isOuterLink(this.item.src.value) {
+      element.node.target = "_blank";
+    }
+  }
+
+  bool isOuterLink(string url) {
+    auto tst = url[0];
+    return url.length > 0 and tst isnot "/";
   }
 
   bind void onClick(object e) {
+    if isOuterLink(this.item.src.value) { return true; }
+
     e.stopPropagation();
+    e.preventDefault();
 
-    browser.log("Link.onClick:");
-    browser.log(e);
+    web.Router.instance().dispatchUrl(this.item.src.value);
 
-    web.Router.instance().dispatchUrl(src);
-
-    return e.preventDefault();
+    return false;
   }
 }

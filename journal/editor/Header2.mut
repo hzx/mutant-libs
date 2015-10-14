@@ -13,9 +13,10 @@ class Header2 extends VerticalNode {
     createPlaceholders();
 
     nameInput_ = <input style=ui_style.nestedInput
-      onfocus=onNameFocus onblur=onNameBlur/>;
+      onfocus=onNameFocus onblur=onNameBlur onchange=onTextChange
+      bind=item.text render=renderInputValue/>;
 
-    nameNode_ = <div style=style_.nameNode active=style_.nameNode_active
+    nameNode_ = <div style=style_.name2Node active=style_.nameNode_active
         onclick=onNameClick>
       <div style=style_.editwrap>
         <div style=style_.label> "Название" </div>
@@ -24,7 +25,9 @@ class Header2 extends VerticalNode {
     </div>;
 
     customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+        onchange=onStyleChange
+        bind=item.style render=renderInputValue/>;
 
     customStyleNode = <div style=style_.customStyleNode
         active=style_.customStyleNode_active onclick=onCustomStyleClick>
@@ -47,6 +50,18 @@ class Header2 extends VerticalNode {
     </div>;
   }
 
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
+  }
+
+  void flushText() {
+    item.text.set(nameInput_.node.value);
+  }
+
+  void flushStyle() {
+    item.style.set(customStyleInput.node.value);
+  }
+
   void focusName() {
     nameNode_.setState(web.STATE_ACTIVE);
     nameInput_.node.focus();
@@ -54,6 +69,7 @@ class Header2 extends VerticalNode {
 
   void blurName() {
     nameNode_.setState(web.STATE_NORMAL);
+    flushText();
   }
 
   void focusCustomStyle() {
@@ -63,6 +79,7 @@ class Header2 extends VerticalNode {
 
   void blurCustomStyle() {
     customStyleNode.setState(web.STATE_NORMAL);
+    flushStyle();
   }
   
   bind void onNameFocus(object e) {
@@ -71,6 +88,10 @@ class Header2 extends VerticalNode {
 
   bind void onNameBlur(object e) {
     blurName();
+  }
+
+  bind void onTextChange(object e) {
+    flushText();
   }
 
   bind void onNameClick(object e) {
@@ -83,6 +104,10 @@ class Header2 extends VerticalNode {
 
   bind void onCustomStyleBlur(object e) {
     blurCustomStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 
   bind void onCustomStyleClick(object e) {

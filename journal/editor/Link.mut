@@ -17,7 +17,8 @@ class Link extends VerticalNode {
     createPlaceholders();
 
     urlInput = <input style=ui_style.nestedInput onfocus=onUrlFocus
-        onblur=onUrlBlur/>;
+        onblur=onUrlBlur onchange=onUrlChange
+        bind=item.src render=renderInputValue/>;
 
     urlNode = <div style=style_.urlNode active=style_.node_active
         onclick=onUrlClick>
@@ -28,7 +29,8 @@ class Link extends VerticalNode {
     </div>;
 
     textInput = <input style=ui_style.nestedInput onfocus=onTextFocus
-        onblur=onTextBlur/>;
+        onblur=onTextBlur onchange=onTextChange
+        bind=item.text render=renderInputValue/>;
 
     textNode = <div style=style_.textNode active=style_.node_active
         onclick=onTextClick>
@@ -39,7 +41,8 @@ class Link extends VerticalNode {
     </div>;
 
     altInput = <input style=ui_style.nestedInput onfocus=onAltFocus
-        onblur=onAltBlur/>;
+        onblur=onAltBlur onchange=onAltChange
+        bind=item.alt render=renderInputValue/>;
 
     altNode = <div style=style_.altNode active=style_.node_active
         onclick=onAltClick>
@@ -50,7 +53,9 @@ class Link extends VerticalNode {
     </div>;
 
     customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+        onchange=onStyleChange
+        bind=item.style render=renderInputValue/>;
 
     customStyleNode = <div style=style_.customStyleNode
         active=style_.customStyleNode_active onclick=onCustomStyleClick>
@@ -73,6 +78,26 @@ class Link extends VerticalNode {
         {customStyleNode}
       </div>
     </div>;
+  }
+
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
+  }
+
+  void flushStyle() {
+    item.style.set(customStyleInput.node.value);
+  }
+
+  void flushSrc() {
+    item.src.set(urlInput.node.value);
+  }
+
+  void flushAlt() {
+    item.alt.set(altInput.node.value);
+  }
+
+  void flushText() {
+    item.text.set(textInput.node.value);
   }
 
   override string serialize() {
@@ -108,14 +133,17 @@ class Link extends VerticalNode {
 
   void blurUrl() {
     urlNode.setState(web.STATE_NORMAL);
+    flushSrc();
   }
 
   void blurText() {
     textNode.setState(web.STATE_NORMAL);
+    flushText();
   }
 
   void blurAlt() {
     altNode.setState(web.STATE_NORMAL);
+    flushAlt();
   }
 
   void focusCustomStyle() {
@@ -125,6 +153,7 @@ class Link extends VerticalNode {
 
   void blurCustomStyle() {
     customStyleNode.setState(web.STATE_NORMAL);
+    flushStyle();
   }
 
   bind void onUrlClick(object e) {
@@ -147,8 +176,16 @@ class Link extends VerticalNode {
     blurUrl();
   }
 
+  bind void onUrlChange(object e) {
+    flushSrc();
+  }
+
   bind void onTextBlur(object e) {
     blurText();
+  }
+
+  bind void onTextChange(object e) {
+    flushText();
   }
 
   bind void onAltClick(object e) {
@@ -163,12 +200,20 @@ class Link extends VerticalNode {
     blurAlt();
   }
 
+  bind void onAltChange(object e) {
+    flushAlt();
+  }
+
   bind void onCustomStyleFocus(object e) {
     focusCustomStyle();
   }
 
   bind void onCustomStyleBlur(object e) {
     blurCustomStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 
   bind void onCustomStyleClick(object e) {

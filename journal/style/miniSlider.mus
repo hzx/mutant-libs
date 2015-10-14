@@ -1,0 +1,12 @@
+
+namespace miniSlider {
+
+
+element {
+  marginBottom: 16px;
+  height: 200px;
+  backgroundColor: #c8eeee;
+}
+
+
+} // end namespace miniSlider

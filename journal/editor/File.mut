@@ -19,13 +19,16 @@ class File extends VerticalNode {
   override void create() {
     createPlaceholders();
 
-    a = <a href="" target="_blank" style=style_.a></a>;
+    a = <a href="" target="_blank" style=style_.a
+      bind=item.filename render=renderLinkHref></a>;
 
     fileDialog = <ui.Upload onChange=onFileChange/>;
 
     filename = <div style=style_.filename></div>;
 
-    textInput = <input style=ui_style.nestedInput onfocus=onTextFocus onblur=onTextBlur/>;
+    textInput = <input style=ui_style.nestedInput
+      onfocus=onTextFocus onblur=onTextBlur onchange=onTextChange
+      bind=item.text render=renderInputValue/>;
 
     textNode = <div style=style_.textNode active=style_.node_active onclick=onTextClick>
       <div style=style_.editwrap>
@@ -44,7 +47,9 @@ class File extends VerticalNode {
     </div>;
 
     customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+        onchange=onStyleChange
+        bind=item.style render=renderInputValue/>;
 
     customStyleNode = <div style=style_.customStyleNode
         active=style_.customStyleNode_active onclick=onCustomStyleClick>
@@ -82,6 +87,14 @@ class File extends VerticalNode {
     </div>;
   }
 
+  void renderLinkHref(tag elem, string ovalue) {
+    elem.node.href = ovalue.value;
+  }
+
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
+  }
+
   override string serialize() {
     object buf = [];
     buf.push(code);
@@ -108,6 +121,17 @@ class File extends VerticalNode {
     base.exit();
   }
 
+  void flushStyle() {
+    item.style.set(customStyleInput.node.value);
+  }
+
+  void flushFilename() {
+  }
+
+  void flushText() {
+    item.text.set(textInput.node.value);
+  }
+
   void focusText() {
     textNode.setState(web.STATE_ACTIVE);
     textInput.node.focus();
@@ -115,6 +139,7 @@ class File extends VerticalNode {
 
   void blurText() {
     textNode.setState(web.STATE_NORMAL);
+    flushText();
   }
 
   void focusAlt() {
@@ -133,6 +158,7 @@ class File extends VerticalNode {
 
   void blurCustomStyle() {
     customStyleNode.setState(web.STATE_NORMAL);
+    flushStyle();
   }
 
   bind void onUploadBtnClick(object e) {
@@ -153,6 +179,10 @@ class File extends VerticalNode {
 
   bind void onTextBlur(object e) {
     blurText();
+  }
+
+  bind void onTextChange(object e) {
+    flushText();
   }
 
   bind void onTextClick(object e) {
@@ -177,6 +207,10 @@ class File extends VerticalNode {
 
   bind void onCustomStyleBlur(object e) {
     blurCustomStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 
   bind void onCustomStyleClick(object e) {
