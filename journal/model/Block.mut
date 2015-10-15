@@ -1,7 +1,13 @@
 
-class Block {
+class Block extends container.Model {
   auto id = new container.String();
   auto pageId = new container.String();
+
+  Block() {
+    polymorph = NodeType.BLOCK;
+
+    enter();
+  }
 
   string getId() {
     return id.value;
@@ -13,5 +19,23 @@ class Block {
         id.init(value);
         break;
     }
+  }
+
+  void enter() {
+    /* style.listen(onStyleUpdate); */
+  }
+
+  void exit() {
+    /* style.unlisten(onStyleUpdate); */
+  }
+
+  string serialize() {
+    auto buf = [];
+
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if pageId.has { buf.push(HeaderField.PAGE_ID, pageId.value); }
+    /* if style.has { buf.push(HeaderField.STYLE, style.value); } */
+
+    return buf.join(container.DELIM_FIELD);
   }
 }

@@ -9,6 +9,8 @@ class EditorDialog extends ui.Dialog {
 
   void setJournal(journal_model.Journal doc) {
     journal_ = doc;
+    journalItems_.parentId = doc.id;
+
     auto editor = <Editor journal_=journal_ journalItems_=journalItems_/>;
 
     content_.clear();

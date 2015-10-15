@@ -73,6 +73,11 @@ void parsePageItems(string data, container.ObservableCollection items) {
   for int i = 1; i < rows.length; i = i + 2 { // parse items and place to buf
     nodeType = window.parseInt(rows[i]); 
     auto item = createItem(nodeType);
+
+    // debug
+    console.log("---journal.model.parsePageItems:");
+    console.log(item);
+
     if item is null { continue; } // unknown nodeType
 
     pices = rows[i + 1].split(container.DELIM_FIELD);
