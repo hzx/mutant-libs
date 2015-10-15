@@ -114,7 +114,6 @@ class Text extends VerticalNode {
   bind void onKeyup(object e) {
     switch e.keyCode {
       case 27: // escape
-        clear();
         break;
       case 9: // tab
         e.preventDefault();
