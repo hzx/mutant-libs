@@ -61,6 +61,7 @@ class ObservableCollection extends Collection {
   void insertLocal(object obj) {
     base.insert(obj);
     obj.eventUpdate.listen(onObjectUpdate);
+    obj.id.listen(onObjectIdUpdate);
     eventInsert.notify(obj);
   }
 
@@ -83,6 +84,7 @@ class ObservableCollection extends Collection {
   void insertBeforeLocal(object obj, string beforeId) {
     base.insertBefore(obj, beforeId);
     obj.eventUpdate.listen(onObjectUpdate);
+    obj.id.listen(onObjectIdUpdate);
 
     eventInsertBefore.notify2(obj, beforeId);
   }
@@ -107,6 +109,7 @@ class ObservableCollection extends Collection {
   void appendLocal(object obj) {
     base.append(obj);
     obj.eventUpdate.listen(onObjectUpdate);
+    obj.id.listen(onObjectIdUpdate);
     eventAppend.notify(obj);
   }
 
@@ -154,6 +157,7 @@ class ObservableCollection extends Collection {
     if obj is null { return null; }
 
     obj.eventUpdate.unlisten(onObjectUpdate);
+    obj.id.unlisten(onObjectIdUpdate);
     base.remove(id);
 
     eventRemove.notify(id);
@@ -177,6 +181,7 @@ class ObservableCollection extends Collection {
     auto cursor = first;
     while cursor isnot null {
       cursor.obj.eventUpdate.unlisten(onObjectUpdate);
+      cursor.obj.id.unlisten(onObjectIdUpdate);
       cursor = cursor.next;
     }
 
@@ -187,5 +192,9 @@ class ObservableCollection extends Collection {
   bind void onObjectUpdate(string id, object updates) {
     notifyUpdateLocal(id, updates);
     updateLink(id, updates);
+  }
+
+  bind void onObjectIdUpdate(string id, string old) {
+    updateId(id, old);
   }
 }
