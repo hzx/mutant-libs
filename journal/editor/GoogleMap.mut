@@ -6,13 +6,9 @@ class GoogleMap extends VerticalNode {
   tag lngNode = null;
   tag zoomInput = null;
   tag zoomNode = null;
-  tag widthNode = null;
-  tag widthInput = null;
-  tag heightNode = null;
-  tag heightInput = null;
   tag iconNode = null;
-  tag customStyleInput = null;
-  tag customStyleNode = null;
+  tag styleInput = null;
+  tag styleNode = null;
 
   GoogleMap() {
     code = journal_model.NodeType.GOOGLE_MAP;
@@ -54,34 +50,18 @@ class GoogleMap extends VerticalNode {
       </div>
     </div>;
 
-    widthInput = <input style=style_.input onfocus=onWidthFocus onblur=onWidthBlur/>;
-    widthNode = <div style=style_.widthNode active=style_.node_active onclick=onWidthClick>
-      <div style=style_.editwrap>
-        <div style=style_.label> "ширина:" </div>
-        {widthInput}
-      </div>
-    </div>;
-
-    heightInput = <input style=style_.input onfocus=onHeightFocus onblur=onHeightBlur/>;
-    heightNode = <div style=style_.heightNode active=style_.node_active onclick=onHeightClick>
-      <div style=style_.editwrap>
-        <div style=style_.label> "высота:" </div>
-        {heightInput}
-      </div>
-    </div>;
-
     iconNode = <div style=style_.iconNode>
     </div>;
 
-    customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur onchange=onStyleChange
+    styleInput = <input style=ui_style.nestedInput
+        onfocus=onStyleFocus onblur=onStyleBlur onchange=onStyleChange
         bind=item.style render=renderInputValue/>;
 
-    customStyleNode = <div style=style_.customStyleNode
-        active=style_.customStyleNode_active onclick=onCustomStyleClick>
+    styleNode = <div style=style_.styleNode
+        active=style_.styleNode_active onclick=onStyleClick>
       <div style=style_.editwrap>
         <div style=style_.label> "Стиль" </div>
-        {customStyleInput}
+        {styleInput}
       </div>
     </div>;
 
@@ -94,35 +74,16 @@ class GoogleMap extends VerticalNode {
           {latNode}
           {lngNode}
           {zoomNode}
-          {widthNode}
-          {heightNode}
         </div>
-        {customStyleNode}
+        {styleNode}
         <a style=style_.a href="http://maps.google.com" target="_blank"> "maps.google.com" </a>
         {iconNode}
       </div>
     </div>;
-
-    // set default values
-    zoomInput.node.value = "16";
-    widthInput.node.value = "1200";
-    heightInput.node.value = "360";
   }
 
   void renderInputValue(tag input, object ovalue) {
     input.node.value = ovalue.value;
-  }
-
-  override string serialize() {
-    object buf = [];
-    buf.push(code);
-    buf.push(latInput.node.value);
-    buf.push(lngInput.node.value);
-    buf.push(zoomInput.node.value);
-    buf.push(widthInput.node.value);
-    buf.push(heightInput.node.value);
-
-    return buf.join(container.DELIM_FIELD);
   }
 
   void flushLat() {
@@ -138,7 +99,7 @@ class GoogleMap extends VerticalNode {
   }
 
   void flushStyle() {
-    item.style.set(customStyleInput.node.value);
+    item.style.set(styleInput.node.value);
   }
 
   void focusLat() {
@@ -156,16 +117,6 @@ class GoogleMap extends VerticalNode {
     zoomInput.node.focus();
   }
 
-  void focusWidth() {
-    widthNode.setState(web.STATE_ACTIVE);
-    widthInput.node.focus();
-  }
-
-  void focusHeight() {
-    heightNode.setState(web.STATE_ACTIVE);
-    heightInput.node.focus();
-  }
-
   void blurLat() {
     latNode.setState(web.STATE_NORMAL);
     flushLat();
@@ -181,21 +132,13 @@ class GoogleMap extends VerticalNode {
     flushZoom();
   }
 
-  void blurWidth() {
-    widthNode.setState(web.STATE_NORMAL);
+  void focusStyle() {
+    styleNode.setState(web.STATE_ACTIVE);
+    styleInput.node.focus();
   }
 
-  void blurHeight() {
-    heightNode.setState(web.STATE_NORMAL);
-  }
-
-  void focusCustomStyle() {
-    customStyleNode.setState(web.STATE_ACTIVE);
-    customStyleInput.node.focus();
-  }
-
-  void blurCustomStyle() {
-    customStyleNode.setState(web.STATE_NORMAL);
+  void blurStyle() {
+    styleNode.setState(web.STATE_NORMAL);
     flushStyle();
   }
 
@@ -247,43 +190,19 @@ class GoogleMap extends VerticalNode {
     focusZoom();
   }
 
-  bind void onWidthFocus(object e) {
-    focusWidth();
+  bind void onStyleFocus(object e) {
+    focusStyle();
   }
 
-  bind void onWidthBlur(object e) {
-    blurWidth();
-  }
-
-  bind void onWidthClick(object e) {
-    focusWidth();
-  }
-
-  bind void onHeightFocus(object e) {
-    focusHeight();
-  }
-
-  bind void onHeightBlur(object e) {
-    blurHeight();
-  }
-
-  bind void onHeightClick(object e) {
-    focusHeight();
-  }
-
-  bind void onCustomStyleFocus(object e) {
-    focusCustomStyle();
-  }
-
-  bind void onCustomStyleBlur(object e) {
-    blurCustomStyle();
+  bind void onStyleBlur(object e) {
+    blurStyle();
   }
 
   bind void onStyleChange(object e) {
     flushStyle();
   }
 
-  bind void onCustomStyleClick(object e) {
-    focusCustomStyle();
+  bind void onStyleClick(object e) {
+    focusStyle();
   }
 }

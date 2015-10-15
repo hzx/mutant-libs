@@ -100,10 +100,10 @@ heightNode {
 iconNode {
 }
 
-customStyleNode: edit {
+styleNode: edit {
 }
 
-customStyleNode_active: edit_active {
+styleNode_active: edit_active {
 }
 
 a {
