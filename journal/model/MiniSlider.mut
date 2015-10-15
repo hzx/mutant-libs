@@ -13,16 +13,16 @@ class MiniSlider extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case MiniSliderField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case MiniSliderField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case MiniSliderField.IMAGES:
-        images.init(value);
+        images.set(value);
         break;
     }
   }

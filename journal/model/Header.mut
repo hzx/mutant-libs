@@ -13,13 +13,13 @@ class Header extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case HeaderField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case HeaderField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
     }
   }
@@ -64,16 +64,16 @@ class Header2 extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case HeaderField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case HeaderField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case HeaderField.TEXT:
-        text.init(value);
+        text.set(value);
         break;
     }
   }

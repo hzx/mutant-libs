@@ -17,16 +17,16 @@ class Gallery extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case GalleryField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case GalleryField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case GalleryField.IMAGES:
-        images.init(value);
+        images.set(value);
         break;
     }
   }

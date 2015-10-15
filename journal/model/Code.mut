@@ -14,16 +14,16 @@ class Code extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case CodeField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case CodeField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case CodeField.TEXT:
-        text.init(value);
+        text.set(value);
         break;
     }
   }

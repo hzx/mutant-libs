@@ -16,22 +16,22 @@ class Link extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case LinkField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case LinkField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case LinkField.SRC:
-        src.init(value);
+        src.set(value);
         break;
       case LinkField.ALT:
-        alt.init(value);
+        alt.set(value);
         break;
       case LinkField.TEXT:
-        text.init(value);
+        text.set(value);
         break;
     }
   }

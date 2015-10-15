@@ -16,22 +16,22 @@ class GoogleMap extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case GoogleMapField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case GoogleMapField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case GoogleMapField.ZOOM:
-        zoom.init(parseInt(value));
+        zoom.set(parseInt(value));
         break;
       case GoogleMapField.LAT:
-        lat.init(parseFloat(value));
+        lat.set(parseFloat(value));
         break;
       case GoogleMapField.LNG:
-        lng.init(parseFloat(value));
+        lng.set(parseFloat(value));
         break;
     }
   }

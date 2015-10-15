@@ -13,13 +13,13 @@ class Break extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case BreakField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case BreakField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
     }
   }

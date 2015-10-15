@@ -14,16 +14,16 @@ class Anchor extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case AnchorField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case AnchorField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case AnchorField.NAME:
-        name.init(value);
+        name.set(value);
         break;
     }
   }

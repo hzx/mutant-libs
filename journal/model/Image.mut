@@ -14,16 +14,16 @@ class Image extends container.Model {
     int field = window.parseInt(key);
     switch field {
       case container.ModelField.ID:
-        id.init(value);
+        id.set(value);
         break;
       case ImageField.PAGE_ID:
-        pageId.init(value);
+        pageId.set(value);
         break;
       case ImageField.STYLE:
-        style.init(value);
+        style.set(value);
         break;
       case ImageField.FILENAME:
-        filename.init(value);
+        filename.set(value);
         break;
     }
   }
