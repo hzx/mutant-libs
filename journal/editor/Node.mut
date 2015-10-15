@@ -1,5 +1,4 @@
 
-
 class Node extends web.View {
   container.Model item = null;
   Node parent = null; // parent block node TODO: rename to parentBlock
@@ -38,7 +37,7 @@ class Node extends web.View {
   }
 
   bind void onDragstart(object e) {
-    e.dataTransfer.setData("text/plain", "move:" + getId());
+    e.dataTransfer.setData("text/plain", "move:" + item.id.value);
   }
 
   bind void onDragover(object e) {
