@@ -13,20 +13,20 @@ class Block extends container.Model {
     return id.value;
   }
 
-  void setField(int name, string value) {
-    switch name {
-      case 1:
-        id.set(value);
-        break;
-    }
-  }
-
   void enter() {
     /* style.listen(onStyleUpdate); */
   }
 
   void exit() {
     /* style.unlisten(onStyleUpdate); */
+  }
+
+  void setField(int field, string value) {
+    switch field {
+      case container.ModelField.ID:
+        id.set(value);
+        break;
+    }
   }
 
   string serialize() {

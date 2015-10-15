@@ -10,8 +10,17 @@ class Anchor extends container.Model {
     enter();
   }
 
-  void setField(string key, string value) {
-    int field = window.parseInt(key);
+  void enter() {
+    style.listen(onStyleUpdate);
+    name.listen(onNameUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    name.unlisten(onNameUpdate);
+  }
+
+  void setField(int field, string value) {
     switch field {
       case container.ModelField.ID:
         id.set(value);
@@ -26,16 +35,6 @@ class Anchor extends container.Model {
         name.set(value);
         break;
     }
-  }
-
-  void enter() {
-    style.listen(onStyleUpdate);
-    name.listen(onNameUpdate);
-  }
-
-  void exit() {
-    style.unlisten(onStyleUpdate);
-    name.unlisten(onNameUpdate);
   }
 
   string serialize() {

@@ -11,8 +11,19 @@ class File extends container.Model {
     enter();
   }
 
-  void setField(string key, string value) {
-    int field = window.parseInt(key);
+  void enter() {
+    style.listen(onStyleUpdate);
+    filename.listen(onFilenameUpdate);
+    text.listen(onTextUpdate);
+  }
+  
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    filename.unlisten(onFilenameUpdate);
+    text.unlisten(onTextUpdate);
+  }
+
+  void setField(int field, string value) {
     switch field {
       case container.ModelField.ID:
         id.set(value);
@@ -29,18 +40,6 @@ class File extends container.Model {
         text.set(value);
         break;
     }
-  }
-
-  void enter() {
-    style.listen(onStyleUpdate);
-    filename.listen(onFilenameUpdate);
-    text.listen(onTextUpdate);
-  }
-  
-  void exit() {
-    style.unlisten(onStyleUpdate);
-    filename.unlisten(onFilenameUpdate);
-    text.unlisten(onTextUpdate);
   }
 
   string serialize() {

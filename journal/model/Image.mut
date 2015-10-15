@@ -10,8 +10,17 @@ class Image extends container.Model {
     enter();
   }
 
-  void setField(string key, string value) {
-    int field = window.parseInt(key);
+  void enter() {
+    style.listen(onStyleUpdate);
+    filename.listen(onFilenameUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    filename.unlisten(onFilenameUpdate);
+  }
+
+  void setField(int field, string value) {
     switch field {
       case container.ModelField.ID:
         id.set(value);
@@ -26,16 +35,6 @@ class Image extends container.Model {
         filename.set(value);
         break;
     }
-  }
-
-  void enter() {
-    style.listen(onStyleUpdate);
-    filename.listen(onFilenameUpdate);
-  }
-
-  void exit() {
-    style.unlisten(onStyleUpdate);
-    filename.unlisten(onFilenameUpdate);
   }
 
   string serialize() {

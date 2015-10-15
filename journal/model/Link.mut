@@ -12,8 +12,21 @@ class Link extends container.Model {
     enter();
   }
 
-  void setField(string key, string value) {
-    int field = window.parseInt(key);
+  void enter() {
+    style.listen(onStyleUpdate);
+    src.listen(onSrcUpdate);
+    alt.listen(onAltUpdate);
+    text.listen(onTextUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    src.unlisten(onSrcUpdate);
+    alt.unlisten(onAltUpdate);
+    text.unlisten(onTextUpdate);
+  }
+
+  void setField(int field, string value) {
     switch field {
       case container.ModelField.ID:
         id.set(value);
@@ -34,20 +47,6 @@ class Link extends container.Model {
         text.set(value);
         break;
     }
-  }
-
-  void enter() {
-    style.listen(onStyleUpdate);
-    src.listen(onSrcUpdate);
-    alt.listen(onAltUpdate);
-    text.listen(onTextUpdate);
-  }
-
-  void exit() {
-    style.unlisten(onStyleUpdate);
-    src.unlisten(onSrcUpdate);
-    alt.unlisten(onAltUpdate);
-    text.unlisten(onTextUpdate);
   }
 
   string serialize() {

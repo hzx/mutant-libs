@@ -9,8 +9,17 @@ class BigSlider extends container.Model {
     enter();
   }
 
-  void setField(string key, string value) {
-    int field = window.parseInt(key);
+  void enter() {
+    style.listen(onStyleUpdate);
+    images.listen(onImagesUpdates);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    images.unlisten(onImagesUpdates);
+  }
+
+  void setField(int field, string value) {
     switch field {
       case container.ModelField.ID:
         id.set(value);
@@ -25,16 +34,6 @@ class BigSlider extends container.Model {
         images.set(value);
         break;
     }
-  }
-
-  void enter() {
-    style.listen(onStyleUpdate);
-    images.listen(onImagesUpdates);
-  }
-
-  void exit() {
-    style.unlisten(onStyleUpdate);
-    images.unlisten(onImagesUpdates);
   }
 
   string serialize() {

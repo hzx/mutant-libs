@@ -10,8 +10,17 @@ class Text extends container.Model {
     enter();
   }
 
-  void setField(string key, string value) {
-    int field = window.parseInt(key);
+  void enter() {
+    style.listen(onStyleUpdate);
+    text.listen(onTextUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    text.unlisten(onTextUpdate);
+  }
+
+  void setField(int field, string value) {
     switch field {
       case container.ModelField.ID:
         id.set(value);
@@ -26,16 +35,6 @@ class Text extends container.Model {
         text.set(value);
         break;
     }
-  }
-
-  void enter() {
-    style.listen(onStyleUpdate);
-    text.listen(onTextUpdate);
-  }
-
-  void exit() {
-    style.unlisten(onStyleUpdate);
-    text.unlisten(onTextUpdate);
   }
 
   string serialize() {

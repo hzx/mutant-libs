@@ -16,8 +16,8 @@ class Journal extends container.Model {
     enter();
   }
 
-  void setField(int name_, string value) {
-    switch name_ {
+  void setField(int field, string value) {
+    switch field {
       case container.ModelField.ID:
         id.set(value);
         break;

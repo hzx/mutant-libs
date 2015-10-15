@@ -12,8 +12,21 @@ class GoogleMap extends container.Model {
     enter();
   }
 
-  void setField(string key, string value) {
-    int field = window.parseInt(key);
+  void enter() {
+    style.listen(onStyleUpdate);
+    zoom.listen(onZoomUpdate);
+    lat.listen(onLatUpdate);
+    lng.listen(onLngUpdate);
+  }
+
+  void exit() {
+    style.unlisten(onStyleUpdate);
+    zoom.unlisten(onZoomUpdate);
+    lat.unlisten(onLatUpdate);
+    lng.unlisten(onLngUpdate);
+  }
+
+  void setField(int field, string value) {
     switch field {
       case container.ModelField.ID:
         id.set(value);
@@ -34,20 +47,6 @@ class GoogleMap extends container.Model {
         lng.set(parseFloat(value));
         break;
     }
-  }
-
-  void enter() {
-    style.listen(onStyleUpdate);
-    zoom.listen(onZoomUpdate);
-    lat.listen(onLatUpdate);
-    lng.listen(onLngUpdate);
-  }
-
-  void exit() {
-    style.unlisten(onStyleUpdate);
-    zoom.unlisten(onZoomUpdate);
-    lat.unlisten(onLatUpdate);
-    lng.unlisten(onLngUpdate);
   }
 
   string serialize() {

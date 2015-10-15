@@ -1,5 +1,4 @@
 
-
 class Model implements Collectable {
   auto id = new String();
   int polymorph = 0;
@@ -33,8 +32,8 @@ class Model implements Collectable {
 
   void enter();
   void exit();
-  string serialize();
   void setField(int name, string value);
+  string serialize();
 
   void unserialize(object pices) {
     for int i = 0; i < pices.length; i=i+2 {
