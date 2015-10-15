@@ -319,14 +319,6 @@ class Editor extends web.View {
 
     string id = fields[1];
 
-    // debug
-    auto obj = journalItems_.get(id);
-
-    browser.log("Editor.onTrashDrop:");
-    browser.log("id: " + id);
-    browser.log(obj);
-    browser.log(journalItems_);
-    
     journalItems_.remove(id);
   }
 
