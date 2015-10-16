@@ -91,6 +91,13 @@ class Header1 extends VerticalNode {
     input.node.value = ovalue.value;
   }
 
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    descriptionTuneHeight();
+  }
+
   void flushName() {
     journal_.name.set(nameInput.node.value);
   }
