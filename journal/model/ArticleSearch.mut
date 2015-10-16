@@ -14,7 +14,7 @@ class ArticleSearch extends container.Model {
   }
 
   void setField(int field, string value) {
-    switch (field) {
+    switch field {
       case ArticleSearchField.QUERY:
         query.set(value);
         break;
