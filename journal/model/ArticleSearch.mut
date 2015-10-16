@@ -1,15 +1,51 @@
 
-class ArticleSearch {
+class ArticleSearch extends container.Model {
   auto query = new container.String();
+  auto leftId = new container.String();
+  auto rightId = new container.String();
+  auto pageCount = new container.Int();
+  auto leftExists = new container.Bool();
+  auto rightExists = new container.Bool();
 
-  ArticleSearch() {
-    query.code = ArticleSearchField.QUERY;
+  void enter() {
+  }
+
+  void exit() {
+  }
+
+  void setField(int field, string value) {
+    switch (field) {
+      case ArticleSearchField.QUERY:
+        query.set(value);
+        break;
+      case ArticleSearchField.LEFT_ID:
+        leftId.set(value);
+        break;
+      case ArticleSearchField.RIGHT_ID:
+        rightId.set(value);
+        break;
+      case ArticleSearchField.PAGE_COUNT:
+        pageCount.set(window.parseInt(value));
+        break;
+      case ArticleSearchField.LEFT_EXISTS:
+        int val = window.parseInt(value, 10);
+        leftExists.set(val is 1);
+        break;
+      case ArticleSearchField.RIGHT_EXISTS:
+        int val = window.parseInt(value, 10);
+        rightExists.set(val is 1);
+        break;
+    }
   }
 
   string serialize() {
     auto buf = [];
 
-    buf.push(query.code, query.value);
+    if query.has { buf.push(ArticleSearchField.QUERY, query.value); }
+    if leftId.has {  buf.push(ArticleSearchField.LEFT_ID, leftId.value); }
+    if rightId.has { buf.push(ArticleSearchField.RIGHT_ID, rightId.value); }
+
+    // pageCount, leftExists, rightExists skip for client usage only
 
     return buf.join(container.DELIM_FIELD);
   }
@@ -18,4 +54,9 @@ class ArticleSearch {
 
 enum ArticleSearchField {
   QUERY = 2,
+  LEFT_ID,
+  RIGHT_ID,
+  PAGE_COUNT,
+  LEFT_EXISTS,
+  RIGHT_EXISTS,
 }
