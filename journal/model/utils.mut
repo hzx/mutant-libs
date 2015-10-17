@@ -60,13 +60,17 @@ object createItem(int type) {
 
 void parsePageItems(string data, container.ObservableCollection items) {
   object rows = data.split(container.DELIM_ROW);
+  parsePageItems_(rows, 0, items);
+}
+
+void parsePageItems_(object rows, int left, container.ObservableCollection items) {
   int nodeType;
   object pices;
 
-  if rows.length < 3 { return; }
+  if rows.length - left < 3 { return; }
 
   // first row contain order ids
-  string s_order = rows[0];
+  string s_order = rows[left];
   object order = s_order.split(",");
 
   object buf = [];
@@ -74,7 +78,7 @@ void parsePageItems(string data, container.ObservableCollection items) {
   // object consists:
   // 1 row nodeType
   // 1 row fields
-  for int i = 1; i < rows.length; i = i + 2 { // parse items and place to buf
+  for int i = left + 1; i < rows.length; i = i + 2 { // parse items and place to buf
     nodeType = window.parseInt(rows[i]); 
     auto item = createItem(nodeType);
 
@@ -91,4 +95,16 @@ void parsePageItems(string data, container.ObservableCollection items) {
   for auto item: buf {
     items.appendLocal(item);
   }
+}
+
+
+void parsePage(string data, Journal doc, container.ObservableItems items) {
+  if data.length is 0 { return; }
+
+  object rows = data.split(container.DELIM_ROW);
+  if rows.length <= 3 { return; }
+
+  doc.unserializeLocal(data.split(container.DELIM_FIELD));
+
+  parsePageItems_(rows, 1, items);
 }
