@@ -6,6 +6,13 @@ class CollectionView extends View {
 
   override void create() {
     element = tag(name, ["style", style_], null, null, null);
+
+    // add items
+    auto cursor = collection.first;
+    while cursor isnot null {
+      appendObj_(cursor.obj);
+      cursor = cursor.next;
+    }
   }
 
   override void enter() {
@@ -70,13 +77,17 @@ class CollectionView extends View {
     }
   }
 
-  bind void onAppend(object obj) {
+  void appendObj_(object obj) {
     auto robj = render(obj);
     if robj isnot null {
       auto node = robj.getNode();
       node.dataId = obj.getId();
       append(robj);
     }
+  }
+
+  bind void onAppend(object obj) {
+    appendObj_(obj);
   }
 
   bind void onMove(string id, string beforeId) {
