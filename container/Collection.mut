@@ -90,6 +90,10 @@ class Collection {
     return null;
   }
 
+  bool isEmpty() {
+    return count is 0;
+  }
+
   void insertNode_(object node) {
     if node.obj.getId() in idToNodes_ {
       /* browser.log("node with the same id exists"); */
