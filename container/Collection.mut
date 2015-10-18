@@ -90,6 +90,16 @@ class Collection {
     return null;
   }
 
+  object getFirst() {
+    if first is null { return null; }
+    return first.obj;
+  }
+
+  object getLast() {
+    if last is null { return null; }
+    return last.obj;
+  }
+
   bool isEmpty() {
     return count is 0;
   }
