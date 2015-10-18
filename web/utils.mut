@@ -96,9 +96,12 @@ string trimString(string value) {
 
   for int i = right - 1; i > left; --i {
     if value.charAt(i) is " " {
-      --right;
+      right = right - 1;
     } else { break; }
   }
+
+  // debug
+  browser.log("web.trimString, left: " + left + ", right: " + right);
 
   if right - left isnot value.length {
     return value.substr(left, right - left);
