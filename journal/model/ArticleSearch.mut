@@ -7,11 +7,12 @@ class ArticleSearch extends container.Model {
   auto leftExists = new container.Bool();
   auto rightExists = new container.Bool();
 
-  void enter() {
-  }
+  // non serializable field
+  auto pageNumber = new container.Int();
 
-  void exit() {
-  }
+  void enter() {}
+
+  void exit() {}
 
   void setField(int field, string value) {
     switch field {
