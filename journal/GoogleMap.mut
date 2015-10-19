@@ -67,6 +67,16 @@ class GoogleMap extends web.View {
     };
 
     map = new google.maps.Map(element.node, options);
+
+    /* for item in this.markers */
+    // add marker
+    auto pos = new google.maps.LatLng(item.lat.value, item.lng.value);
+
+    marker = new google.maps.Marker({
+      position: pos,
+      map: map,
+      /* icon: item.image */
+    });
   
     /* object options = { */
     /*   disableDefaultUI: true, */
