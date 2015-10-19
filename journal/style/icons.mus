@@ -1,0 +1,16 @@
+
+nextSliderIcon {
+  background: url(img/next_48.png) center center no-repeat transparent;
+}
+
+prevSliderIcon {
+  background: url(img/prev_48.png) center center no-repeat transparent;
+}
+
+nextIcon {
+  background: url(img/next.png) center center no-repeat transparent;
+}
+
+prevIcon {
+  background: url(img/prev.png) center center no-repeat transparent;
+}

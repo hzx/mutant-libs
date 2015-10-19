@@ -100,9 +100,6 @@ string trimString(string value) {
     } else { break; }
   }
 
-  // debug
-  browser.log("web.trimString, left: " + left + ", right: " + right);
-
   if right - left isnot value.length {
     return value.substr(left, right - left);
   } else {
