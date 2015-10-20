@@ -1,11 +1,34 @@
 
 class MiniSlider extends web.View {
+  tag prevButton = null;
+  tag nextButton = null;
+  tag slides = null;
+
   MiniSlider() {
     style_ = style.miniSlider;
   }
 
   override void create() {
+    prevButton = <div style=style_.prevButton onclick=onPrevClick></div>;
+
+    nextButton = <div style=style_.nextButton onclick=onNextClick></div>;
+
+    slides = <div style=style_.slides></div>;
+
     element = <div style=style_.element>
+      {prevButton}
+      {nextButton}
+      {slides}
     </div>;
+  }
+
+  bind void onPrevClick(object e) {
+    // TODO: set prev slide
+    browser.log("onPrevClick:");
+  }
+
+  bind void onNextClick(object e) {
+    // TODO: set next slide
+    browser.log("onNextClick:");
   }
 }

@@ -14,3 +14,7 @@ nextIcon {
 prevIcon {
   background: url(img/prev.png) center center no-repeat transparent;
 }
+
+pagingDisableIcon {
+  background: url(img/paging_disable.png) center center no-repeat transparent;
+}
