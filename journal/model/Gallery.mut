@@ -1,7 +1,7 @@
 
 class Gallery extends container.Model {
-  static int THUMB_WIDTH = 396;
-  static int THUMB_HEIGHT = 224;
+  static int THUMB_WIDTH = 300;
+  static int THUMB_HEIGHT = 225;
 
   auto pageId = new container.String();
   auto style = new container.String();

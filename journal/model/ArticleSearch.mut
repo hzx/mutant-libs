@@ -1,5 +1,7 @@
 
 class ArticleSearch extends container.Model {
+  static int COUNT_PER_PAGE = 16;
+
   auto query = new container.String();
   auto leftId = new container.String();
   auto rightId = new container.String();
