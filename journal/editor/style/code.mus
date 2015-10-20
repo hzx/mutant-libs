@@ -36,6 +36,7 @@ edit_active {
 }
 
 areawrap {
+  marginBottom: 4px;
 }
 
 area: ui_style.nestedTextarea {
