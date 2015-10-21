@@ -13,7 +13,7 @@ class Bool extends Event {
   void set(bool value_) {
     if value isnot value_ {
       bool old = value;
-      set(value_);
+      set_(value_);
 
       if onUpdate isnot null { onUpdate(code, value_, old); }
       notify2(value, old);
