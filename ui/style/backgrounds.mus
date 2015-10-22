@@ -1,0 +1,4 @@
+
+checkerBg {
+  background: url(img/checker.png) left top repeat transparent;
+}
