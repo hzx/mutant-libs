@@ -7,6 +7,14 @@ prevSliderIcon {
   background: url(img/prev_48.png) center center no-repeat transparent;
 }
 
+nextSliderDisableIcon {
+  background: url(img/next_48_disable.png) center center no-repeat transparent;
+}
+
+prevSliderDisableIcon {
+  background: url(img/prev_48_disable.png) center center no-repeat transparent;
+}
+
 nextIcon {
   background: url(img/next.png) center center no-repeat transparent;
 }
@@ -15,6 +23,10 @@ prevIcon {
   background: url(img/prev.png) center center no-repeat transparent;
 }
 
-pagingDisableIcon {
-  background: url(img/paging_disable.png) center center no-repeat transparent;
+nextDisableIcon {
+  background: url(img/next_disable.png) center center no-repeat transparent;
+}
+
+prevDisableIcon {
+  background: url(img/prev_disable.png) center center no-repeat transparent;
 }

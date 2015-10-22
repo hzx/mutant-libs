@@ -6,7 +6,6 @@ element {
   position: relative;
   marginBottom: 16px;
   height: 200px;
-  backgroundColor: #c8eeee;
 }
 
 prevButton: prevSliderIcon {
@@ -20,6 +19,9 @@ prevButton: prevSliderIcon {
   cursor: pointer;
 }
 
+prevDisableButton: prevDisableIcon {
+}
+
 nextButton: nextSliderIcon {
   position: absolute;
   width: 48px;
@@ -31,11 +33,15 @@ nextButton: nextSliderIcon {
   cursor: pointer;
 }
 
-slides {
+nextDisableButton: nextDisableIcon {
+}
+
+slides: ui_style.checkerBg {
   position: relative;
   width: 100%;
   height: 100%;
   zIndex: 1;
+  backgroundColor: #c8eeee;
 }
 
 slide {

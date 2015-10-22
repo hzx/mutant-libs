@@ -9,9 +9,11 @@ class MiniSlider extends web.View {
   }
 
   override void create() {
-    prevButton = <div style=style_.prevButton onclick=onPrevClick></div>;
+    prevButton = <div style=style_.prevButton disable=style_.prevDisableButton
+        onclick=onPrevClick></div>;
 
-    nextButton = <div style=style_.nextButton onclick=onNextClick></div>;
+    nextButton = <div style=style_.nextButton disable=style_.nextDisableButton
+        onclick=onNextClick></div>;
 
     slides = <div style=style_.slides></div>;
 
