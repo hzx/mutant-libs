@@ -12,6 +12,18 @@ class ArticleSearch extends container.Model {
   // non serializable field
   auto pageNumber = new container.Int();
 
+  static int counterToPages(int count, int perPage) {
+    if count is 0 { return 1; }
+
+    int pages = Math.floor(count / perPage);
+    int rem = count - pages * perPage;
+    if rem > 0 {
+      pages = pages + 1;
+    }
+
+    return pages;
+  }
+
   void enter() {}
 
   void exit() {}
@@ -28,7 +40,8 @@ class ArticleSearch extends container.Model {
         rightId.set(value);
         break;
       case ArticleSearchField.PAGE_COUNT:
-        pageCount.set(window.parseInt(value));
+        pageCount.set(ArticleSearch.counterToPages(window.parseInt(value),
+            ArticleSearch.COUNT_PER_PAGE));
         break;
       case ArticleSearchField.LEFT_EXISTS:
         int val = window.parseInt(value, 10);
