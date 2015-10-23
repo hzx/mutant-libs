@@ -12,6 +12,9 @@ class PagingSearch extends container.Model {
   // non serializable field
   auto pageNumber = new container.Int();
 
+  // generated from query
+  auto queryTags = [];
+
   static int counterToPages(int count, int perPage) {
     if count is 0 { return 1; }
 
@@ -52,6 +55,15 @@ class PagingSearch extends container.Model {
         rightExists.set(val is 1);
         break;
     }
+  }
+
+  void setQuery(string text) {
+    auto tags = container.createTags(text);
+    if container.equalArrays(tags, queryTags) { return; }
+
+    queryTags = tags; // save last queryTags
+    query.set(tags.join(" "));
+    pageCount.set(0); // reset pageCount too
   }
 
   string serialize() {
