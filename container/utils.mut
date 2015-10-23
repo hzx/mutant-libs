@@ -22,6 +22,7 @@ bool equalArrays(object left, object right) {
   return true;
 }
 
+
 string trimString(string value) {
   int left = 0;
   int right = value.length;
@@ -43,4 +44,172 @@ string trimString(string value) {
   } else {
     return value;
   }
+}
+
+
+auto TAG_SYMBOLS = {
+  "Щ": null,
+  "Ё": null,
+  "Ж": null,
+  "Ц": null,
+  "Ч": null,
+  "Ш": null,
+  "Ы": null,
+  "Ю": null,
+  "Я": null,
+  "А": null,
+  "Б": null,
+  "В": null,
+  "Г": null,
+  "Д": null,
+  "Е": null,
+  "З": null,
+  "И": null,
+  "Й": null,
+  "К": null,
+  "Л": null,
+  "М": null,
+  "Н": null,
+  "О": null,
+  "П": null,
+  "Р": null,
+  "С": null,
+  "Т": null,
+  "У": null,
+  "Ф": null,
+  "Х": null,
+  "Э": null,
+  "Ъ": null,
+  "Ь": null,
+  "щ": null,
+  "ё": null,
+  "ж": null,
+  "ц": null,
+  "ч": null,
+  "ш": null,
+  "ы": null,
+  "ю": null,
+  "я": null,
+  "а": null,
+  "б": null,
+  "в": null,
+  "г": null,
+  "д": null,
+  "е": null,
+  "з": null,
+  "и": null,
+  "й": null,
+  "к": null,
+  "л": null,
+  "м": null,
+  "н": null,
+  "о": null,
+  "п": null,
+  "р": null,
+  "с": null,
+  "т": null,
+  "у": null,
+  "ф": null,
+  "х": null,
+  "э": null,
+  "ъ": null,
+  "ь": null,
+
+  "c": null,
+  "q": null,
+  "y": null,
+  "x": null,
+  "w": null,
+  "1": null,
+  "2": null,
+  "3": null,
+  "4": null,
+  "5": null,
+  "6": null,
+  "7": null,
+  "8": null,
+  "9": null,
+  "0": null,
+  "A": null,
+  "B": null,
+  "C": null,
+  "D": null,
+  "E": null,
+  "F": null,
+  "G": null,
+  "H": null,
+  "I": null,
+  "J": null,
+  "K": null,
+  "L": null,
+  "M": null,
+  "N": null,
+  "O": null,
+  "P": null,
+  "Q": null,
+  "R": null,
+  "S": null,
+  "T": null,
+  "U": null,
+  "V": null,
+  "W": null,
+  "X": null,
+  "Y": null,
+  "Z": null,
+
+  "a": null,
+  "b": null,
+  "c": null,
+  "d": null,
+  "e": null,
+  "f": null,
+  "g": null,
+  "h": null,
+  "i": null,
+  "j": null,
+  "k": null,
+  "l": null,
+  "m": null,
+  "n": null,
+  "o": null,
+  "p": null,
+  "q": null,
+  "r": null,
+  "s": null,
+  "t": null,
+  "u": null,
+  "v": null,
+  "w": null,
+  "x": null,
+  "y": null,
+  "z": null,
+};
+
+
+string createTags(string text) {
+  auto tags = [];
+  int left = 0;
+  bool isTagBegin = false;
+
+  for int i = 0; i < text.length; ++i {
+    if text.charAt(i) in TAG_SYMBOLS {
+      if !isTagBegin { // mark tag beginning
+        isTagBegin = true;
+        left = i;
+      }
+    } else {
+      if isTagBegin { // add tag
+        isTagBegin = false;
+        if i - left >= 2 {
+          tags.push(text.substr(left, i - left));
+        }
+      }
+    }
+  }
+
+  if isTagBegin and text.length - left >= 2 { // add remainder
+    tags.push(text.substr(left, text.length - left));
+  }
+
+  return tags;
 }
