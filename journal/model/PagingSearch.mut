@@ -1,5 +1,5 @@
 
-class ArticleSearch extends container.Model {
+class PagingSearch extends container.Model {
   static int COUNT_PER_PAGE = 16;
 
   auto query = new container.String();
@@ -30,24 +30,24 @@ class ArticleSearch extends container.Model {
 
   void setField(int field, string value) {
     switch field {
-      case ArticleSearchField.QUERY:
+      case PagingSearchField.QUERY:
         query.set(value);
         break;
-      case ArticleSearchField.LEFT_ID:
+      case PagingSearchField.LEFT_ID:
         leftId.set(value);
         break;
-      case ArticleSearchField.RIGHT_ID:
+      case PagingSearchField.RIGHT_ID:
         rightId.set(value);
         break;
-      case ArticleSearchField.PAGE_COUNT:
-        pageCount.set(ArticleSearch.counterToPages(window.parseInt(value),
-            ArticleSearch.COUNT_PER_PAGE));
+      case PagingSearchField.PAGE_COUNT:
+        pageCount.set(PagingSearch.counterToPages(window.parseInt(value),
+            PagingSearch.COUNT_PER_PAGE));
         break;
-      case ArticleSearchField.LEFT_EXISTS:
+      case PagingSearchField.LEFT_EXISTS:
         int val = window.parseInt(value, 10);
         leftExists.set(val is 1);
         break;
-      case ArticleSearchField.RIGHT_EXISTS:
+      case PagingSearchField.RIGHT_EXISTS:
         int val = window.parseInt(value, 10);
         rightExists.set(val is 1);
         break;
@@ -57,9 +57,9 @@ class ArticleSearch extends container.Model {
   string serialize() {
     auto buf = [];
 
-    if query.has { buf.push(ArticleSearchField.QUERY, query.value); }
-    if leftId.has {  buf.push(ArticleSearchField.LEFT_ID, leftId.value); }
-    if rightId.has { buf.push(ArticleSearchField.RIGHT_ID, rightId.value); }
+    if query.has { buf.push(PagingSearchField.QUERY, query.value); }
+    if leftId.has {  buf.push(PagingSearchField.LEFT_ID, leftId.value); }
+    if rightId.has { buf.push(PagingSearchField.RIGHT_ID, rightId.value); }
 
     // pageCount, leftExists, rightExists skip for client usage only
 
@@ -68,7 +68,7 @@ class ArticleSearch extends container.Model {
 }
 
 
-enum ArticleSearchField {
+enum PagingSearchField {
   QUERY = 2,
   LEFT_ID,
   RIGHT_ID,
