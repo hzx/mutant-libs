@@ -4,3 +4,43 @@ ObservableCollection observableCollection(object model) {
   collection.model = model;
   return collection;
 }
+
+
+bool equalArrays(object left, object right) {
+  object l;
+  object r;
+  if left.length isnot right.length { return false; }
+  for int i = 0; i < left.length; ++i {
+    l = left[i];
+    r = right[i];
+
+    // TODO: bug cause parse only left[i]
+    /* if left[i] isnot right[i] { return false; } */
+
+    if l isnot r { return false; }
+  }
+  return true;
+}
+
+string trimString(string value) {
+  int left = 0;
+  int right = value.length;
+
+  for int i = 0; i < right; ++i {
+    if value.charAt(i) is " " {
+      ++left;
+    } else { break; }
+  }
+
+  for int i = right - 1; i > left; --i {
+    if value.charAt(i) is " " {
+      right = right - 1;
+    } else { break; }
+  }
+
+  if right - left isnot value.length {
+    return value.substr(left, right - left);
+  } else {
+    return value;
+  }
+}
