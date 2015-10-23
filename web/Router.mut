@@ -57,7 +57,7 @@ class Router {
   }
 
   void dispatch(object slugs) {
-    if equalArrays(lastSlugs, slugs) { return; }
+    if container.equalArrays(lastSlugs, slugs) { return; }
     lastSlugs = slugs;
     skipHashChange = true;
     window.location.hash = "/" + slugs.join("/");
