@@ -63,7 +63,8 @@ class PagingSearch extends container.Model {
 
     queryTags = tags; // save last queryTags
     query.set(tags.join(" "));
-    pageCount.set(0); // reset pageCount too
+    pageCount.set(0); // reset pageCount
+    pageNumber.set(1); // reset pageNumber
   }
 
   string serialize() {
