@@ -71,6 +71,12 @@ label {
   color: #2c597a;
 }
 
+seoLabel {
+  fontSize: 10px;
+  fontFamily: Ubuntu, sans-serif;
+  color: #762c7a;
+}
+
 node {
   fontFamily: Ubuntu, sans-serif;
   backgroundColor: #f0f0f0;

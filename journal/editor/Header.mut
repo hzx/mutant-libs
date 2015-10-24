@@ -49,7 +49,7 @@ class Header1 extends VerticalNode {
     descriptionNode = <div style=style_.descriptionNode
         active=style_.descriptionNode_active onclick=onDescriptionClick>
       <div style=style_.editwrap>
-        <div style=style_.label> "Описание" </div>
+        <div style=style_.seoLabel> "Описание (SEO)" </div>
         {descriptionWrap}
       </div>
     </div>;
