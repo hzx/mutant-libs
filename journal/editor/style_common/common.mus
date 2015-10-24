@@ -3,6 +3,7 @@ styleNode {
   position: absolute;
   top: 0;
   right: 28px;
+  width: 300px;
   height: 24px;
   fontFamily: Ubuntu Mono, monospace;
   fontSize: 12px;

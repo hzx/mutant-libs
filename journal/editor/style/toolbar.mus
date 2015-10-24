@@ -87,7 +87,7 @@ trashBg {
 trashBtn: trashBg {
   float: right;
   cssFloat: right;
-  width: 660px; // 14 buttons + trash
+  width: 128px; // 14 buttons + trash
   height: 32px;
 }
 
