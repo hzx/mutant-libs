@@ -16,7 +16,9 @@ class Gallery extends VerticalNode {
     userImages = <div></div>;
 
     styleInput = <input style=ui_style.nestedInput
-        onfocus=onStyleFocus onblur=onStyleBlur/>;
+        onfocus=onStyleFocus onblur=onStyleBlur
+        onchange=onStyleChange
+        bind=item.style render=renderInputValue/>;
 
     styleNode = <div style=style_.styleNode
         active=style_.styleNode_active onclick=onStyleClick>
@@ -45,6 +47,18 @@ class Gallery extends VerticalNode {
     return <img id=id src=url alt=alt style=style_.image draggable=true ondragstart=onImageDragstart/>;
   }
 
+  void renderValue(tag elem, object ovalue) {
+    elem.setValue(ovalue.value);
+  }
+
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
+  }
+
+  void flushStyle() {
+    item.style.set(styleInput.node.value);
+  }
+
   void focusStyle() {
     styleNode.setState(web.STATE_ACTIVE);
     styleInput.node.focus();
@@ -52,6 +66,7 @@ class Gallery extends VerticalNode {
 
   void blurStyle() {
     styleNode.setState(web.STATE_NORMAL);
+    flushStyle();
   }
 
   bind void onUploadBtnClick(object e) {
@@ -77,6 +92,10 @@ class Gallery extends VerticalNode {
 
   bind void onStyleBlur(object e) {
     blurStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 
   bind void onStyleClick(object e) {

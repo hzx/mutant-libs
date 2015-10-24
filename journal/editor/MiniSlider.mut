@@ -14,7 +14,9 @@ class MiniSlider extends VerticalNode {
     fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
 
     styleInput = <input style=ui_style.nestedInput
-        onfocus=onStyleFocus onblur=onStyleBlur/>;
+        onfocus=onStyleFocus onblur=onStyleBlur
+        onchange=onStyleChange
+        bind=item.style render=renderInputValue/>;
 
     styleNode = <div style=style_.styleNode
         active=style_.styleNode_active onclick=onStyleClick>
@@ -35,6 +37,14 @@ class MiniSlider extends VerticalNode {
     </div>;
   }
 
+  void renderInputValue(tag input, object ovalue) {
+    input.node.value = ovalue.value;
+  }
+
+  void flushStyle() {
+    item.style.set(styleInput.node.value);
+  }
+
   void focusStyle() {
     styleNode.setState(web.STATE_ACTIVE);
     styleInput.node.focus();
@@ -42,6 +52,7 @@ class MiniSlider extends VerticalNode {
 
   void blurStyle() {
     styleNode.setState(web.STATE_NORMAL);
+    flushStyle();
   }
 
   bind void onUploadBtnClick(object e) {
@@ -61,6 +72,10 @@ class MiniSlider extends VerticalNode {
 
   bind void onStyleBlur(object e) {
     blurStyle();
+  }
+
+  bind void onStyleChange(object e) {
+    flushStyle();
   }
 
   bind void onStyleClick(object e) {
