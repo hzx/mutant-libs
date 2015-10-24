@@ -5,11 +5,6 @@ class Collection {
   string xsrf = "";
 
   void update(object params) {
-    // debug
-    browser.log("Collection.update");
-    browser.log("params:");
-    browser.log(params);
-
     auto data = {};
 
     data[container.SyncName.OP] = container.SyncOp.UPDATE;
@@ -62,10 +57,6 @@ class Collection {
   }
 
   void insertBefore(object params) {
-    // debug
-    browser.log("Collection.insertBefore:");
-    browser.log(params);
-
     auto data = {};
 
     data[container.SyncName.OP] = container.SyncOp.INSERT;

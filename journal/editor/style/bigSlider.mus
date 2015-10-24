@@ -47,10 +47,13 @@ wrap {
 editwrap {
 }
 
-customStyleNode: edit {
+styleNode: common.styleNode {
 }
 
-customStyleNode_active: edit_active {
+styleNode_active: common.styleNode_active {
+}
+
+styleEditWrap: common.styleEditWrap {
 }
 
 

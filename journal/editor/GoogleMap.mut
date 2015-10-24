@@ -59,8 +59,8 @@ class GoogleMap extends VerticalNode {
 
     styleNode = <div style=style_.styleNode
         active=style_.styleNode_active onclick=onStyleClick>
-      <div style=style_.editwrap>
-        <div style=style_.label> "Стиль" </div>
+      <div style=style_.styleEditWrap>
+        /* <div style=style_.label> "Стиль" </div> */
         {styleInput}
       </div>
     </div>;

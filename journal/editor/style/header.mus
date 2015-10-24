@@ -110,10 +110,14 @@ descriptionNode: node {
 descriptionNode_active: node_active {
 }
 
-customStyleNode: node {
+styleNode: common.styleNode {
 }
 
-customStyleNode_active: node_active {
+styleNode_active: common.styleNode_active {
 }
+
+styleEditWrap: common.styleEditWrap {
+}
+
 
 } // end namespace header

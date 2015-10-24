@@ -1,0 +1,19 @@
+
+styleNode {
+  position: absolute;
+  top: 0;
+  right: 28px;
+  height: 24px;
+  fontFamily: Ubuntu Mono, monospace;
+  fontSize: 12px;
+  color: #dda21c;
+  backgroundColor: #ffe9b6;
+}
+
+styleNode_active {
+  backgroundColor: #e0e0e0;
+}
+
+styleEditWrap {
+  margin: 4px 2px;
+}

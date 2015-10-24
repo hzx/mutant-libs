@@ -100,15 +100,18 @@ heightNode {
 iconNode {
 }
 
-styleNode: edit {
-}
-
-styleNode_active: edit_active {
-}
-
 a {
   fontSize: 12px;
   color: #38569a;
+}
+
+styleNode: common.styleNode {
+}
+
+styleNode_active: common.styleNode_active {
+}
+
+styleEditWrap: common.styleEditWrap {
 }
 
 

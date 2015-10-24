@@ -1,1 +1,2 @@
 import ui.style as ui_style;
+import journal.editor.style_common as common;

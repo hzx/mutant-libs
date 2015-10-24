@@ -1,8 +1,8 @@
 
 class BigSlider extends VerticalNode {
   tag fileDialog = null;
-  tag customStyleInput = null;
-  tag customStyleNode = null;
+  tag styleInput = null;
+  tag styleNode = null;
 
   BigSlider() {
     code = journal_model.NodeType.BIG_SLIDER;
@@ -13,14 +13,14 @@ class BigSlider extends VerticalNode {
 
     fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
 
-    customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur/>;
+    styleInput = <input style=ui_style.nestedInput
+        onfocus=onStyleFocus onblur=onStyleBlur/>;
 
-    customStyleNode = <div style=style_.customStyleNode
-        active=style_.customStyleNode_active onclick=onCustomStyleClick>
-      <div style=style_.editwrap>
-        <div style=style_.label> "Стиль" </div>
-        {customStyleInput}
+    styleNode = <div style=style_.styleNode
+        active=style_.styleNode_active onclick=onStyleClick>
+      <div style=style_.styleEditWrap>
+        /* <div style=style_.label> "Стиль" </div> */
+        {styleInput}
       </div>
     </div>;
 
@@ -30,18 +30,18 @@ class BigSlider extends VerticalNode {
       {fileDialog}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
-        {customStyleNode}
+        {styleNode}
       </div>
     </div>;
   }
 
-  void focusCustomStyle() {
-    customStyleNode.setState(web.STATE_ACTIVE);
-    customStyleInput.node.focus();
+  void focusStyle() {
+    styleNode.setState(web.STATE_ACTIVE);
+    styleInput.node.focus();
   }
 
-  void blurCustomStyle() {
-    customStyleNode.setState(web.STATE_NORMAL);
+  void blurStyle() {
+    styleNode.setState(web.STATE_NORMAL);
   }
 
   bind void onUploadBtnClick(object e) {
@@ -55,15 +55,15 @@ class BigSlider extends VerticalNode {
     /* browser.setText(filename.node, file.name); */
   }
 
-  bind void onCustomStyleFocus(object e) {
-    focusCustomStyle();
+  bind void onStyleFocus(object e) {
+    focusStyle();
   }
 
-  bind void onCustomStyleBlur(object e) {
-    blurCustomStyle();
+  bind void onStyleBlur(object e) {
+    blurStyle();
   }
 
-  bind void onCustomStyleClick(object e) {
-    focusCustomStyle();
+  bind void onStyleClick(object e) {
+    focusStyle();
   }
 }

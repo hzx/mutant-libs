@@ -5,8 +5,8 @@ class Image extends VerticalNode {
   tag altInput = null;
   tag altNode = null;
   tag picNode = null;
-  tag customStyleInput = null;
-  tag customStyleNode = null;
+  tag styleInput = null;
+  tag styleNode = null;
 
   object file = null;
 
@@ -35,16 +35,16 @@ class Image extends VerticalNode {
     picNode = <div style=style_.pic>
     </div>;
 
-    customStyleInput = <input style=ui_style.nestedInput
-        onfocus=onCustomStyleFocus onblur=onCustomStyleBlur
+    styleInput = <input style=ui_style.nestedInput
+        onfocus=onStyleFocus onblur=onStyleBlur
         onchange=onStyleChange
         bind=item.style render=renderInputValue/>;
 
-    customStyleNode = <div style=style_.customStyleNode
-        active=style_.customStyleNode_active onclick=onCustomStyleClick>
-      <div style=style_.editwrap>
-        <div style=style_.label> "Стиль" </div>
-        {customStyleInput}
+    styleNode = <div style=style_.styleNode
+        active=style_.styleNode_active onclick=onStyleClick>
+      <div style=style_.styleEditWrap>
+        /* <div style=style_.label> "Стиль" </div> */
+        {styleInput}
       </div>
     </div>;
 
@@ -65,7 +65,7 @@ class Image extends VerticalNode {
         </div>
         {altNode}
         {picNode}
-        {customStyleNode}
+        {styleNode}
       </div>
     </div>;
   }
@@ -75,7 +75,7 @@ class Image extends VerticalNode {
   }
 
   void flushStyle() {
-    item.style.set(customStyleInput.node.value);
+    item.style.set(styleInput.node.value);
   }
 
   void flushFilename() {
@@ -93,13 +93,13 @@ class Image extends VerticalNode {
     altNode.setState(web.STATE_NORMAL);
   }
 
-  void focusCustomStyle() {
-    customStyleNode.setState(web.STATE_ACTIVE);
-    customStyleInput.node.focus();
+  void focusStyle() {
+    styleNode.setState(web.STATE_ACTIVE);
+    styleInput.node.focus();
   }
 
-  void blurCustomStyle() {
-    customStyleNode.setState(web.STATE_NORMAL);
+  void blurStyle() {
+    styleNode.setState(web.STATE_NORMAL);
   }
 
   bind void onFileChange(object files) {
@@ -129,19 +129,19 @@ class Image extends VerticalNode {
     fileDialog.click();
   }
 
-  bind void onCustomStyleFocus(object e) {
-    focusCustomStyle();
+  bind void onStyleFocus(object e) {
+    focusStyle();
   }
 
-  bind void onCustomStyleBlur(object e) {
-    blurCustomStyle();
+  bind void onStyleBlur(object e) {
+    blurStyle();
   }
 
   bind void onStyleChange(object e) {
     flushStyle();
   }
 
-  bind void onCustomStyleClick(object e) {
-    focusCustomStyle();
+  bind void onStyleClick(object e) {
+    focusStyle();
   }
 }

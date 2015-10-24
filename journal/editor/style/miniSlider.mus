@@ -48,10 +48,13 @@ wrap {
   padding: 28px 0px 8px 0px;
 }
 
-customStyleNode: edit {
+styleNode: common.styleNode {
 }
 
-customStyleNode_active: edit_active {
+styleNode_active: common.styleNode_active {
+}
+
+styleEditWrap: common.styleEditWrap {
 }
 
 
