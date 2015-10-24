@@ -48,15 +48,11 @@ class MiniSlider extends container.Model {
   }
 
   bind void onStyleUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      MiniSlider.STYLE, val,
-    ]);
+    eventUpdate.notify2(id.value, [MiniSliderField.STYLE, val]);
   }
 
   bind void onImagesUpdates(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      MiniSlider.IMAGES, val,
-    ]);
+    eventUpdate.notify2(id.value, [MiniSliderField.IMAGES, val]);
   }
 }
 

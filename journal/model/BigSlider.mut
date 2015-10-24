@@ -48,15 +48,11 @@ class BigSlider extends container.Model {
   }
 
   bind void onStyleUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      BigSlider.STYLE, val,
-    ]);
+    eventUpdate.notify2(id.value, [BigSliderField.STYLE, val]);
   }
 
   bind void onImagesUpdates(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      BigSlider.IMAGES, val,
-    ]);
+    eventUpdate.notify2(id.value, [BigSliderField.IMAGES, val]);
   }
 }
 
