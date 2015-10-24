@@ -1,0 +1,50 @@
+
+class File extends container.Model{
+  auto name = new container.String();
+  auto filename = new conatiner.String();
+  auto date = new container.Int();
+  auto bunchId = new container.String();
+
+  void enter() {}
+  void exit() {};
+
+  string serialize() {
+    auto buf = [];
+
+    if id.has { buf.push(container.ModelField.ID, id.value); }
+    if name.has { buf.push(FileField.NAME, name.value); }
+    if filename.has { buf.push(FileField.FILENAME, filename.value); }
+    if date.has { buf.push(FileField.DATE, date.value); }
+    if bunchId.has { buf.push(FileField.BUNCH_ID, bunchId.value); }
+
+    return buf.join(container.DELIM_FIELD);
+  }
+
+  void setField(int field, string value) {
+    switch field {
+      case container.ModelField.ID:
+        id.set(value);
+        break;
+      case FileField.NAME:
+        name.set(value);
+        break;
+      case FileField.FILENAME:
+        filename.set(value);
+        break;
+      case FileField.DATE:
+        date.set(window.parseInt(value, 10));
+        break;
+      case FileField.BUNCH_ID:
+        bunchId.set(value);
+        break;
+    }
+  }
+}
+
+
+enum FileField {
+  NAME = 2, // container.ModelField.ID + 1
+  FILENAME,
+  DATE,
+  BUNCH_ID,
+}
