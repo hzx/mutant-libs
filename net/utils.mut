@@ -19,3 +19,29 @@ Document document(int table, string url, string xsrf, container.Model obj) {
 
   return doc;
 }
+
+void postSessionFiles(object files, string hash, object success, object fail,
+    object progress) {
+  browser.postFiles(browser.Net.addFileUrl, files, hash, void (string response) { // success
+    // unserialize session.model.File items
+    auto rows = response.split(container.DELIM_ROW);
+    auto sessionFiles = new container.ObservableCollection();
+
+    for auto row: rows {
+      auto pices = row.split(container.DELIM_FIELD);
+      if pices.length < 2 { continue; }
+
+      auto file = new session_model.File();
+      file.unserializeLocal(pices);
+
+      sessionFiles.appendLocal(file);
+    }
+
+    success(sessionFiles);
+  }, void (int status, string response) { // fail
+    browser.notifyNetworkFail(status, response);
+    fail(status, response);
+  }, void (object e) {
+    progress(e.loaded / e.total);
+  }); // progress
+}
