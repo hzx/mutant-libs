@@ -1,12 +1,12 @@
 
 class File extends container.Model{
   auto name = new container.String();
-  auto filename = new conatiner.String();
+  auto filename = new container.String();
   auto date = new container.Int();
   auto bunchId = new container.String();
 
   void enter() {}
-  void exit() {};
+  void exit() {}
 
   string serialize() {
     auto buf = [];
