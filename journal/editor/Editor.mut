@@ -184,7 +184,7 @@ class Editor extends web.View {
   bool isH1Exists() {
     auto cursor = journalItems_.first;
     while cursor isnot null {
-      if cursor.obj.nodeType is journal_model.NodeType.H1 {
+      if cursor.obj.polymorph is journal_model.NodeType.H1 {
         return true;
       }
       cursor = cursor.next;
