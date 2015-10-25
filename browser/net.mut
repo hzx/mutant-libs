@@ -4,6 +4,12 @@ auto eventClientError = new container.Event();
 auto eventServerError = new container.Event();
 
 
+class Net {
+  static auto addFileUrl = "/add-file";
+  static auto xsrf = "";
+}
+
+
 // FormData supported
 // window.FormData;
 
@@ -126,6 +132,7 @@ void get(string url, object success, object fail, object progress) {
 }
 
 
+// TODO: remove redundant xsrf param
 void post(string url, object data, string xsrf,
     object success, object fail, object progress) {
   object params = {
@@ -133,7 +140,7 @@ void post(string url, object data, string xsrf,
     method: "POST",
     headers: {
       "Content-Type": "application/x-www-form-urlencoded",
-      "X-Xsrftoken": xsrf,
+      "X-Xsrftoken": Net.xsrf,
     },
     url: url,
     data: encodeData(data),
@@ -160,8 +167,8 @@ void postFiles(string url, object files, string hash,
     method: "POST",
     headers: {
       "Content-Type": "multipart/form-data",
-      "X-Xsrftoken": xsrf,
-      "X-Hash": hash
+      "X-Xsrftoken": Net.xsrf,
+      "X-Hash": hash,
     },
     url: url,
     data: data,
