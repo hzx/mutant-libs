@@ -1,8 +1,12 @@
 
 class Image extends container.Model {
+  static int THUMB_WIDTH = 300;
+  static int THUMB_HEIGHT = 225;
+
   auto pageId = new container.String();
   auto style = new container.String();
   auto filename = new container.String();
+  auto alt = new container.String();
 
   Image() {
     polymorph = NodeType.IMAGE;
@@ -13,11 +17,13 @@ class Image extends container.Model {
   void enter() {
     style.listen(onStyleUpdate);
     filename.listen(onFilenameUpdate);
+    alt.listen(onAltUpdate);
   }
 
   void exit() {
     style.unlisten(onStyleUpdate);
     filename.unlisten(onFilenameUpdate);
+    alt.unlisten(onAltUpdate);
   }
 
   void setField(int field, string value) {
@@ -34,6 +40,9 @@ class Image extends container.Model {
       case ImageField.FILENAME:
         filename.set(value);
         break;
+      case ImageField.ALT:
+        alt.set(value);
+        break;
     }
   }
 
@@ -44,20 +53,21 @@ class Image extends container.Model {
     if pageId.has { buf.push(ImageField.PAGE_ID, pageId.value); }
     if style.has { buf.push(ImageField.STYLE, style.value); }
     if filename.has { buf.push(ImageField.FILENAME, filename.value); }
+    if alt.has { buf.push(ImageField.ALT, alt.value); }
 
     return buf.join(container.DELIM_FIELD);
   }
 
   bind void onStyleUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      ImageField.STYLE, val,
-    ]);
+    eventUpdate.notify2(id.value, [ImageField.STYLE, val]);
   }
 
   bind void onFilenameUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      ImageField.FILENAME, val,
-    ]);
+    eventUpdate.notify2(id.value, [ImageField.FILENAME, val]);
+  }
+
+  bind void onAltUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [ImageField.ALT, val]);
   }
 }
 
@@ -66,4 +76,5 @@ enum ImageField {
   PAGE_ID = 3, // container.ModelField.ID + TYPE + 1,
   STYLE,
   FILENAME,
+  ALT,
 }
