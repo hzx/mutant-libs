@@ -4,6 +4,7 @@ class File extends container.Model {
   auto style = new container.String();
   auto filename = new container.String();
   auto text = new container.String();
+  auto alt = new container.String();
 
   File() {
     polymorph = NodeType.FILE;
@@ -15,12 +16,14 @@ class File extends container.Model {
     style.listen(onStyleUpdate);
     filename.listen(onFilenameUpdate);
     text.listen(onTextUpdate);
+    alt.listen(onAltUpdate);
   }
   
   void exit() {
     style.unlisten(onStyleUpdate);
     filename.unlisten(onFilenameUpdate);
     text.unlisten(onTextUpdate);
+    alt.unlisten(onAltUpdate);
   }
 
   void setField(int field, string value) {
@@ -39,6 +42,9 @@ class File extends container.Model {
       case FileField.TEXT:
         text.set(value);
         break;
+      case FileField.ALT:
+        alt.set(value);
+        break;
     }
   }
 
@@ -50,26 +56,25 @@ class File extends container.Model {
     if style.has { buf.push(FileField.STYLE, style.value); }
     if filename.has { buf.push(FileField.FILENAME, filename.value); }
     if text.has { buf.push(FileField.TEXT, text.value); }
+    if alt.has { buf.push(FileField.ALT, alt.value); }
 
     return buf.join(container.DELIM_FIELD);
   }
 
   bind void onStyleUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      FileField.STYLE, val,
-    ]);
+    eventUpdate.notify2(id.value, [FileField.STYLE, val]);
   }
 
   bind void onFilenameUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      FileField.FILENAME, val,
-    ]);
+    eventUpdate.notify2(id.value, [FileField.FILENAME, val]);
   }
 
   bind void onTextUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      FileField.TEXT, val,
-    ]);
+    eventUpdate.notify2(id.value, [FileField.TEXT, val]);
+  }
+
+  bind void onAltUpdate(string val, string old) {
+    eventUpdate.notify2(id.value, [FileField.ALT, val]);
   }
 }
 
@@ -79,4 +84,5 @@ enum FileField {
   STYLE,
   FILENAME,
   TEXT,
+  ALT,
 }
