@@ -1,0 +1,43 @@
+
+class FileUpload extends container.Model {
+  auto collection = new container.Int();
+  auto field = new container.Int();
+  auto objId = new container.String();
+
+  void setField(int field_, string value) {
+    switch field_ {
+      case FileUploadField.COLLECTION:
+        int val = window.parseInt(value, 10);
+        collection.set(val);
+        break;
+      case FileUploadField.FIELD:
+        int val = window.parseInt(value, 10);
+        field.set(val);
+        break;
+      case OBJ_ID:
+        objId.set(value);
+        break;
+    }
+  }
+
+  void enter() {}
+
+  void exit() {}
+
+  string serialize() {
+    auto buf = [];
+
+    if collection.has { buf.push(FileUploadField.COLLECTION, collection.value); }
+    if field.has { buf.push(FileUploadField.FIELD, field.value); }
+    if objId.has { buf.push(FileUploadField.OBJ_ID, objId.value); }
+
+    return buf.join(container.DELIM_FIELD);
+  }
+}
+
+
+enum FileUploadField {
+  COLLECTION = 2,
+  FIELD,
+  OBJ_ID,
+}
