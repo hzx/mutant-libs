@@ -9,6 +9,8 @@ class ObservableCollection extends Collection {
   auto eventMove = new Event();
   auto eventRemove = new Event();
 
+  int code = 0;
+
   // link collection
   object link = null;
 
