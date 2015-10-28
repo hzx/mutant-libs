@@ -6,6 +6,10 @@ class FileUpload extends container.Model {
 
   void setField(int field_, string value) {
     switch field_ {
+      case FileUploadField.POLYMORPH:
+        int val = window.parseInt(value, 10);
+        polymorph = val;
+        break;
       case FileUploadField.COLLECTION:
         int val = window.parseInt(value, 10);
         collection.set(val);
@@ -27,6 +31,7 @@ class FileUpload extends container.Model {
   string serialize() {
     auto buf = [];
 
+    if polymorph > 0 { buf.push(FileUploadField.POLYMORPH, polymorph); }
     if collection.has { buf.push(FileUploadField.COLLECTION, collection.value); }
     if field.has { buf.push(FileUploadField.FIELD, field.value); }
     if objId.has { buf.push(FileUploadField.OBJ_ID, objId.value); }
@@ -37,7 +42,8 @@ class FileUpload extends container.Model {
 
 
 enum FileUploadField {
-  COLLECTION = 2,
+  POLYMORPH = 2,
+  COLLECTION,
   FIELD,
   OBJ_ID,
 }
