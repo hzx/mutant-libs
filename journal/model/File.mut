@@ -33,6 +33,7 @@ class File extends container.Model {
         break;
       case FileField.PAGE_ID:
         pageId.set(value);
+        break;
       case FileField.STYLE:
         style.set(value);
         break;
