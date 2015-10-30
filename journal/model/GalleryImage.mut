@@ -1,0 +1,14 @@
+
+class GalleryImage extends container.Model {
+  auto filename = new container.String();
+
+  void enter() {}
+  void exit() {}
+
+  void setField(int field, string value) {
+  }
+
+  string serialize() {
+    return "";
+  }
+}
