@@ -20,6 +20,18 @@ Document document(int table, string url, string xsrf, container.Model obj) {
   return doc;
 }
 
+void uploadFiles(object files, FileUpload fu, object success, object fail,
+    object progress) {
+  browser.postFiles(browser.Net.addFileUrl, files,
+      fu.serialize(), void (string response) { // success
+    success(response.split(container.DELIM_FIELD));
+  }, void (int status, string response) { // fail
+    fail(status, response);
+  }, void (object e) { // progress
+    progress(e.loaded / e.total);
+  });
+}
+
 void postSessionFiles(object files, string hash, object success, object fail,
     object progress) {
   browser.postFiles(browser.Net.addFileUrl, files, hash, void (string response) { // success

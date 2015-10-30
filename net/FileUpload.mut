@@ -36,7 +36,7 @@ class FileUpload extends container.Model {
     if field.has { buf.push(FileUploadField.FIELD, field.value); }
     if objId.has { buf.push(FileUploadField.OBJ_ID, objId.value); }
 
-    return buf.join(container.DELIM_FIELD);
+    return buf.join(":");
   }
 }
 
