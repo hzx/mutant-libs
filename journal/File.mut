@@ -5,6 +5,14 @@ class File extends web.View {
   }
 
   override void create() {
-    element = <div style=style_.element> "file" </div>;
+    string url = "";
+    if this.item.filename.value.length > 0 {
+      url = "/static/data/" + this.item.filename.value;
+    }
+
+    element = <a href=url alt=this.item.alt.value style=style_.element
+        target="_blank">
+      this.item.text.value
+    </a>;
   }
 }
