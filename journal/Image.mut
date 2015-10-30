@@ -1,15 +1,17 @@
 
 class Image extends web.View {
-  string src="";
-  string alt="";
-
   Image() {
     style_ = style.image;
   }
 
   override void create() {
+    string url = "";
+    if this.item.filename.value.length > 0 {
+      url = "/static/img/1920x1080-" + this.item.filename.value;
+    }
+
     element = <div style=style_.element>
-      <img src=src alt=alt/>
+      <img style=style_.img src=url alt=this.item.alt.value/>
     </div>;
   }
 }
