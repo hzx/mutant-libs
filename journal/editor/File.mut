@@ -20,11 +20,13 @@ class File extends VerticalNode {
     createPlaceholders();
 
     a = <a href="" target="_blank" style=style_.a
-      bind=item.filename render=renderLinkHref></a>;
+        bind=item.filename render=renderLinkHref>
+      <span bind=item.text render=renderValue></span>
+    </a>;
 
     fileDialog = <ui.Upload onChange=onFileChange/>;
 
-    filename = <div style=style_.filename></div>;
+    /* filename = <div style=style_.filename></div>; */
 
     textInput = <input style=ui_style.nestedInput
       onfocus=onTextFocus onblur=onTextBlur onchange=onTextChange
@@ -73,14 +75,14 @@ class File extends VerticalNode {
               <span> "выбрать" </span>
             </div>
           </div>
-          <div style=style_.filenameNode>
-            <div style=style_.label> "новый файл:" </div>
-            {filename}
-          </div>
+          /* <div style=style_.filenameNode> */
+          /*   <div style=style_.label> "новый файл:" </div> */
+          /*   {filename} */
+          /* </div> */
           {textNode}
           {altNode}
           <div style=style_.aNode>
-            <div style=style_.label> "ссылка:" </div>
+            /* <div style=style_.label> "ссылка:" </div> */
             {a}
           </div>
         </div>
@@ -90,11 +92,17 @@ class File extends VerticalNode {
   }
 
   void renderLinkHref(tag elem, string ovalue) {
-    elem.node.href = ovalue.value;
+    if ovalue.value.length > 0 {
+      elem.node.href = "/static/data/" + ovalue.value;
+    }
   }
 
   void renderInputValue(tag input, object ovalue) {
     input.node.value = ovalue.value;
+  }
+
+  void renderValue(tag elem, string ovalue) {
+    elem.setValue(ovalue.value);
   }
 
   override string serialize() {
@@ -174,10 +182,27 @@ class File extends VerticalNode {
 
   bind void onFileChange(object files) {
     if files.length < 1 { return; }
-    file = files[0];
+
+    auto me = this;
+    auto fu = new net.FileUpload();
+    fu.polymorph = item.polymorph;
+    fu.collection.set(this.itemsColl_);
+    fu.field.set(journal_model.FileField.FILENAME);
+    fu.objId.set(item.id.value);
+
+    net.uploadFiles(files, fu, void (object filenames) { // success
+      if filenames.length > 0 {
+        auto first = filenames[0];
+        if first.length > 0 {
+          me.item.filename.set(first);
+        }
+      }
+    }, void (int status, string response) { // fail
+    }, void (float progress) { // progress
+    });
 
     /* browser.setText(a.node, file.name); */
-    browser.setText(filename.node, file.name);
+    /* browser.setText(filename.node, file.name); */
   }
 
   bind void onTextFocus(object e) {

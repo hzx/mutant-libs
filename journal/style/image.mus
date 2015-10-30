@@ -3,7 +3,11 @@ namespace image {
 
 
 element {
+  textAlign: center;
 }
 
+img {
+  maxWidth: 100%;
+}
 
 } // end namespace image

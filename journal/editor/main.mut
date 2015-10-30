@@ -5,3 +5,4 @@ import journal.model as journal_model;
 import journal.editor.style;
 import ui;
 import ui.style as ui_style;
+import net;

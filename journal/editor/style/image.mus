@@ -62,9 +62,6 @@ label {
   color: #2c597a;
 }
 
-filename {
-}
-
 altNode {
   fontFamily: Ubuntu, sans-serif;
   marginBottom: 4px;
@@ -72,14 +69,12 @@ altNode {
   backgroundColor: #f0f0f0;
 }
 
-filenameNode {
-  marginBottom: 4px;
-  fontSize: 16px;
-  fontFamily: Ubuntu, sans-serif;
-  color: #1b5413;
-}
-
 pic {
+  width: 300px;
+  height: 225px;
+  marginBottom: 4px;
+  backgroundColor: #eeffee;
+  cursor: pointer;
 }
 
 styleNode: common.styleNode {

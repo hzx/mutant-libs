@@ -1,7 +1,6 @@
 
 class Image extends VerticalNode {
   tag fileDialog = null;
-  tag filename = null;
   tag altInput = null;
   tag altNode = null;
   tag picNode = null;
@@ -19,11 +18,10 @@ class Image extends VerticalNode {
 
     fileDialog = <ui.Upload onChange=onFileChange accept="image/\*"/>;
 
-    filename = <div style=style_.filename></div>;
-    
     altInput = <input style=ui_style.nestedInput
         onfocus=onAltFocus onblur=onAltBlur
-        onchange=onAltChange/>;
+        onchange=onAltChange
+        bind=item.alt render=renderInputValue/>;
 
     altNode = <div style=style_.altNode active=style_.node_active onclick=onAltClick>
       <div style=style_.editwrap>
@@ -32,8 +30,8 @@ class Image extends VerticalNode {
       </div>
     </div>;
 
-    picNode = <div style=style_.pic>
-    </div>;
+    picNode = <img style=style_.pic onclick=onPicClick
+        bind=item.filename render=renderImgFilename/>;
 
     styleInput = <input style=ui_style.nestedInput
         onfocus=onStyleFocus onblur=onStyleBlur
@@ -53,25 +51,31 @@ class Image extends VerticalNode {
       {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
-        <div style=style_.buttons>
-          <div style=style_.uploadBtn onclick=onUploadBtnClick>
-            {fileDialog}
-            <span> "выбрать" </span>
-          </div>
-        </div>
-        <div style=style_.filenameNode>
-          <div style=style_.label> "новый файл:" </div>
-          {filename}
-        </div>
-        {altNode}
+        {fileDialog}
+        /* <div style=style_.buttons> */
+        /*   <div style=style_.uploadBtn onclick=onUploadBtnClick> */
+        /*     <span> "выбрать" </span> */
+        /*   </div> */
+        /* </div> */
         {picNode}
+        {altNode}
         {styleNode}
       </div>
     </div>;
   }
 
+  void renderValue(tag elem, object ovalue) {
+    elem.setValue(ovalue.value);
+  }
+
   void renderInputValue(tag input, object ovalue) {
     input.node.value = ovalue.value;
+  }
+
+  void renderImgFilename(tag elem, object filename) {
+    if filename.value.length > 0 {
+      elem.node.src = "/static/img/300x225-" + filename.value;
+    }
   }
 
   void flushStyle() {
@@ -82,6 +86,7 @@ class Image extends VerticalNode {
   }
 
   void flushAlt() {
+    item.alt.set(altInput.node.value);
   }
 
   void focusAlt() {
@@ -104,9 +109,41 @@ class Image extends VerticalNode {
 
   bind void onFileChange(object files) {
     if files.length < 1 { return; }
-    file = files[0];
 
-    browser.setText(filename.node, file.name);
+    auto me = this;
+    auto fu = new net.FileUpload();
+    fu.polymorph = item.polymorph;
+    fu.collection.set(this.itemsColl_);
+    fu.field.set(journal_model.ImageField.FILENAME);
+    fu.objId.set(item.id.value);
+
+    net.uploadFiles(files, fu, void (object filenames) { // success
+      // debug
+      browser.log("Image.onFileChange uploadFiles success:");
+      browser.log(filenames);
+
+      if filenames.length > 0 {
+        auto first = filenames[0];
+        if first.length > 0 {
+          me.item.filename.set(first);
+        }
+      }
+    }, void (int status, string response) { // fail
+    }, void (float progress) { // progress
+    });
+
+    // upload file to session
+    /* net.postSessionFiles(files, item.id.value, void (object sessionFiles) { // success */
+    /*   me.item.filename.set(sessionFiles.first.obj.filename.value); */
+    /* }, void (int status, string response) { // fail */
+    /*   browser.log("error upload file, status: " + status + ", response: " + */
+    /*       response); */
+    /* }, void (float progress) { // progress */
+    /*   // TODO: show upload progress */
+    /*   browser.log("upload image progress: " + progress); */
+    /* }); */
+
+    /* browser.setText(filename.node, file.name); */
   }
 
   bind void onAltClick(object e) {
@@ -126,6 +163,10 @@ class Image extends VerticalNode {
   }
 
   bind void onUploadBtnClick(object e) {
+    fileDialog.click();
+  }
+
+  bind void onPicClick(object e) {
     fileDialog.click();
   }
 
