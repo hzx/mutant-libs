@@ -1,11 +1,50 @@
 
 class Gallery extends web.View {
+  GalleryDialog dialog = null;
+
   Gallery() {
     style_ = style.gallery;
   }
 
   override void create() {
+    dialog = <GalleryDialog images=this.item.images/>;
+
     element = <div style=style_.element>
+      <web.CollectionView name="div" collection=this.item.images
+          render=renderImage style_=style_.images/>
     </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    dialog.hide();
+    web.appendTag(dialog);
+  }
+
+  override void exit() {
+    if !isEnter { return; }
+
+    dialog.hide();
+    dialog.remove();
+
+    base.exit();
+  }
+
+
+  bind tag renderImage(journal_model.GalleryImage image) {
+    string url = "/static/img/300x225-" + image.filename.value;
+
+    return <img src=url style=style_.image dataId=image.id.value
+        onclick=onImageClick/>;
+  }
+
+  bind void onImageClick(object e) {
+    auto target = e.srcElement or e.target;
+    auto id = target.dataId;
+
+    dialog.setActive(id);
+    dialog.show();
   }
 }
