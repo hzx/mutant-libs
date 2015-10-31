@@ -13,7 +13,8 @@ class Gallery extends VerticalNode {
     createPlaceholders();
 
     fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
-    userImages = <div></div>;
+    userImages = <web.CollectionView name="div" collection=item.images
+      render=renderImage style_=style_.images/>;
 
     styleInput = <input style=ui_style.nestedInput
         onfocus=onStyleFocus onblur=onStyleBlur
@@ -34,7 +35,7 @@ class Gallery extends VerticalNode {
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       {fileDialog}
       <div style=style_.wrap>
-        <div style=style_.images>
+        <div style=style_.imagesWrap>
           {userImages}
           <div style=style_.add onclick=onAddClick></div>
         </div>
@@ -44,7 +45,8 @@ class Gallery extends VerticalNode {
   }
 
   tag createImage(string id, string url, string alt) {
-    return <img id=id src=url alt=alt style=style_.image draggable=true ondragstart=onImageDragstart/>;
+    return <img id=id src=url alt=alt style=style_.image draggable=true
+      ondragstart=onImageDragstart/>;
   }
 
   void renderValue(tag elem, object ovalue) {
@@ -53,6 +55,12 @@ class Gallery extends VerticalNode {
 
   void renderInputValue(tag input, object ovalue) {
     input.node.value = ovalue.value;
+  }
+
+  bind tag renderImage(journal_model.GalleryImage image) {
+    string url = "/static/img/300x225-" + image.filename.value;
+    return <img src=url style=style_.image draggable=true
+      ondragstart=onImageDragstart/>;
   }
 
   void flushStyle() {
@@ -75,15 +83,44 @@ class Gallery extends VerticalNode {
 
   bind void onFileChange(object files) {
     if files.length < 1 { return; }
-    /* file = files[0]; */
 
-    /* browser.setText(filename.node, file.name); */
+    auto me = this;
+    auto fu = new net.FileUpload();
+    fu.polymorph = item.polymorph;
+    fu.collection.set(this.itemsColl_);
+    fu.field.set(journal_model.GalleryField.IMAGES);
+    fu.objId.set(item.id.value);
+
+    net.uploadFiles(files, fu, void (object filenames) { // success
+      // debug
+      browser.log("Gallery.onFileChange uploadFiles success:");
+      browser.log(filenames);
+
+      // add gallery images
+      for auto filename: filenames {
+        if filename.length > 0 {
+          auto image = new journal_model.GalleryImage();
+          image.id.set(filename);
+          image.filename.set(filename);
+
+          me.item.images.appendLocal(image);
+        }
+      }
+    }, void (int status, string response) { // fail
+    }, void (float progress) { // progress
+    });
+
+    /* net.postSessionFiles(files, item.id.value, void (object sessionFiles) { // success */
+    /* }, void (int status, string response) { // fail */
+    /* }, void (float progress) { // progress */
+    /* }); */
   }
 
   bind void onImageDragstart(object e) {
   }
 
   bind void onAddClick(object e) {
+    fileDialog.click();
   }
 
   bind void onStyleFocus(object e) {

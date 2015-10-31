@@ -47,10 +47,26 @@ wrap {
 images {
 }
 
+imagesWrap {
+  overflow: hidden;
+}
+
 add {
+  float: left;
+  cssFloat: left;
+  width: 300px;
+  height: 225px;
+  margin: 0 0 2px 0;
+  background: url(img/add_icon.png) center center no-repeat #eeffee;
+  cursor: pointer;
 }
 
 image {
+  float: left;
+  cssFloat: left;
+  width: 300px;
+  height: 225px;
+  cursor: move;
 }
 
 styleNode: common.styleNode {
