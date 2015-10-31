@@ -90,6 +90,20 @@ class Collection {
     return null;
   }
 
+  object getPrev(string id) {
+    auto node = getNode_(id);
+    if node is null or node.prev is null { return null; }
+
+    return node.prev.obj;
+  }
+
+  object getNext(string id) {
+    auto node = getNode_(id);
+    if node is null or node.next is null { return null; }
+
+    return node.next.obj;
+  }
+
   object getFirst() {
     if first is null { return null; }
     return first.obj;
