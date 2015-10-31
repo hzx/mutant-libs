@@ -4,8 +4,18 @@ namespace gallery {
 
 element {
   marginBottom: 16px;
-  minHeight: 260px;
+  minHeight: 24px;
   backgroundColor: #d8eec8;
+}
+
+images {
+  overflow: hidden;
+}
+
+image {
+  float: left;
+  cssFloat: left;
+  cursor: pointer;
 }
 
 
