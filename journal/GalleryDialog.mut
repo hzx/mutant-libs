@@ -1,0 +1,146 @@
+
+class GalleryDialog extends web.View {
+  container.ObservableCollection images = null;
+  string activeId = null;
+
+  tag imagesWrap = null;
+  tag prevImage = null;
+  tag image = null;
+  tag nextImage = null;
+
+  GalleryDialog() {
+    style_ = style.galleryDialog;
+  }
+
+  override void create() {
+    prevImage = <img style=style_.prevImage
+        onload=onPrevImageLoad onclick=onPrevButtonClick/>;
+    image = <img style=style_.image
+        onload=onImageLoad onclick=onImageClick/>;
+    nextImage = <img style=style_.nextImage
+        onload=onNextImageLoad onclick=onNextButtonClick/>;
+
+    imagesWrap = <div style=style_.images onclick=onOverlayClick>
+      {prevImage}
+      {image}
+      {nextImage}
+    </div>;
+
+    element = <div style=style_.element>
+      <div style=style_.overlay onclick=onOverlayClick></div>
+      {imagesWrap}
+    </div>;
+  }
+
+  void setActive(string id) {
+    activeId = id;
+    
+    auto img = images.get(id);
+    if img isnot null {
+      image.node.src = "/static/img/1920x1080-" + img.filename.value;
+    }
+
+    auto prev = images.getPrev(id);
+    auto next = images.getNext(id);
+
+    if prev isnot null {
+      prevImage.node.src = "/static/img/1920x1080-" + prev.filename.value;
+      browser.show(prevImage.node);
+    } else {
+      browser.hide(prevImage.node);
+    }
+
+    if next isnot null {
+      nextImage.node.src = "/static/img/1920x1080-" + next.filename.value;
+      browser.show(nextImage.node);
+    } else {
+      browser.hide(nextImage.node);
+    }
+  }
+
+  void show() {
+    /* exit(); // unsubscribe from old scrollNode */
+
+    /* browser.pushScrollNode(element.node); */
+    browser.pushZindex(element.node);
+    browser.show(element.node);
+
+    /* enter(); // subscribe to current scrollNode onscroll */
+  }
+
+  void hide() {
+    /* exit(); // unsubscribe from current scrollNode */
+
+    /* if browser.scrollNode is element.node { */
+    /*   browser.popScrollNode(); */
+      browser.popZindex(element.node);
+    /* } */
+    browser.hide(element.node);
+
+    /* enter(); */
+  }
+
+  bind void onPrevImageLoad(object e) {
+    int w = browser.getWidth(imagesWrap.node);
+    int h = browser.getHeight(imagesWrap.node);
+
+    int iw = browser.getWidth(prevImage.node);
+    int ih = browser.getHeight(prevImage.node);
+
+    int left = 0 - (ih + 8);
+    int top = Math.floor((h - ih) / 2.0);
+
+    prevImage.node.style.right = w + "px";
+    prevImage.node.style.top = top + "px";
+  }
+
+  bind void onImageLoad(object e) {
+    int w = browser.getWidth(imagesWrap.node);
+    int h = browser.getHeight(imagesWrap.node);
+
+    int iw = browser.getWidth(image.node);
+    int ih = browser.getHeight(image.node);
+
+    int left = Math.floor((w - iw) / 2.0);
+    int top = Math.floor((h - ih) / 2.0);
+
+    image.node.style.left = left + "px";
+    image.node.style.top = top + "px";
+  }
+
+  bind void onNextImageLoad(object e) {
+    int w = browser.getWidth(imagesWrap.node);
+    int h = browser.getHeight(imagesWrap.node);
+
+    int iw = browser.getWidth(nextImage.node);
+    int ih = browser.getHeight(nextImage.node);
+
+    int right = 0 - (ih + 8);
+    int top = Math.floor((h - ih) / 2.0);
+
+    nextImage.node.style.left = w + "px";
+    nextImage.node.style.top = top + "px";
+  }
+
+  bind void onOverlayClick(object e) {
+    hide();
+  }
+
+  bind void onPrevButtonClick(object e) {
+    e.stopPropagation();
+
+    auto prev = images.getPrev(activeId);
+    setActive(prev.id.value);
+  }
+
+  bind void onImageClick(object e) {
+    e.stopPropagation();
+  }
+
+  bind void onNextButtonClick(object e) {
+    e.stopPropagation();
+
+    auto next = images.getNext(activeId);
+    setActive(next.id.value);
+  }
+}

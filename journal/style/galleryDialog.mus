@@ -1,0 +1,70 @@
+
+namespace galleryDialog {
+
+
+element {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+overlay {
+  position: absolute;
+  zIndex: 3;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.9;
+  backgroundColor: #000000;
+}
+
+images {
+  position: absolute;
+  zIndex: 4;
+  left: 128px;
+  top: 16px;
+  right: 128px;
+  bottom: 16px;
+}
+
+image {
+  position: absolute;
+  zIndex: 5;
+  maxWidth: 100%;
+  maxHeight: 100%;
+}
+
+imageWrap {
+  margin: 0 auto;
+}
+
+prevImage {
+  position: absolute;
+  zIndex: 5;
+  maxWidth: 100%;
+  maxHeight: 100%;
+  cursor: pointer;
+}
+
+prevImage_disable {
+  display: none;
+}
+
+nextImage {
+  position: absolute;
+  zIndex: 5;
+  maxWidth: 100%;
+  maxHeight: 100%;
+  cursor: pointer;
+}
+
+nextImage_disable {
+  display: none;
+}
+
+
+} // end namespace galleryDialog
