@@ -4,18 +4,32 @@ class BigSlider extends web.View {
   tag nextButton = null;
   tag slides = null;
 
+  int slideWidth = 0;
+  int slideHeight = 0;
+
+  tag currentId = null;
+  tag prevId = null;
+  tag nextId = null;
+
   BigSlider() {
     style_ = style.bigSlider;
   }
 
   override void create() {
+    // parse size
+    auto size = this.item.size.value.split("x");
+    slideWidth = size[0];
+    slideHeight = size[1];
+
     prevButton = <div style=style_.prevButton disable=style_.prevDisableButton
         onclick=onPrevClick></div>;
 
     nextButton = <div style=style_.nextButton disable=style_.nextDisableButton
         onclick=onNextClick></div>;
 
-    slides = <div style=style_.slides></div>;
+    /* slides = <div style=style_.slides></div>; */
+    slides = <web.CollectionView name="div" collection=this.item.images
+      render=renderImage style_=style_.slides/>;
 
     element = <div style=style_.element>
       {prevButton}
@@ -24,13 +38,95 @@ class BigSlider extends web.View {
     </div>;
   }
 
+  void enter() {
+    if isEnter { return; }
+    base.enter();
+
+    if currentId is null {
+      initSlides();
+    }
+  }
+
+  bind tag renderImage(journal_model.GalleryImage image) {
+    auto buf = ["/static/img/", this.item.size.value, "-", image.filename.value];
+
+    string url = buf.join("");
+
+    return <img src=url style=style_.slide id=image.id.value
+        dataId=image.id.value/>;
+  }
+
+  void initSlides() {
+    if this.item.images.count is 0 { return; }
+
+    currentId = this.item.images.first.obj.getId();
+    if this.item.images.first isnot this.item.images.last {
+      prevId = this.item.images.last.obj.getId();
+    }
+
+    if this.item.images.count > 1 {
+      auto next = this.item.images.getNext(currentId);
+      if next isnot null {
+        nextId = next.getId();
+      }
+    }
+
+    if prevId isnot null {
+      auto prev = slides.getChild(prevId);
+      prev.node.style.left = (0 - slideWidth) + "px";
+    }
+
+    if nextId isnot null {
+      auto next = slides.getChild(nextId);
+      next.node.style.left = slideWidth + "px";
+    }
+  }
+
+  void slidePrev() {
+    if this.item.images.count < 2 { return; }
+
+    if currentId is null {
+      initSlides();
+    }
+
+    auto current = slides.getChild(currentId);
+
+    auto prev = current.getPrev();
+    if prev is null {
+      prev = slides.getLast();
+    }
+
+    current.node.style.left = (0 - slideWidth) + "px";
+    prev.node.style.left = 0;
+
+    currentId = prev.getId();
+  }
+
+  void slideNext() {
+    if this.item.images.count < 2 { return; }
+
+    if currentId is null {
+      initSlides();
+    }
+
+    auto current = slides.getChild(currentId);
+
+    auto next = current.getNext();
+    if next is null {
+      next = slides.getFirst();
+    }
+
+    current.node.style.left = slideWidth + "px";
+    next.node.style.left = 0;
+
+    currentId = next.getId();
+  }
+
   bind void onPrevClick(object e) {
-    // TODO: set prev slide
-    browser.log("onPrevClick:");
+    slidePrev();
   }
 
   bind void onNextClick(object e) {
-    // TODO: set next slide
-    browser.log("onNextClick:");
+    slideNext();
   }
 }

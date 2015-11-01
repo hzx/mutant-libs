@@ -65,7 +65,7 @@ class BigSlider extends VerticalNode {
   }
 
   bind tag renderImage(journal_model.GalleryImage image) {
-    string url = "/static/img/200x200-" + image.filename.value;
+    string url = "/static/img/300x225-" + image.filename.value;
     return <img src=url style=style_.image draggable=true
       ondragstart=onImageDragstart/>;
   }

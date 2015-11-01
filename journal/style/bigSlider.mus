@@ -43,9 +43,13 @@ slides: ui_style.checkerBg {
   height: 100%;
   zIndex: 1;
   backgroundColor: #e5c8ee;
+  overflow: hidden;
 }
 
 slide {
+  position: absolute;
+  left: 0;
+  top: 0;
   zIndex: 2;
 }
 
