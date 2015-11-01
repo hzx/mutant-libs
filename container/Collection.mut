@@ -104,6 +104,40 @@ class Collection {
     return node.next.obj;
   }
 
+  object getPrevRestricted(string id, int count) {
+    auto cursor = getNode_(id);
+    if cursor is null { return null; }
+
+    cursor = cursor.prev;
+    int counter = 0;
+    object obj = null;
+
+    while cursor isnot null and counter < count {
+      obj = cursor.obj;
+      cursor = cursor.prev;
+      counter = counter + 1;
+    }
+
+    return obj;
+  }
+
+  object getNextRestricted(string id, int count) {
+    auto cursor = getNode_(id);
+    if cursor is null { return null; }
+
+    cursor = cursor.next;
+    int counter = 0;
+    object obj = null;
+
+    while cursor isnot null and counter < count {
+      obj = cursor.obj;
+      cursor = cursor.next;
+      counter = counter + 1;
+    }
+
+    return obj;
+  }
+
   object getFirst() {
     if first is null { return null; }
     return first.obj;
@@ -166,6 +200,36 @@ class Collection {
   object getNode_(string id) {
     if id in idToNodes_ { return idToNodes_[id]; }
     return null;
+  }
+
+  int getIdIndex(string id) {
+    int index = 0;
+    auto cursor = first;
+
+    while cursor isnot null {
+      if cursor.obj.getId() is id { break; }
+
+      cursor = cursor.next;
+      index = index + 1;
+    }
+
+    return index;
+  }
+
+  string getIndexId(int index) {
+    int counter = 0;
+    int index = 0;
+    string id = "";
+    auto cursor = first;
+
+    while cursor isnot null and counter < index {
+      id = cursor.obj.getId();
+
+      cursor = cursor.next;
+      counter = counter + 1;
+    }
+
+    return id;
   }
 
   void removeNode_(object node) {
