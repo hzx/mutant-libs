@@ -3,6 +3,11 @@ class MiniSlider extends web.View {
   tag prevButton = null;
   tag nextButton = null;
   tag slides = null;
+  tag firstSlide = null;
+
+  int bunchCount = 6;
+  tag leftId = null;
+  tag rightId = null;
 
   MiniSlider() {
     style_ = style.miniSlider;
@@ -15,22 +20,112 @@ class MiniSlider extends web.View {
     nextButton = <div style=style_.nextButton disable=style_.nextDisableButton
         onclick=onNextClick></div>;
 
-    slides = <div style=style_.slides></div>;
+    slides = <web.CollectionView name="div" collection=this.item.images
+      render=renderImage style_=style_.images/>;
+
+    slidesWrap = <div style=style_.imagesWrap>
+      {slides}
+    </div>;
 
     element = <div style=style_.element>
       {prevButton}
       {nextButton}
-      {slides}
+      {slidesWrap}
     </div>;
   }
 
+  bind tag renderImage(journal_model.GalleryImage image) {
+    /* if slideCounter is 1 { */
+    /*   leftId = image.id.value; */
+
+    /*   browser.log("left image:"); */
+    /*   browser.log(image); */
+    /* } */
+
+    /* if slideCounter is bunchCount { */
+    /*   rightId = image.id.value; */
+
+    /*   browser.log("right image:"); */
+    /*   browser.log(image); */
+    /* } */
+
+    /* slideCounter = slideCounter + 1; */
+
+    string url = "/static/img/200x200-" + image.filename.value;
+
+    return <img src=url style=style_.image id=image.id.value
+        dataId=image.id.value/>;
+  }
+
+  void initLeftRightIds() {
+    leftId = this.item.images.first.obj.getId();
+    right = this.item.images.getNextRestricted(leftId, bunchCount - 1);
+    if right is null {
+      rightId = leftId;
+    } else {
+      rightId = right.getId();
+    }
+  }
+
+  int computePrevOffset() {
+    if this.item.images.count is 0 { return 0; }
+    if leftId is null { initLeftRightIds(); }
+    if this.item.images.getPrev(leftId) is null { return null; }
+
+    auto images = this.item.images;
+
+    // find new leftId pos
+    auto left = images.getPrevRestricted(leftId, bunchCount);
+    if left is null { leftId = rightId }
+    else { leftId = left.getId(); }
+
+    // find new rightId relative leftId
+    auto right = images.getNextRestricted(leftId, bunchCount - 1);
+    if right is null { rightId = leftId; }
+    else { rightId = right.getId(); }
+
+    int leftIndex = images.getIdIndex(leftId);
+    int rightIndex = images.getIdIndex(rightId);
+
+    return 200 * leftIndex;
+  }
+
+  int computeNextOffset() {
+    if this.item.images.count is 0 { return 0; }
+    if leftId is null { initLeftRightIds(); }
+    if this.item.images.getNext(rightId) is null { return null; }
+
+    auto images = this.item.images;
+
+    // find new rightId pos
+    auto right = images.getNextRestricted(rightId, bunchCount);
+    if right is null { rightId = leftId; }
+    else { rightId = right.getId(); }
+
+    // find new leftId relative rightId
+    auto left = images.getPrevRestricted(rightId, bunchCount - 1);
+    if left is null { leftId = rightId; }
+    else { leftId = left.getId(); }
+
+    int leftIndex = images.getIdIndex(leftId);
+    int rightIndex = images.getIdIndex(rightId);
+
+    return 200 * leftIndex;
+  }
+
   bind void onPrevClick(object e) {
-    // TODO: set prev slide
-    browser.log("onPrevClick:");
+    auto offset = computePrevOffset();
+    if offset is null { return; }
+
+    auto node = slides.getNode();
+    node.style.left = (0 - offset) + "px";
   }
 
   bind void onNextClick(object e) {
-    // TODO: set next slide
-    browser.log("onNextClick:");
+    auto offset = computeNextOffset();
+    if offset is null { return; }
+
+    auto node = slides.getNode();
+    node.style.left = (0 - offset) + "px";
   }
 }

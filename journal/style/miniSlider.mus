@@ -6,6 +6,7 @@ element {
   position: relative;
   marginBottom: 16px;
   height: 200px;
+  overflow: hidden;
 }
 
 prevButton: prevSliderIcon {
@@ -36,16 +37,24 @@ nextButton: nextSliderIcon {
 nextDisableButton: nextDisableIcon {
 }
 
-slides: ui_style.checkerBg {
+imagesWrap {
   position: relative;
-  width: 100%;
-  height: 100%;
+  height: inherit;
+}
+
+images: ui_style.checkerBg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  /* width: inherit; */
+  height: inherit;
   zIndex: 1;
   backgroundColor: #c8eeee;
 }
 
-slide {
-  zIndex: 2;
+image {
+  float: left;
+  cssFloat: left;
 }
 
 

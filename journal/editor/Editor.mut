@@ -201,6 +201,16 @@ class Editor extends web.View {
     auto obj = createNodeModel(nodeType);
     if obj is null { return; } // unknown nodeType
 
+    // set default values
+    switch nodeType {
+      case journal_model.NodeType.MINI_SLIDER:
+        obj.size.set("200x200");
+        break;
+      case journal_model.NodeType.BIG_SLIDER:
+        obj.size.set("1200x480");
+        break;
+    }
+
     journalItems_.insertBefore(obj, beforeId);
   }
 

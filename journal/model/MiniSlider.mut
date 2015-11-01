@@ -2,24 +2,24 @@
 class MiniSlider extends container.Model {
   auto pageId = new container.String();
   auto style = new container.String();
-  auto images = new container.String();
+  /* auto images = new container.String(); */
+  auto images = new container.ObservableCollection();
   auto size = new container.String();
 
   MiniSlider() {
     polymorph = NodeType.MINI_SLIDER;
     enter();
-    size.listen(onSizeUpdates);
   }
 
   void enter() {
     style.listen(onStyleUpdate);
-    images.listen(onImagesUpdates);
+    /* images.listen(onImagesUpdates); */
     size.listen(onSizeUpdates);
   }
 
   void exit() {
     style.unlisten(onStyleUpdate);
-    images.unlisten(onImagesUpdates);
+    /* images.unlisten(onImagesUpdates); */
     size.unlisten(onSizeUpdates);
   }
 
@@ -35,7 +35,16 @@ class MiniSlider extends container.Model {
         style.set(value);
         break;
       case MiniSliderField.IMAGES:
-        images.set(value);
+        auto filenames = value.split(":");
+        images.clear();
+
+        for auto filename: filenames {
+          auto image = new GalleryImage();
+          image.id.set(filename);
+          image.filename.set(filename);
+
+          images.appendLocal(image);
+        }
         break;
       case BigSliderField.SIZE:
         size.set(value);
@@ -49,7 +58,17 @@ class MiniSlider extends container.Model {
     if id.has { buf.push(container.ModelField.ID, id.value); }
     if pageId.has { buf.push(MiniSliderField.PAGE_ID, pageId.value); }
     if style.has { buf.push(MiniSliderField.STYLE, style.value); }
-    if images.has { buf.push(MiniSliderField.IMAGES, images.value); }
+    if images.has {
+      auto filenames = [];
+      auto cursor = images.first;
+
+      while cursor isnot null {
+        filenames.push(cursor.obj.filename.value);
+        cursor = cursor.next;
+      }
+
+      buf.push(MiniSliderField.IMAGES, filenames.join(":"));
+    }
     if size.has { buf.push(MiniSliderField.SIZE, size.value); }
 
     return buf.join(container.DELIM_FIELD);
@@ -59,9 +78,9 @@ class MiniSlider extends container.Model {
     eventUpdate.notify2(id.value, [MiniSliderField.STYLE, val]);
   }
 
-  bind void onImagesUpdates(string val, string old) {
-    eventUpdate.notify2(id.value, [MiniSliderField.IMAGES, val]);
-  }
+  /* bind void onImagesUpdates(string val, string old) { */
+  /*   eventUpdate.notify2(id.value, [MiniSliderField.IMAGES, val]); */
+  /* } */
 
   bind void onSizeUpdates(string val, string old) {
     eventUpdate.notify2(id.value, [BigSliderField.SIZE, val]);

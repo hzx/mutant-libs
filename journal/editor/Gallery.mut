@@ -13,6 +13,7 @@ class Gallery extends VerticalNode {
     createPlaceholders();
 
     fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
+
     userImages = <web.CollectionView name="div" collection=item.images
       render=renderImage style_=style_.images/>;
 

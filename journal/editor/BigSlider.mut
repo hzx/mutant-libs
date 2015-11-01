@@ -1,8 +1,11 @@
 
 class BigSlider extends VerticalNode {
   tag fileDialog = null;
+  tag images = null;
   tag styleInput = null;
   tag styleNode = null;
+  tag sizeInput = null;
+  tag sizeNode = null;
 
   BigSlider() {
     code = journal_model.NodeType.BIG_SLIDER;
@@ -11,11 +14,14 @@ class BigSlider extends VerticalNode {
   override void create() {
     createPlaceholders();
 
-    fileDialog = <ui.Upload multiple=true accept="image/\*" onChange=onFileChange/>;
+    fileDialog = <ui.Upload multiple=true accept="image/\*"
+        onChange=onFileChange/>;
+
+    images = <web.CollectionView name="div" collection=item.images
+        render=renderImage style_=style_.images/>;
 
     styleInput = <input style=ui_style.nestedInput
-        onfocus=onStyleFocus onblur=onStyleBlur
-        onchange=onStyleChange
+        onfocus=onStyleFocus onblur=onStyleBlur onchange=onStyleChange
         bind=item.style render=renderInputValue/>;
 
     styleNode = <div style=style_.styleNode
@@ -26,15 +32,42 @@ class BigSlider extends VerticalNode {
       </div>
     </div>;
 
-    element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
+    sizeInput = <input style=ui_style.nestedInput
+        onfocus=onSizeFocus onblur=onSizeBlur onchange=onSizeChange
+        bind=item.size render=renderInputValue/>;
+
+    sizeNode = <div style=style_.sizeNode
+        active=style_.sizeNode_active onclick=onSizeClick>
+      /* <div style=style_.sizeEditWrap> */
+        <div style=style_.sizeLabel> "ШхВ:" </div>
+        <div style=style_.sizeWrap>
+          {sizeInput}
+        </div>
+      /* </div> */
+    </div>;
+
+    element = <div style=style_.node
+        ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave
+        ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
       {fileDialog}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
         {styleNode}
+        {sizeNode}
+        <div style=style_.imagesWrap>
+          {images}
+          <div style=style_.add onclick=onAddClick></div>
+        </div>
       </div>
     </div>;
+  }
+
+  bind tag renderImage(journal_model.GalleryImage image) {
+    string url = "/static/img/200x200-" + image.filename.value;
+    return <img src=url style=style_.image draggable=true
+      ondragstart=onImageDragstart/>;
   }
 
   void renderValue(tag elem, object ovalue) {
@@ -49,6 +82,10 @@ class BigSlider extends VerticalNode {
     item.style.set(styleInput.node.value);
   }
 
+  void flushSize() {
+    item.size.set(sizeInput.node.value);
+  }
+
   void focusStyle() {
     styleNode.setState(web.STATE_ACTIVE);
     styleInput.node.focus();
@@ -57,6 +94,23 @@ class BigSlider extends VerticalNode {
   void blurStyle() {
     styleNode.setState(web.STATE_NORMAL);
     flushStyle();
+  }
+
+  void focusSize() {
+    sizeNode.setState(web.STATE_ACTIVE);
+    sizeInput.node.focus();
+  }
+
+  void blurSize() {
+    sizeNode.setState(web.STATE_NORMAL);
+    flushSize();
+  }
+
+  bind void onImageDragstart(object e) {
+  }
+
+  bind void onAddClick(object e) {
+    fileDialog.click();
   }
 
   bind void onUploadBtnClick(object e) {
@@ -68,6 +122,28 @@ class BigSlider extends VerticalNode {
     /* file = files[0]; */
 
     /* browser.setText(filename.node, file.name); */
+
+    auto me = this;
+    auto fu = new net.FileUpload();
+    fu.polymorph = item.polymorph;
+    fu.collection.set(this.itemsColl_);
+    fu.field.set(journal_model.BigSliderField.IMAGES);
+    fu.objId.set(item.id.value);
+
+    net.uploadFiles(files, fu, void (object filenames) { // success
+      // add images to slider
+      for auto filename: filenames {
+        if filename.length > 0 {
+          auto image = new journal_model.GalleryImage();
+          image.id.set(filename);
+          image.filename.set(filename);
+
+          me.item.images.appendLocal(image);
+        }
+      }
+    }, void (int status, string response) { // fail
+    }, void (float progress) { // progress
+    });
   }
 
   bind void onStyleFocus(object e) {
@@ -84,5 +160,21 @@ class BigSlider extends VerticalNode {
 
   bind void onStyleClick(object e) {
     focusStyle();
+  }
+
+  bind void onSizeFocus(object e) {
+    focusSize();
+  }
+
+  bind void onSizeBlur(object e) {
+    blurSize();
+  }
+
+  bind void onSizeChange(object e) {
+    flushSize();
+  }
+
+  bind void onSizeClick(object e) {
+    focusSize();
   }
 }

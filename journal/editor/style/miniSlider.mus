@@ -8,6 +8,9 @@ label {
   color: #2c597a;
 }
 
+sizeLabel: common.floatLabel {
+}
+
 node {
   position: relative;
   /* margin: 16px; */
@@ -48,6 +51,31 @@ wrap {
   padding: 28px 0px 8px 0px;
 }
 
+images {
+}
+
+imagesWrap {
+  overflow: hidden;
+}
+
+add {
+  float: left;
+  cssFloat: left;
+  width: 200px;
+  height: 200px;
+  margin: 0 0 2px 0;
+  background: url(img/add_icon.png) center center no-repeat #eeffee;
+  cursor: pointer;
+}
+
+image {
+  float: left;
+  cssFloat: left;
+  width: 200px;
+  height: 200px;
+  cursor: move;
+}
+
 styleNode: common.styleNode {
 }
 
@@ -55,6 +83,15 @@ styleNode_active: common.styleNode_active {
 }
 
 styleEditWrap: common.styleEditWrap {
+}
+
+sizeWrap: common.sizeWrap {
+}
+
+sizeNode: common.sizeNode {
+}
+
+sizeNode_active: common.sizeNode_active {
 }
 
 

@@ -18,3 +18,25 @@ styleNode_active {
 styleEditWrap {
   margin: 4px 2px;
 }
+
+floatLabel {
+  float: left;
+  cssFloat: left;
+  padding: 4px 0;
+  color: #2c597a;
+}
+
+sizeWrap {
+  marginLeft: 28px;
+  height: inherit;
+}
+
+sizeNode: styleNode {
+  width: 100px;
+  left: 0;
+  overflow: hidden;
+}
+
+sizeNode_active: styleNode_active {
+}
+
