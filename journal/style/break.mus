@@ -4,6 +4,7 @@ namespace breax {
 
 element {
   clear: both;
+  height: 1px;
 }
 
 
