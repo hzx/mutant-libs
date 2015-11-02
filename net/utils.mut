@@ -1,20 +1,18 @@
 
-Collection collection(int table, string url, string xsrf) {
+Collection collection(int table, string url) {
   auto coll = new Collection();
 
   coll.table = table;
   coll.url = url;
-  coll.xsrf = xsrf;
 
   return coll;
 }
 
-Document document(int table, string url, string xsrf, container.Model obj) {
+Document document(int table, string url, container.Model obj) {
   auto doc = new Document();
 
   doc.table = table;
   doc.url = url;
-  doc.xsrf = xsrf;
   doc.obj = obj;
 
   return doc;

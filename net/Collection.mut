@@ -2,7 +2,6 @@
 class Collection {
   int table = 0;
   string url = "";
-  string xsrf = "";
 
   void update(object params) {
     auto data = {};
@@ -24,7 +23,7 @@ class Collection {
 
     auto me = this;
 
-    browser.post(url, data, xsrf, void (string response) { // success
+    browser.post(url, data, void (string response) { // success
       params.obj.unserializeLocal(response.split(container.DELIM_FIELD));
     }, void (int status, string response) { // fail
       // TODO: set error to browser net errors
@@ -49,7 +48,7 @@ class Collection {
 
     auto me = this;
 
-    browser.post(url, data, xsrf, void (string response) { // success
+    browser.post(url, data, void (string response) { // success
       params.obj.unserialize(response.split(container.DELIM_FIELD));
     }, void (int status, string response) { // fail
       // TODO: set error to browser net errors
@@ -78,7 +77,7 @@ class Collection {
 
     auto me = this;
 
-    browser.post(url, data, xsrf, void (string response) { // success
+    browser.post(url, data, void (string response) { // success
       params.obj.unserialize(response.split(container.DELIM_FIELD));
     }, void (int status, string response) { // fail
       // TODO: set error to browser net errors
@@ -103,7 +102,7 @@ class Collection {
 
     auto me = this;
 
-    browser.post(url, data, xsrf, void (string response) { // success
+    browser.post(url, data, void (string response) { // success
       params.obj.unserialize(response.split(container.DELIM_FIELD));
     }, void (int status, string response) { // fail
       // TODO: set error to browser net errors
@@ -128,7 +127,7 @@ class Collection {
 
     auto me = this;
 
-    browser.post(url, data, xsrf, void (string response) { // success
+    browser.post(url, data, void (string response) { // success
       // do nothing
     }, void (int status, string response) { // fail
       // TODO: set error to browser net errors
@@ -153,7 +152,7 @@ class Collection {
 
     auto me = this;
 
-    browser.post(url, data, xsrf, void (string response) { // success
+    browser.post(url, data, void (string response) { // success
       // do nothing
     }, void (int status, string response) { // fail
       // TODO: set error to browser net errors

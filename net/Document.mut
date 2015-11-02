@@ -29,7 +29,7 @@ class Document extends Collection {
 
     auto me = this;
 
-    browser.post(url, data, xsrf, void (string response) { // success
+    browser.post(url, data, void (string response) { // success
       if params.parentId isnot null { // update link collection object
         params.obj.unserialize(response.split(container.DELIM_FIELD));
       } else { // update document object

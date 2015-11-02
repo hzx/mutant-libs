@@ -132,8 +132,7 @@ void get(string url, object success, object fail, object progress) {
 }
 
 
-// TODO: remove redundant xsrf param
-void post(string url, object data, string xsrf,
+void post(string url, object data,
     object success, object fail, object progress) {
   object params = {
     xhr: null,
