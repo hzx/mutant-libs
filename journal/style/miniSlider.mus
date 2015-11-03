@@ -20,7 +20,8 @@ prevButton: prevSliderIcon {
   cursor: pointer;
 }
 
-prevDisableButton: prevDisableIcon {
+prevDisableButton: prevSliderDisableIcon {
+  cursor: default;
 }
 
 nextButton: nextSliderIcon {
@@ -34,7 +35,8 @@ nextButton: nextSliderIcon {
   cursor: pointer;
 }
 
-nextDisableButton: nextDisableIcon {
+nextDisableButton: nextSliderDisableIcon {
+  cursor: default;
 }
 
 imagesWrap {

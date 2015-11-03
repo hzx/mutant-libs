@@ -9,6 +9,9 @@ class MiniSlider extends web.View {
   tag leftId = null;
   tag rightId = null;
 
+  bool isPrevExists = false;
+  bool isNextExists = false;
+
   MiniSlider() {
     style_ = style.miniSlider;
   }
@@ -32,6 +35,12 @@ class MiniSlider extends web.View {
       {nextButton}
       {slidesWrap}
     </div>;
+  }
+
+  override void enter() {
+    if isEnter { return; }
+    base.enter();
+    initLeftRightIds();
   }
 
   bind tag renderImage(journal_model.GalleryImage image) {
@@ -58,13 +67,18 @@ class MiniSlider extends web.View {
   }
 
   void initLeftRightIds() {
-    leftId = this.item.images.first.obj.getId();
-    right = this.item.images.getNextRestricted(leftId, bunchCount - 1);
-    if right is null {
-      rightId = leftId;
-    } else {
-      rightId = right.getId();
+    if this.item.images.count > 0 {
+      leftId = this.item.images.first.obj.getId();
+      right = this.item.images.getNextRestricted(leftId, bunchCount - 1);
+
+      if right is null {
+        rightId = leftId;
+      } else {
+        rightId = right.getId();
+      }
     }
+
+    setButtonsState();
   }
 
   int computePrevOffset() {
@@ -113,19 +127,80 @@ class MiniSlider extends web.View {
     return 200 * leftIndex;
   }
 
+  void setPrevButtonState() {
+    if leftId isnot null {
+      auto prev = this.item.images.getPrev(leftId);
+
+      if prev isnot null {
+        isPrevExists = true;
+        prevButton.setState(web.STATE_NORMAL);
+        return;
+      }
+    }
+
+    isPrevExists = false;
+    prevButton.setState(web.STATE_DISABLE);
+  }
+
+  void setNextButtonState() {
+    if rightId isnot null {
+      auto next = this.item.images.getNext(rightId);
+      
+      if next isnot null {
+        isNextExists = true;
+        nextButton.setState(web.STATE_NORMAL);
+        return;
+      }
+    }
+
+    isNextExists = false;
+    nextButton.setState(web.STATE_DISABLE);
+  }
+
+  void setButtonsState() {
+    setPrevButtonState();
+    setNextButtonState();
+  }
+
   bind void onPrevClick(object e) {
+    if !isPrevExists { return; }
+
     auto offset = computePrevOffset();
+    setButtonsState();
     if offset is null { return; }
 
     auto node = slides.getNode();
-    node.style.left = (0 - offset) + "px";
+    int from = window.parseInt(node.style.left);
+    int to = 0 - offset;
+
+    browser.log("---animate, from: " + from + ", to: " + to);
+
+    browser.animate(void (float value) { // update
+      browser.log(value);
+      node.style.left = Math.floor(value) + "px";
+    }, void () { // end
+      node.style.left = to + "px";
+    }, 400, browser.animationDelta, to, from, browser.easingSineOut);
   }
 
   bind void onNextClick(object e) {
+    if !isNextExists { return; }
+
     auto offset = computeNextOffset();
+    setButtonsState();
     if offset is null { return; }
 
     auto node = slides.getNode();
-    node.style.left = (0 - offset) + "px";
+    int from = window.parseInt(node.style.left);
+    int to = 0 - offset;
+
+    browser.log("---animate, from: " + from + ", to: " + to);
+
+    browser.animate(void (float value) { // update
+      browser.log(value);
+      node.style.left = Math.floor(value) + "px";
+    }, void () { // end
+      node.style.left = to + "px";
+    }, 400, browser.animationDelta, to, from, browser.easingSineOut);
   }
 }
