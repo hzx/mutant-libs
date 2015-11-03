@@ -80,6 +80,10 @@ class GalleryDialog extends web.View {
     /* enter(); */
   }
 
+  // TODO: make slides with animation
+  // FIX: with equal slides zIndex cause rendering bug
+  // make current zIndex 4, prev and next zIndex 3
+
   bind void onPrevImageLoad(object e) {
     int w = browser.getWidth(imagesWrap.node);
     int h = browser.getHeight(imagesWrap.node);

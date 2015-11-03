@@ -73,8 +73,13 @@ class MiniSlider extends web.View {
 
     string url = "/static/img/200x200-" + image.filename.value;
 
-    return <img src=url style=style_.image id=image.id.value
+    auto img = <img src=url style=style_.image id=image.id.value
         dataId=image.id.value/>;
+
+    img.node.style.width = slideWidth + "px";
+    img.node.style.height = slideHeight + "px";
+
+    return img;
   }
 
   void initLeftRightIds() {

@@ -36,8 +36,13 @@ class Gallery extends web.View {
   bind tag renderImage(journal_model.GalleryImage image) {
     string url = "/static/img/300x225-" + image.filename.value;
 
-    return <img src=url style=style_.image dataId=image.id.value
+    auto img = <img src=url style=style_.image dataId=image.id.value
         onclick=onImageClick/>;
+
+    img.node.style.width = "300px";
+    img.node.style.height = "225px";
+
+    return img;
   }
 
   bind void onImageClick(object e) {

@@ -56,8 +56,13 @@ class BigSlider extends web.View {
 
     string url = buf.join("");
 
-    return <img src=url style=style_.slide id=image.id.value
+    auto img = <img src=url style=style_.slide id=image.id.value
         dataId=image.id.value/>;
+
+    img.node.style.width = slideWidth + "px";
+    img.node.style.height = slideHeight + "px";
+
+    return img;
   }
 
   void getCurrentId() {
