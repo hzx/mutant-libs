@@ -75,11 +75,6 @@ float animationDelta = 1000.0 / 60.0;
 /* int lastTime; */
 
 
-float easingLinear(float progress) {
-  return progress;
-}
-
-
 void animationFrame() {
   int i = 0;
   object task;
@@ -116,7 +111,8 @@ void animationFrame() {
 }
 
 
-int animate(object update, object end, int time, int dt, int from, int to, Easing easing) {
+int animate(object update, object end, int time, int dt, int from, int to,
+    Easing easing) {
   object date = new Date();
   begin = date.getTime();
 
@@ -157,9 +153,12 @@ int animateBackward(string id, object end) {
 }
 
 
+// TODO: split animationStart to native supported and emulated, no need to
+// overcharge call everytime
 void animateStart() {
   if !animationFlag {
     animationFlag = true;
+    // call frame with window event emulated requestAnimationFrame
     requestAnimationFrame.call(window, animationFrame);
   }
 }

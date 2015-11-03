@@ -1,0 +1,31 @@
+
+float easingLinear(float p) {
+  return p;
+}
+
+float easingSineIn(float p) {
+  return 1 - Math.cos( p * Math.PI / 2 );
+}
+
+float easingSineOut(float p) {
+  return easingSineIn(1.0 - p);
+}
+
+float easingCircIn(float p) {
+  return 1 - Math.sqrt( 1 - p * p );
+}
+
+float easingBounceIn(float p) {
+  float bounce = 4;
+  float pow2 = Math.pow( 2, --bounce );
+
+  while p < ( pow2 - 1 ) / 11 {
+    pow2 = Math.pow( 2, --bounce );
+  }
+  return 1 / Math.pow( 4, 3 - bounce ) - 7.5625 * Math.pow( ( pow2 * 3 - 2 ) / 22 - p, 2 );
+}
+
+
+float easingBounceOut(float p) {
+  return easingBounceIn(1.0 - p);
+}
