@@ -393,3 +393,8 @@ int getScreenHeight() {
     return window.outerHeight;
   }
 }
+
+
+float getPixelRatio() {
+  return window.devicePixelRatio or 1;
+}
