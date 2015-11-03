@@ -15,7 +15,7 @@ prevButton: prevSliderIcon {
   height: 48px;
   left: 0;
   top: 216px;
-  zIndex: 3;
+  zIndex: 5;
   /* backgroundColor: #8888ff; */
   cursor: pointer;
 }
@@ -29,7 +29,7 @@ nextButton: nextSliderIcon {
   height: 48px;
   right: 0;
   top: 216px;
-  zIndex: 3;
+  zIndex: 4;
   /* backgroundColor: #8888ff; */
   cursor: pointer;
 }

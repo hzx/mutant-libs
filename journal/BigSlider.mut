@@ -27,7 +27,6 @@ class BigSlider extends web.View {
     nextButton = <div style=style_.nextButton disable=style_.nextDisableButton
         onclick=onNextClick></div>;
 
-    /* slides = <div style=style_.slides></div>; */
     slides = <web.CollectionView name="div" collection=this.item.images
       render=renderImage style_=style_.slides/>;
 
@@ -42,8 +41,11 @@ class BigSlider extends web.View {
     if isEnter { return; }
     base.enter();
 
-    if currentId is null {
-      initSlides();
+    // init current slide
+    auto id = getCurrentId();
+    if id isnot null {
+      auto current = slides.getChild(id);
+      current.node.style.zIndex = 4;
     }
   }
 
@@ -56,70 +58,86 @@ class BigSlider extends web.View {
         dataId=image.id.value/>;
   }
 
-  void initSlides() {
-    if this.item.images.count is 0 { return; }
-
-    currentId = this.item.images.first.obj.getId();
-    if this.item.images.first isnot this.item.images.last {
-      prevId = this.item.images.last.obj.getId();
+  void getCurrentId() {
+    if currentId is null {
+      auto first = this.item.images.getFirst();
+      currentId = first.getId();
     }
+    return currentId;
+  }
 
-    if this.item.images.count > 1 {
-      auto next = this.item.images.getNext(currentId);
-      if next isnot null {
-        nextId = next.getId();
-      }
+  void getPrevId() {
+    auto prev = this.item.images.getPrev(currentId);
+    if prev is null {
+      auto last = this.item.images.getLast();
+      if last is null { return null; }
+      return last.getId();
     }
+    return prev.getId();
+  }
 
-    if prevId isnot null {
-      auto prev = slides.getChild(prevId);
-      prev.node.style.left = (0 - slideWidth) + "px";
+  void getNextId() {
+    auto next = this.item.images.getNext(currentId);
+    if next is null {
+      auto first = this.item.images.getFirst();
+      if first is null { return null; }
+      return first.getId();
     }
-
-    if nextId isnot null {
-      auto next = slides.getChild(nextId);
-      next.node.style.left = slideWidth + "px";
-    }
+    return next.getId();
   }
 
   void slidePrev() {
     if this.item.images.count < 2 { return; }
 
-    if currentId is null {
-      initSlides();
-    }
+    auto current = slides.getChild(getCurrentId());
+    auto prev = slides.getChild(getPrevId());
 
-    auto current = slides.getChild(currentId);
+    int from = (0 - slideHeight);
+    int to = 0;
 
-    auto prev = current.getPrev();
-    if prev is null {
-      prev = slides.getLast();
-    }
+    current.node.style.zIndex = 3;
+    current.node.style.left = 0;
+    current.node.style.top = 0;
 
-    current.node.style.left = (0 - slideWidth) + "px";
-    prev.node.style.left = 0;
-
+    // new current
     currentId = prev.getId();
+    prev.node.style.zIndex = 4;
+    prev.node.style.left = 0;
+    prev.node.style.top = from + "px";
+
+    browser.animate(void (float value) { // update
+      prev.node.style.top = Math.round(value) + "px";
+    }, void () { // end
+      prev.node.style.top = to + "px";
+      current.node.style.zIndex = 2;
+    }, 500, browser.animationDelta, to, from, browser.easingBounceOut);
   }
 
   void slideNext() {
     if this.item.images.count < 2 { return; }
 
-    if currentId is null {
-      initSlides();
-    }
+    auto current = slides.getChild(getCurrentId());
+    auto next = slides.getChild(getNextId());
 
-    auto current = slides.getChild(currentId);
+    int from = (0 - slideHeight);
+    int to = 0;
 
-    auto next = current.getNext();
-    if next is null {
-      next = slides.getFirst();
-    }
+    current.node.style.zIndex = 3;
+    current.node.style.left = 0;
+    current.node.style.top = 0;
 
-    current.node.style.left = slideWidth + "px";
-    next.node.style.left = 0;
-
+    // new current
     currentId = next.getId();
+    next.node.style.zIndex = 4;
+    next.node.style.left = 0;
+    next.node.style.top = from + "px";
+
+    browser.animate(void (float value) { // update
+      next.node.style.top = Math.round(value) + "px";
+    }, void () { // end
+      next.node.style.top = to + "px";
+      current.node.style.zIndex = 2;
+    }, 500, browser.animationDelta, to, from, browser.easingBounceOut);
   }
 
   bind void onPrevClick(object e) {
