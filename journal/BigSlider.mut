@@ -6,10 +6,12 @@ class BigSlider extends web.View {
 
   int slideWidth = 0;
   int slideHeight = 0;
+  int ANIM_TIME = 500;
 
   tag currentId = null;
   tag prevId = null;
   tag nextId = null;
+
 
   BigSlider() {
     style_ = style.bigSlider;
@@ -110,7 +112,7 @@ class BigSlider extends web.View {
     }, void () { // end
       prev.node.style.top = to + "px";
       current.node.style.zIndex = 2;
-    }, 500, browser.animationDelta, to, from, browser.easingBounceOut);
+    }, ANIM_TIME, browser.animationDelta, to, from, browser.easingBounceOut);
   }
 
   void slideNext() {
@@ -137,7 +139,7 @@ class BigSlider extends web.View {
     }, void () { // end
       next.node.style.top = to + "px";
       current.node.style.zIndex = 2;
-    }, 500, browser.animationDelta, to, from, browser.easingBounceOut);
+    }, ANIM_TIME, browser.animationDelta, to, from, browser.easingBounceOut);
   }
 
   bind void onPrevClick(object e) {
