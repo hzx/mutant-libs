@@ -375,3 +375,21 @@ int mouseNodeX(object node, object e) {
 int mouseNodeY(object node, object e) {
   return e.clientY + scrollY(scrollNode) - pageY(node);
 }
+
+
+int getScreenWidth() {
+  if window.screen {
+    return window.screen.width;
+  } else {
+    return window.outerWidth;
+  }
+}
+
+
+int getScreenHeight() {
+  if window.screen {
+    return window.screen.height;
+  } else {
+    return window.outerHeight;
+  }
+}
