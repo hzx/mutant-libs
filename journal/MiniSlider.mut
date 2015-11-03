@@ -6,8 +6,14 @@ class MiniSlider extends web.View {
   tag firstSlide = null;
 
   int bunchCount = 6;
+  int slideWidth = 0;
+  int slideHeight = 0;
+  int ANIM_TIME_PER_SLIDE = 100;
   tag leftId = null;
   tag rightId = null;
+  int leftIndex = 0;
+  int rightIndex = 0;
+
 
   bool isPrevExists = false;
   bool isNextExists = false;
@@ -17,6 +23,11 @@ class MiniSlider extends web.View {
   }
 
   override void create() {
+    // parse size
+    auto size = this.item.size.value.split("x");
+    slideWidth = size[0];
+    slideHeight = size[1];
+
     prevButton = <div style=style_.prevButton disable=style_.prevDisableButton
         onclick=onPrevClick></div>;
 
@@ -76,13 +87,16 @@ class MiniSlider extends web.View {
       } else {
         rightId = right.getId();
       }
+
+      leftIndex = this.item.images.getIdIndex(leftId);
+      rightIndex = this.item.images.getIdIndex(rightId);
     }
 
     setButtonsState();
   }
 
-  int computePrevOffset() {
-    if this.item.images.count is 0 { return 0; }
+  object computePrevOffset() {
+    if this.item.images.count is 0 { return null; }
     if leftId is null { initLeftRightIds(); }
     if this.item.images.getPrev(leftId) is null { return null; }
 
@@ -98,14 +112,15 @@ class MiniSlider extends web.View {
     if right is null { rightId = leftId; }
     else { rightId = right.getId(); }
 
-    int leftIndex = images.getIdIndex(leftId);
-    int rightIndex = images.getIdIndex(rightId);
+    int oldLeftIndex = leftIndex;
+    leftIndex = images.getIdIndex(leftId);
+    rightIndex = images.getIdIndex(rightId);
 
-    return 200 * leftIndex;
+    return [slideWidth * leftIndex, oldLeftIndex - leftIndex];
   }
 
-  int computeNextOffset() {
-    if this.item.images.count is 0 { return 0; }
+  object computeNextOffset() {
+    if this.item.images.count is 0 { return null; }
     if leftId is null { initLeftRightIds(); }
     if this.item.images.getNext(rightId) is null { return null; }
 
@@ -121,10 +136,11 @@ class MiniSlider extends web.View {
     if left is null { leftId = rightId; }
     else { leftId = left.getId(); }
 
-    int leftIndex = images.getIdIndex(leftId);
-    int rightIndex = images.getIdIndex(rightId);
+    int oldRightIndex = rightIndex;
+    leftIndex = images.getIdIndex(leftId);
+    rightIndex = images.getIdIndex(rightId);
 
-    return 200 * leftIndex;
+    return [slideWidth * leftIndex, rightIndex - oldRightIndex];
   }
 
   void setPrevButtonState() {
@@ -171,16 +187,14 @@ class MiniSlider extends web.View {
 
     auto node = slides.getNode();
     int from = window.parseInt(node.style.left);
-    int to = 0 - offset;
-
-    browser.log("---animate, from: " + from + ", to: " + to);
+    int to = 0 - offset[0];
 
     browser.animate(void (float value) { // update
-      browser.log(value);
       node.style.left = Math.floor(value) + "px";
     }, void () { // end
       node.style.left = to + "px";
-    }, 400, browser.animationDelta, to, from, browser.easingSineOut);
+    }, ANIM_TIME_PER_SLIDE * offset[1], browser.animationDelta,
+        to, from, browser.easingSineOut);
   }
 
   bind void onNextClick(object e) {
@@ -192,15 +206,13 @@ class MiniSlider extends web.View {
 
     auto node = slides.getNode();
     int from = window.parseInt(node.style.left);
-    int to = 0 - offset;
-
-    browser.log("---animate, from: " + from + ", to: " + to);
+    int to = 0 - offset[0];
 
     browser.animate(void (float value) { // update
-      browser.log(value);
       node.style.left = Math.floor(value) + "px";
     }, void () { // end
       node.style.left = to + "px";
-    }, 400, browser.animationDelta, to, from, browser.easingSineOut);
+    }, ANIM_TIME_PER_SLIDE * offset[1], browser.animationDelta,
+        to, from, browser.easingSineOut);
   }
 }
