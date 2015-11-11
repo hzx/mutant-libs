@@ -25,7 +25,14 @@ float easingBounceIn(float p) {
   return 1 / Math.pow( 4, 3 - bounce ) - 7.5625 * Math.pow( ( pow2 * 3 - 2 ) / 22 - p, 2 );
 }
 
-
 float easingBounceOut(float p) {
   return easingBounceIn(1.0 - p);
+}
+
+float easingBackIn(float p) {
+  return p * p * ( 3 * p - 2 );
+}
+
+float easingBackOut(float p) {
+  return easingBackIn(1.0 - p);
 }
