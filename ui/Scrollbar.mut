@@ -153,8 +153,6 @@ class Scrollbar extends web.View {
   }
 
   bind void onScrollareaTouchstart(object e) {
-    e.preventDefault();
-
     auto touches = e.changedTouches;
     startY = touches[touches.length - 1].pageY;
     lastTop = scrollarea.scrollTop;
