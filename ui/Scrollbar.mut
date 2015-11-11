@@ -4,13 +4,15 @@ class Scrollbar extends web.View {
   int scrollprogressHeight = 20;
   int touchStartY = 0;
   bool isMousedown = false;
+  // assign this
   tag scrollarea = null;
   tag scrollup = null;
   tag scrolldown = null;
   tag scrollprogress = null;
   tag scrollfield = null;
   int lastScrollHeight = 0;
-  /* int lastTop = 0; */
+  int lastTop = 0;
+  int startY = 0;
 
   override void create() {
     scrollup = <div style=style_.up hover=style_.up_hover onclick=onScrollupClick></div>;
@@ -37,12 +39,17 @@ class Scrollbar extends web.View {
     browser.addEvent(scrollarea, "touchstart", onScrollareaTouchstart);
     browser.addEvent(scrollarea, "touchmove", onScrollareaTouchmove);
     browser.addEvent(scrollarea, "touchend", onScrollareaTouchend);
-    /* browser.addEvent(scrollarea, "keyup", onScrollareaKeyup); */
+    browser.addEvent(scrollarea, "keyup", onScrollareaKeyup);
     /* browser.addEvent(scrollarea, "keypress", onScrollareaKeypress); */
-    browser.addEvent(scrollarea, "resize", onScrollparentResize);
-    browser.addEvent(window, "resize", onScrollparentResize);
+    browser.addEvent(scrollarea, "scroll", onScrollareaResize);
+    browser.addEvent(scrollarea, "resize", onScrollareaResize);
+    browser.addEvent(window, "resize", onScrollareaResize);
 
-    tuneBarHeight();
+    auto me = this;
+
+    window.setTimeout(void () {
+      me.tuneBarHeight();
+    }, 0);
   }
 
   override void exit() {
@@ -54,17 +61,18 @@ class Scrollbar extends web.View {
     browser.removeEvent(scrollarea, "touchstart", onScrollareaTouchstart);
     browser.removeEvent(scrollarea, "touchmove", onScrollareaTouchmove);
     browser.removeEvent(scrollarea, "touchend", onScrollareaTouchend);
-    /* browser.removeEvent(scrollarea, "keyup", onScrollareaKeyup); */
+    browser.removeEvent(scrollarea, "keyup", onScrollareaKeyup);
     /* browser.removeEvent(scrollarea, "keypress", onScrollareaKeypress); */
-    browser.removeEvent(scrollarea, "resize", onScrollparentResize);
-    browser.removeEvent(window, "resize", onScrollparentResize);
-
-    if isMousedown {
-      isMousedown = false;
-      unlistenDocument();
-    }
+    browser.removeEvent(scrollarea, "scroll", onScrollareaResize);
+    browser.removeEvent(scrollarea, "resize", onScrollareaResize);
+    browser.removeEvent(window, "resize", onScrollareaResize);
 
     base.exit();
+  }
+
+  void setScrollTop(int top) {
+    scrollarea.scrollTop = top;
+    tuneBarPos();
   }
 
   // get scroll area size and scrollprogress area size
@@ -107,16 +115,6 @@ class Scrollbar extends web.View {
     }
   }
 
-  void listenDocument() {
-    browser.addEvent(document, "mousemove", onDocumentMousemove);
-    browser.addEvent(document, "mouseup", onDocumentMouseup);
-  }
-
-  void unlistenDocument() {
-    browser.removeEvent(document, "mousemove", onDocumentMousemove);
-    browser.removeEvent(document, "mouseup", onDocumentMouseup);
-  }
-
   bind void onScrollbarMouseenter(object e) {
     element.setState(web.STATE_HOVER);
     scrollup.setState(web.STATE_HOVER);
@@ -151,62 +149,51 @@ class Scrollbar extends web.View {
       top = 0;
     }
 
-    scrollarea.scrollTop = top;
-    tuneBarPos();
+    setScrollTop(top);
   }
 
   bind void onScrollareaTouchstart(object e) {
+    e.preventDefault();
+
+    auto touches = e.changedTouches;
+    startY = touches[touches.length - 1].pageY;
+    lastTop = scrollarea.scrollTop;
   }
 
   bind void onScrollareaTouchmove(object e) {
     e.preventDefault();
 
-    // get last touch y
-    object touches = e.changedTouches;
-    /* int firstY = touches[0].pageY; */
+    auto touches = e.changedTouches;
     int lastY = touches[touches.length - 1].pageY;
+    int top = lastTop + (startY - lastY);
 
-    int top = scrollarea.scrollTop + lastY/* - firstY*/;
-    if top < 0 { top = 0; }
-
-    scrollarea.scrollTop = top;
-    tuneBarPos();
+    setScrollTop(top);
   }
 
   bind void onScrollareaTouchend(object e) {
   }
 
+  // TODO: keyboard scroll support
   bind void onScrollareaKeyup(object e) {
     browser.log("onScrollareaKeyup: " + e.keyCode);
+    
+    /* switch e.keyCode { */
+    /* } */
   }
 
   bind void onScrollareaKeypress(object e) {
     browser.log("onScrollareaKeypress: " + e.keyCode);
   }
 
-  bind void onScrollparentResize(object e) {
-    tuneBarHeight();
-  }
-
-  bind void onDocumentMousemove(object e) {
-    // TODO: implement
-    /* int y = e.pageY or e.clientY; */
-    /* scrollarea.scrollTop = scrollarea. */
+  bind void onScrollareaResize(object e) {
     tuneBarPos();
-  }
-
-  bind void onDocumentMouseup(object e) {
-    isMousedown = false;
-    unlistenDocument();
   }
 
   bind void onScrollupClick(object e) {
-    scrollarea.scrollTop = scrollarea.scrollTop - Scrollbar.DELTA_Y;
-    tuneBarPos();
+    setScrollTop(scrollarea.scrollTop - Scrollbar.DELTA_Y);
   }
 
   bind void onScrolldownClick(object e) {
-    scrollarea.scrollTop = scrollarea.scrollTop + Scrollbar.DELTA_Y;
-    tuneBarPos();
+    setScrollTop(scrollarea.scrollTop + Scrollbar.DELTA_Y);
   }
 }
