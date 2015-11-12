@@ -1,5 +1,6 @@
 
 class GoogleMap extends VerticalNode {
+  tag fileDialog = null;
   tag latInput = null;
   tag latNode = null;
   tag lngInput = null;
@@ -16,6 +17,8 @@ class GoogleMap extends VerticalNode {
 
   override void create() {
     createPlaceholders();
+
+    fileDialog = <ui.Upload onChange=onFileChange accept="image/\*"/>;
 
     latInput = <input style=style_.input
       onfocus=onLatFocus onblur=onLatBlur onchange=onLatChange
@@ -65,15 +68,20 @@ class GoogleMap extends VerticalNode {
       </div>
     </div>;
 
+    picNode = <img style=style_.pic onclick=onPicClick
+        bind=item.icon render=renderIcon/>;
+
     element = <div style=style_.node ondragover=onDragover ondragenter=onDragenter ondragleave=onDragleave ondrop=onDrop>
       {topPlaceholder_}
       {bottomPlaceholder_}
       <div style=style_.move draggable=true ondragstart=onDragstart></div>
       <div style=style_.wrap>
+        {fileDialog}
         <div style=style_.row>
           {latNode}
           {lngNode}
           {zoomNode}
+          {picNode}
         </div>
         {styleNode}
         <a style=style_.a href="http://maps.google.com" target="_blank"> "maps.google.com" </a>
@@ -84,6 +92,12 @@ class GoogleMap extends VerticalNode {
 
   void renderInputValue(tag input, object ovalue) {
     input.node.value = ovalue.value;
+  }
+
+  void renderIcon(tag elem, object filename) {
+    if filename.value.length > 0 {
+      elem.node.src = "/static/img/" + filename.value;
+    }
   }
 
   void flushLat() {
@@ -204,5 +218,48 @@ class GoogleMap extends VerticalNode {
 
   bind void onStyleClick(object e) {
     focusStyle();
+  }
+
+  bind void onFileChange(object files) {
+    if files.length < 1 { return; }
+
+    auto me = this;
+    auto fu = new net.FileUpload();
+    fu.polymorph = item.polymorph;
+    fu.collection.set(this.itemsColl_);
+    fu.field.set(journal_model.GoogleMapField.ICON);
+    fu.objId.set(item.id.value);
+
+    net.uploadFiles(files, fu, void (object filenames) { // success
+      // debug
+      browser.log("Image.onFileChange uploadFiles success:");
+      browser.log(filenames);
+
+      if filenames.length > 0 {
+        auto first = filenames[0];
+        if first.length > 0 {
+          me.item.icon.set(first);
+        }
+      }
+    }, void (int status, string response) { // fail
+    }, void (float progress) { // progress
+    });
+
+    // upload file to session
+    /* net.postSessionFiles(files, item.id.value, void (object sessionFiles) { // success */
+    /*   me.item.filename.set(sessionFiles.first.obj.filename.value); */
+    /* }, void (int status, string response) { // fail */
+    /*   browser.log("error upload file, status: " + status + ", response: " + */
+    /*       response); */
+    /* }, void (float progress) { // progress */
+    /*   // TODO: show upload progress */
+    /*   browser.log("upload image progress: " + progress); */
+    /* }); */
+
+    /* browser.setText(filename.node, file.name); */
+  }
+
+  bind void onPicClick(object e) {
+    fileDialog.click();
   }
 }

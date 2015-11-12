@@ -75,7 +75,7 @@ class GoogleMap extends web.View {
     auto marker = new google.maps.Marker({
       position: pos,
       map: map,
-      icon: item.icon.value,
+      icon: "/static/img/" + item.icon.value,
     });
   }
 }

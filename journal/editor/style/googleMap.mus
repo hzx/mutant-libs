@@ -114,5 +114,12 @@ styleNode_active: common.styleNode_active {
 styleEditWrap: common.styleEditWrap {
 }
 
+pic {
+  minWidth: 40px;
+  minHeight: 52px;
+  backgroundColor: #ff8888;
+  cursor: pointer;
+}
+
 
 } // end namespace googleMap
