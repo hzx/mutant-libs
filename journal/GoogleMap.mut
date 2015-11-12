@@ -55,8 +55,9 @@ class GoogleMap extends web.View {
     // create map here
 
     object options = {
+      // disable dragging map for touch cause collision with scrolling
+      draggable: !browser.isTouchSupported(), 
       disableDefaultUI: true,
-      panControl: true,
       zoomControl: true,
       zoomControlOptions: {
         style: google.maps.ZoomControlStyle.LARGE
