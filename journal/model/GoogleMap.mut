@@ -5,6 +5,7 @@ class GoogleMap extends container.Model {
   auto zoom = new container.Int();
   auto lat = new container.Float();
   auto lng = new container.Float();
+  auto icon = new container.String();
 
   GoogleMap() {
     polymorph = NodeType.GOOGLE_MAP;
@@ -46,6 +47,8 @@ class GoogleMap extends container.Model {
       case GoogleMapField.LNG:
         lng.set(parseFloat(value));
         break;
+      case GoogleMapField.ICON:
+        icon.set(value);
     }
   }
 
@@ -57,32 +60,25 @@ class GoogleMap extends container.Model {
     if zoom.has { buf.push(GoogleMapField.ZOOM, zoom.value); }
     if lat.has { buf.push(GoogleMapField.LAT, lat.value); }
     if lng.has { buf.push(GoogleMapField.LNG, lng.value); }
+    if icon.has { buf.push(GoogleMapField.ICON, icon.value); }
 
     return buf.join(container.DELIM_FIELD);
   }
 
   bind void onStyleUpdate(string val, string old) {
-    eventUpdate.notify2(id.value, [
-      GoogleMapField.STYLE, val,
-    ]);
+    eventUpdate.notify2(id.value, [GoogleMapField.STYLE, val]);
   }
 
   bind void onZoomUpdate(int val, int old) {
-    eventUpdate.notify2(id.value, [
-      GoogleMapField.ZOOM, val,
-    ]);
+    eventUpdate.notify2(id.value, [GoogleMapField.ZOOM, val]);
   }
 
   bind void onLatUpdate(float val, float old) {
-    eventUpdate.notify2(id.value, [
-      GoogleMapField.LAT, val,
-    ]);
+    eventUpdate.notify2(id.value, [GoogleMapField.LAT, val]);
   }
 
   bind void onLngUpdate(float val, float old) {
-    eventUpdate.notify2(id.value, [
-      GoogleMapField.LNG, val,
-    ]);
+    eventUpdate.notify2(id.value, [GoogleMapField.LNG, val]);
   }
 }
 
@@ -93,5 +89,5 @@ enum GoogleMapField {
   ZOOM,
   LAT,
   LNG,
-  // TODO: add icon field
+  ICON,
 }
