@@ -69,32 +69,13 @@ class GoogleMap extends web.View {
 
     map = new google.maps.Map(element.node, options);
 
-    /* for item in this.markers */
     // add marker
     auto pos = new google.maps.LatLng(item.lat.value, item.lng.value);
 
     auto marker = new google.maps.Marker({
       position: pos,
       map: map,
-      /* icon: item.image */
+      icon: item.icon.value,
     });
-  
-    /* object options = { */
-    /*   disableDefaultUI: true, */
-    /*   panControl: true, */
-    /*   zoomControl: true, */
-    /*   zoomControlOptions: { */
-    /*     style: google.maps.ZoomControlStyle.LARGE */
-    /*   }, */
-    /*   scrollwheel: false, */
-    /*   zoom: zoom, */
-    /*   center: new google.maps.LatLng(lat, lng) */
-    /* }; */
-
-    /* map = new google.maps.Map(element.node, options); */
-
-    // add icons
   }
-
-
 }
