@@ -94,9 +94,9 @@ class GoogleMap extends VerticalNode {
     input.node.value = ovalue.value;
   }
 
-  void renderIcon(tag elem, object filename) {
-    if filename.value.length > 0 {
-      elem.node.src = "/static/img/" + filename.value;
+  void renderIcon(tag elem, object icon) {
+    if icon.has and icon.value.length > 0 {
+      elem.node.src = "/static/img/" + icon.value;
     }
   }
 

@@ -72,10 +72,15 @@ class GoogleMap extends web.View {
     // add marker
     auto pos = new google.maps.LatLng(item.lat.value, item.lng.value);
 
-    auto marker = new google.maps.Marker({
+    auto markerOptions = {
       position: pos,
       map: map,
-      icon: "/static/img/" + item.icon.value,
-    });
+    };
+
+    if item.icon.has and item.icon.value.length > 0 {
+      markerOptions.icon = "/static/img/" + item.icon.value;
+    }
+
+    auto marker = new google.maps.Marker(markerOptions);
   }
 }
