@@ -41,6 +41,13 @@ class MiniSlider extends web.View {
       {slides}
     </div>;
 
+    // set slides, slidesWrap height
+    slidesWrap.getNode().style.height = slideHeight + "px";
+    slides.getNode().style.height = slideHeight + "px";
+    // set slides width
+    slides.getNode().style.width = (this.item.images.count * slideWidth) + "px";
+
+
     element = <div style=style_.element>
       {prevButton}
       {nextButton}

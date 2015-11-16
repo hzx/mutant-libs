@@ -41,22 +41,19 @@ nextDisableButton: nextSliderDisableIcon {
 
 imagesWrap {
   position: relative;
-  height: inherit;
+  overflow: hidden;
 }
 
-images: ui_style.checkerBg {
+images {
   position: absolute;
   left: 0;
   top: 0;
-  /* width: inherit; */
-  height: inherit;
   zIndex: 1;
-  backgroundColor: #c8eeee;
 }
 
 image {
-  float: left;
-  cssFloat: left;
+  /* float: left; */
+  /* cssFloat: left; */
 }
 
 
