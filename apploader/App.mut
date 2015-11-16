@@ -20,7 +20,13 @@ class App {
   }
 
   void hide() {
-    browser.hide(view.getNode());
+    auto viewNode = view.getNode();
+
+    browser.animate(void (float val) { // update
+      browser.setOpacity(viewNode, val);
+    }, void () { // end
+      browser.hide(viewNode);
+    }, 800, browser.animationDelta, 1.0, 0.0, browser.easingCircIn);
   }
 
   void parseFields(string data) {
