@@ -139,6 +139,7 @@ class GalleryDialog extends web.View {
 
   bind void onImageClick(object e) {
     e.stopPropagation();
+    hide();
   }
 
   bind void onNextButtonClick(object e) {
