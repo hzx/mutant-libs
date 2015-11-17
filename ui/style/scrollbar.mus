@@ -10,7 +10,8 @@ bar {
   bottom: 0;
   /* padding: 16px 0; */
   backgroundColor: #d7e7f7;
-  zIndex: 100;
+  zIndex: 50;
+  /* zIndex: 100; */
 }
 
 bar_hover {
